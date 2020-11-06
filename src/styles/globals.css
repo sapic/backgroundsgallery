@@ -51,7 +51,7 @@ a {
 .item-enter-active {
   opacity: 1;
   transform: translateY(0%);
-  transition: all 500ms ease-in;
+  transition: all 500ms ease-in-out;
 }
 .item-exit {
   transform: translateY(0%);
@@ -60,5 +60,5 @@ a {
 .item-exit-active {
   opacity: 0;
   transform: translateY(100%);
-  transition: all 500ms ease-in;
+  transition: all 500ms ease-in-out;
 }

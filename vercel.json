@@ -1,0 +1,5 @@
+{
+  "env": {
+    "MONGO_UR1L": "mongo-url"
+  }
+}

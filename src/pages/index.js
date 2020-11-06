@@ -4,8 +4,7 @@ import clsx from 'clsx';
 import styled from 'styled-components'
 import useFetch from 'use-http'
 import { useState, useEffect } from 'react'
-import ReactCSSTransitionReplace from 'react-css-transition-replace';
-import TinyCrossfade from "react-tiny-crossfade";
+
 import {
   CSSTransition,
   TransitionGroup,
@@ -51,7 +50,7 @@ export default function Home() {
   async function loadBgs() {
     console.log('loadbgs')
     // const initialTodos = await get('/api/get_random_bgs')
-    const bgs = await fetch('/api/get_random_bgs').then(r => r.json())
+    const bgs = await fetch('/api/random').then(r => r.json())
     console.log('bgs', bgs)
 
     let loadAwait = []
@@ -62,6 +61,39 @@ export default function Home() {
     await Promise.all(loadAwait)
 
     setBgs(bgs)
+  }
+
+  async function trackVote(item) {
+    console.log('trackVote')
+    await fetch('/api/vote', {
+      method: 'POST',
+      body: JSON.stringify({
+        item,
+      })
+    })
+  }
+
+  async function clickOnImage(item) {
+    trackVote(item)
+    loadBgs()
+  }
+
+  function ImageContainer(props) {
+    const { item, ...restProps } = props
+    return (
+      <CSSTransition
+        key={props.item.steamUrl}
+        timeout={500}
+        classNames="item"
+        {...restProps}
+      >
+        <div className="w-full flex flex-col justify-center absolute h-full select-none cursor-pointer" onClick={() => { clickOnImage(item) }}>
+          <VerticalCenterDiv className="absolute w-full">
+            <img className="w-full transform scale-105 hover:scale-110 transition-all duration-500 user-drag-none" src={props.item.steamUrl}></img>
+          </VerticalCenterDiv>
+        </div>
+      </CSSTransition>
+    )
   }
 
   // const [randomBg1, randomBg2] = bgs
@@ -84,33 +116,13 @@ export default function Home() {
 
       <div className="w-full h-screen flex pt-16">
         <TransitionGroup className="w-full h-full overflow-hidden relative">
-          {leftBgs.map(({ steamUrl }) => (
-            <CSSTransition
-              key={steamUrl}
-              timeout={500}
-              classNames="item"
-            >
-              <div className="w-full flex flex-col justify-center absolute h-full" onClick={() => { loadBgs() }}>
-                <VerticalCenterDiv className="absolute w-full">
-                  <img className="w-full transform scale-110 hover:scale-125 transition-all  duration-500" src={steamUrl}></img>
-                </VerticalCenterDiv>
-              </div>
-            </CSSTransition>
+          {leftBgs.map((item) => (
+            <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
           ))}
         </TransitionGroup>
         <TransitionGroup className="w-full h-full overflow-hidden relative">
-          {rightBgs.map(({ steamUrl }) => (
-            <CSSTransition
-              key={steamUrl}
-              timeout={500}
-              classNames="item"
-            >
-              <div className="w-full flex flex-col justify-center absolute h-full" onClick={() => { loadBgs() }}>
-                <VerticalCenterDiv className="absolute w-full">
-                  <img className="w-full transform scale-110 hover:scale-125 transition-all  duration-500" src={steamUrl}></img>
-                </VerticalCenterDiv>
-              </div>
-            </CSSTransition>
+          {rightBgs.map((item) => (
+            <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
           ))}
         </TransitionGroup>
         {/* <TinyCrossfade className="w-1/2 flex flex-col justify-center"> */}

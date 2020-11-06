@@ -16,7 +16,7 @@
     "file-loader": "^6.1.1",
     "micro-redirect": "^1.0.2",
     "mongodb": "^3.6.2",
-    "next": "^10.0.0",
+    "next": "10.0.0",
     "next-cookies": "^2.0.3",
     "passport": "^0.4.1",
     "passport-steam": "^1.0.14",
@@ -27,9 +27,6 @@
     "react-transition-group": "^4.4.1",
     "styled-components": "^5.2.1",
     "use-http": "^1.0.15"
-  },
-  "installConfig": {
-    "pnp": true
   },
   "devDependencies": {
     "autoprefixer": "^9",
@@ -45,5 +42,12 @@
     "postcss-nested": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.9.6"
+  },
+  "browser1": {
+    "fs": false,
+    "path": false,
+    "os": false,
+    "child_process": false,
+    "worker_threads": false
   }
 }

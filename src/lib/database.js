@@ -1,12 +1,14 @@
 import { MongoClient } from 'mongodb';
 
-const client = new MongoClient('mongodb+srv://truecarry:2RRugg%23%21MU%23UHN.t@cluster0.qonxy.mongodb.net/test?retryWrites=true&w=majority', {
+const client = new MongoClient(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 async function database(req, res, next) {
+  console.log('init db')
   if (!client.isConnected()) await client.connect();
+  console.log('db connected')
 
   req.dbClient = client;
   req.db = client.db('test');

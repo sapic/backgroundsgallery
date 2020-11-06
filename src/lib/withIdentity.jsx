@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import nextCookie from 'next-cookies'
 import redirect from './redirect'
-import NextApp, { AppInitialProps, AppContext } from 'next/app'
-import { NextPageContext } from 'next'
+import NextApp from 'next/app'
+
 
 // export interface UserIdentity {
 //   id: number

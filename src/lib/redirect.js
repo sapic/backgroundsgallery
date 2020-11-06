@@ -1,5 +1,4 @@
 import Router from 'next/router'
-import { NextPageContext } from 'next'
 
 export default function Redirect(context, target) {
   if (context.res) {
