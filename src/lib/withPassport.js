@@ -1,9 +1,9 @@
 import passport from 'passport'
 import cookieSession from 'cookie-session'
 import url from 'url'
-import redirect from 'micro-redirect'
+// import redirect from 'micro-redirect'
 import { steam } from './passport'
-import { UserIdentity } from './withIdentity'
+// import { UserIdentity } from './withIdentity'
 // import { Profile } from 'passport-github'
 export { default as passport } from 'passport'
 

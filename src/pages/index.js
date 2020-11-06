@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+// import styles from '../styles/Home.module.css'
 import clsx from 'clsx';
 import styled from 'styled-components'
-import useFetch from 'use-http'
-import { useState, useEffect } from 'react'
+// import useFetch from 'use-http'
+import { useState } from 'react'
 
 import {
   CSSTransition,
@@ -43,9 +43,13 @@ export default function Home() {
   const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const [bgs, setBgs] = useState([])
-  const { get, post, response, loading, error } = useFetch()
+  const [enableEnter, setEnableEnter] = useState(false)
+  // const { get, post, response, loading, error } = useFetch()
 
-  useEffect(() => { loadBgs() }, [])
+  // console.log('home')
+  // useEffect(() => {
+  if (bgs.length === 0) loadBgs()
+  // }, [])
 
   async function loadBgs() {
     console.log('loadbgs')
@@ -61,6 +65,7 @@ export default function Home() {
     await Promise.all(loadAwait)
 
     setBgs(bgs)
+    setEnableEnter(true)
   }
 
   async function trackVote(item) {
@@ -87,10 +92,37 @@ export default function Home() {
         classNames="item"
         {...restProps}
       >
-        <div className="w-full flex flex-col justify-center absolute h-full select-none cursor-pointer" onClick={() => { clickOnImage(item) }}>
+        <div className={clsx(
+          "w-full flex flex-col justify-center",
+          "absolute h-full select-none cursor-pointer",
+          // "transform scale-105 hover:scale-110 transition-all duration-500"
+        )} onClick={() => { clickOnImage(item) }}>
           <VerticalCenterDiv className="absolute w-full">
-            <img className="w-full transform scale-105 hover:scale-110 transition-all duration-500 user-drag-none" src={props.item.steamUrl}></img>
+            <img alt="" className="w-full user-drag-none" src={props.item.steamUrl}></img>
           </VerticalCenterDiv>
+          <a
+            className={clsx(
+              'bg-gray-900 text-white p-4 rounded',
+              'shadow-xl absolute bottom-48 left-1/2 w-128',
+              'transform', '-translate-x-1/2'
+            )}
+            onClick={(e) => {
+              // e.preventDefault()
+              e.stopPropagation()
+              console.log('click info')
+            }}
+            href={`https://steamcommunity.com/market/listings/${item.url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="flex">
+              <div className="leading-6 align-middle">{item.name} </div>
+              <div className="ml-2 text-gray-500 text-sm leading-6 align-middle"> {item.price}$</div>
+            </div>
+            <div className="text-gray-500 text-sm">
+              {item.game}
+            </div>
+          </a>
         </div>
       </CSSTransition>
     )
@@ -115,7 +147,10 @@ export default function Home() {
       <Header />
 
       <div className="w-full h-screen flex pt-16">
-        <TransitionGroup className="w-full h-full overflow-hidden relative">
+        <TransitionGroup
+          className="w-full h-full overflow-hidden relative"
+          enter={enableEnter}
+        >
           {leftBgs.map((item) => (
             <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
           ))}
@@ -134,8 +169,8 @@ export default function Home() {
             <img className="w-full" src={randomBg2.steamUrl}></img>
           </div> */}
 
-        <CenterDiv className="absolute left-8 text-white">
-          <div className="w-16 h-16 rounded-full bg-white leading-16 text-black text-center">
+        <CenterDiv className="absolute left-8">
+          <div className="w-16 h-16 rounded-full bg-white leading-16 text-center bg-gray-900 text-white shadow-xl">
             VS
           </div>
         </CenterDiv>

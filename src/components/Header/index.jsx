@@ -23,14 +23,14 @@ export default function Header() {
         <div>
           <Link href="/">
             <a className="flex items-center">
-              HI
+              <img className="w-12 h-12" src={require('@/assets/images/logo.svg')} alt=""></img>
             </a>
           </Link>
         </div>
         <div className="flex mx-8">
           <Link href="/">
             <a className="flex items-center">
-              Designers List
+              Backgrounds battle
             </a>
           </Link>
         </div>
@@ -39,13 +39,13 @@ export default function Header() {
 
       {identity && identity.id
         ? (
-          <div className="flex">
-            <img src={identity.photos[0].value} ></img>
-            <a href="/api/logout"> Logout </a>
+          <div className="flex items-center">
+            <img className="w-12 h-12 rounded-full" alt="" src={identity.photos[0].value} ></img>
+            <a className="ml-4 h-6 align-middle" href="/api/logout"> Logout </a>
           </div>
         )
-        : <div>
-          <a href="/api/auth/steam">Login through Steam</a>
+        : <div className="flex flex-col justify-center">
+          <a className="h-6" href="/api/auth/steam">Login through Steam</a>
         </div>
       }
     </div>

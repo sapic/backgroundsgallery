@@ -6,14 +6,19 @@ const client = new MongoClient(process.env.MONGO_URL, {
 });
 
 async function database(req, res, next) {
-  if (!client.isConnected()) await client.connect();
+  try {
+    if (!client.isConnected()) await client.connect();
 
-  req.dbClient = client;
-  req.db = client.db('test');
+    req.dbClient = client;
+    req.db = client.db('test');
+  } catch (err) {
+    console.log('maybeDatabase error')
+  }
 
   return next()
 }
 
 export default fn => (req, res) =>
   database(req, res, () => fn(req, res))
+
 

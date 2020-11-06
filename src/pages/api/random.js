@@ -1,4 +1,4 @@
-import withDatabase from '../../lib/database'
+import withDatabase from '../../lib/maybeDatabase'
 const bgs = require('../../assets/bgs.json')
 
 export default withDatabase((req, res) => {
@@ -9,20 +9,22 @@ export default withDatabase((req, res) => {
 
   res.send(resbgs)
 
-  const views = req.db.collection('views')
+  if (req.db) {
+    const views = req.db.collection('views')
 
-  for (const bg of resbgs) {
-    const query = { url: bg.url };
-    const update = {
-      $set: {
-        url: bg.url,
-      },
-      $inc: {
-        views: 1
-      }
-    };
-    const options = { upsert: true };
+    for (const bg of resbgs) {
+      const query = { url: bg.url };
+      const update = {
+        $set: {
+          url: bg.url,
+        },
+        $inc: {
+          views: 1
+        }
+      };
+      const options = { upsert: true };
 
-    views.updateOne(query, update, options);
+      views.updateOne(query, update, options);
+    }
   }
 })

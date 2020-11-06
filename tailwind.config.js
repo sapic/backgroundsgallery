@@ -49,6 +49,9 @@ module.exports = {
         '16': '4rem',
         '20': '5rem',
         '24': '6rem',
+        '64': '16rem',
+        '48': '12rem',
+        '1/2': '50%',
       },
       borderWidth: {
         '6': '6px',
