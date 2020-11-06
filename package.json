@@ -1,0 +1,43 @@
+{
+  "name": "designers-list-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@next/bundle-analyzer": "^9.5.5",
+    "babel-plugin-preval": "^5.0.0",
+    "clsx": "^1.1.1",
+    "cookie-session": "^1.4.0",
+    "file-loader": "^6.1.1",
+    "micro-redirect": "^1.0.2",
+    "mongodb": "^3.6.2",
+    "next": "^10.0.0",
+    "next-cookies": "^2.0.3",
+    "passport": "^0.4.1",
+    "passport-steam": "^1.0.14",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "installConfig": {
+    "pnp": true
+  },
+  "devDependencies": {
+    "autoprefixer": "^9",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.11.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "postcss": "^8.1.4",
+    "postcss-nested": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "tailwindcss": "^1.9.6"
+  }
+}
