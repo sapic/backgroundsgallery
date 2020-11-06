@@ -3,6 +3,12 @@
     "next/babel"
   ],
   "plugins": [
-    "preval"
+    "preval",
+    [
+      "styled-components",
+      {
+        "ssr": true
+      }
+    ]
   ]
 }

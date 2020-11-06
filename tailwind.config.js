@@ -65,6 +65,9 @@ module.exports = {
         '90': '90',
         '100': '100',
       },
+      lineHeight: {
+        '16': '4rem',
+      }
     },
   },
   variants: {

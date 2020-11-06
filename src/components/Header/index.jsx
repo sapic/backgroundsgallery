@@ -17,13 +17,13 @@ import { useIdentity } from '@/lib/withIdentity'
 
 export default function Header() {
   const identity = useIdentity()
-  return <header className="flex bg-white border-b border-gray-200 fixed top-0 inset-x-0 z-100 h-16 items-center">
+  return <header className="flex bg-gray-900 border-b border-gray-800 fixed top-0 inset-x-0 z-100 h-16 items-center text-white">
     <div className="w-full max-w-screen-xl relative mx-auto flex justify-between">
       <div className="flex">
         <div>
           <Link href="/">
             <a className="flex items-center">
-              Steam.Design
+              HI
             </a>
           </Link>
         </div>

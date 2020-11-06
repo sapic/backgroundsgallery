@@ -1,19 +1,133 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import clsx from 'clsx';
+import styled from 'styled-components'
+import useFetch from 'use-http'
+import { useState, useEffect } from 'react'
+import ReactCSSTransitionReplace from 'react-css-transition-replace';
+import TinyCrossfade from "react-tiny-crossfade";
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 
 import { useIdentity } from '../lib/withIdentity'
 
+import Header from '../components/Header'
+
+// const bgs = require('../assets/bgs.json')
+
+const CenterDiv = styled.div`
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+`
+
+const VerticalCenterDiv = styled.div`
+  top: 50%;
+  transform: translateY(-50%);
+`
+
+function preloadImage(url) {
+  return new Promise((resolve, reject) => {
+    console.log('preload', url)
+    let img = new Image()
+    img.onload = () => {
+      console.log('loaded')
+      resolve()
+    }
+    img.src = url
+  })
+}
+
 export default function Home() {
   const identity = useIdentity()
+  // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
+  const [bgs, setBgs] = useState([])
+  const { get, post, response, loading, error } = useFetch()
+
+  useEffect(() => { loadBgs() }, [])
+
+  async function loadBgs() {
+    console.log('loadbgs')
+    // const initialTodos = await get('/api/get_random_bgs')
+    const bgs = await fetch('/api/get_random_bgs').then(r => r.json())
+    console.log('bgs', bgs)
+
+    let loadAwait = []
+    for (const bg of bgs) {
+      loadAwait.push(preloadImage(bg.steamUrl))
+    }
+
+    await Promise.all(loadAwait)
+
+    setBgs(bgs)
+  }
+
+  // const [randomBg1, randomBg2] = bgs
+  const leftBgs = bgs.filter((_, i) => i % 2 === 0)
+  const rightBgs = bgs.filter((_, i) => i % 2 === 1)
+
   console.log('identity', identity)
+  // const bgKeys = Object.keys(bgs)
+  // const randomBg1 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
+  // const randomBg2 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
 
   return (
-    <div className={styles.container}>
+    <div className="bg-black">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    </div >
+
+      <Header />
+
+      <div className="w-full h-screen flex pt-16">
+        <TransitionGroup className="w-full h-full overflow-hidden relative">
+          {leftBgs.map(({ steamUrl }) => (
+            <CSSTransition
+              key={steamUrl}
+              timeout={500}
+              classNames="item"
+            >
+              <div className="w-full flex flex-col justify-center absolute h-full" onClick={() => { loadBgs() }}>
+                <VerticalCenterDiv className="absolute w-full">
+                  <img className="w-full transform scale-110 hover:scale-125 transition-all  duration-500" src={steamUrl}></img>
+                </VerticalCenterDiv>
+              </div>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+        <TransitionGroup className="w-full h-full overflow-hidden relative">
+          {rightBgs.map(({ steamUrl }) => (
+            <CSSTransition
+              key={steamUrl}
+              timeout={500}
+              classNames="item"
+            >
+              <div className="w-full flex flex-col justify-center absolute h-full" onClick={() => { loadBgs() }}>
+                <VerticalCenterDiv className="absolute w-full">
+                  <img className="w-full transform scale-110 hover:scale-125 transition-all  duration-500" src={steamUrl}></img>
+                </VerticalCenterDiv>
+              </div>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+        {/* <TinyCrossfade className="w-1/2 flex flex-col justify-center"> */}
+        {/* <div className="" onClick={() => { loadBgs() }} key={randomBg1.steamUrl}> */}
+        {/* <img className="w-full" src={randomBg1.steamUrl} key={randomBg1.steamUrl} ></img> */}
+        {/* </div> */}
+        {/* </TinyCrossfade> */}
+        {/* <div className="w-1/2 flex flex-col justify-center" onClick={() => { loadBgs() }}>
+            <img className="w-full" src={randomBg2.steamUrl}></img>
+          </div> */}
+
+        <CenterDiv className="absolute left-8 text-white">
+          <div className="w-16 h-16 rounded-full bg-white leading-16 text-black text-center">
+            VS
+          </div>
+        </CenterDiv>
+      </div>
+    </div>
   )
 }

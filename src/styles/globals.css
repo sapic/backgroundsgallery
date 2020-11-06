@@ -10,6 +10,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  
+  @apply bg-black;
 }
 
 a {
@@ -19,4 +21,44 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+
+.cross-fade-leave {
+  opacity: 1;
+}
+.cross-fade-leave.cross-fade-leave-active {
+  opacity: 0;
+  transition: opacity 10s ease-in;
+}
+
+.cross-fade-enter {
+  opacity: 0;
+}
+.cross-fade-enter.cross-fade-enter-active {
+  opacity: 1;
+  transition: opacity 10s ease-in;
+}
+
+.cross-fade-height {
+  transition: height 0.5s ease-in-out;
+}
+
+.item-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.item-enter-active {
+  opacity: 1;
+  transform: translateY(0%);
+  transition: all 500ms ease-in;
+}
+.item-exit {
+  transform: translateY(0%);
+  opacity: 1;
+}
+.item-exit-active {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 500ms ease-in;
 }
