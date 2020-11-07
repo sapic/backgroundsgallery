@@ -1,7 +1,8 @@
-import withDatabase from '../../lib/maybeDatabase'
+// import withDatabase from '../../lib/maybeDatabase'
 const bgs = require('../../assets/bgs.json')
 
-export default withDatabase((req, res) => {
+// export default withDatabase((req, res) => {
+export default (req, res) => {
   const bgKeys = Object.keys(bgs)
   const randomBg1 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
   const randomBg2 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
@@ -27,4 +28,4 @@ export default withDatabase((req, res) => {
       views.updateOne(query, update, options);
     }
   }
-})
+}

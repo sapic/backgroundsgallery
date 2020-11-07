@@ -39,7 +39,7 @@ function preloadImage(url) {
   })
 }
 
-export default function Home() {
+function Home({ origin }) {
   const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const [bgs, setBgs] = useState([])
@@ -54,7 +54,7 @@ export default function Home() {
   async function loadBgs() {
     console.log('loadbgs')
     // const initialTodos = await get('/api/get_random_bgs')
-    const bgs = await fetch('/api/random').then(r => r.json())
+    const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
     console.log('bgs', bgs)
 
     let loadAwait = []
@@ -74,6 +74,7 @@ export default function Home() {
       method: 'POST',
       body: JSON.stringify({
         item,
+        views: bgs
       })
     })
   }
@@ -104,7 +105,8 @@ export default function Home() {
             className={clsx(
               'bg-gray-900 text-white p-4 rounded',
               'shadow-xl absolute bottom-48 left-1/2 w-128',
-              'transform', '-translate-x-1/2'
+              'transform', '-translate-x-1/2',
+              'transition-color duration-300 hover:bg-gray-800'
             )}
             onClick={(e) => {
               // e.preventDefault()
@@ -117,7 +119,7 @@ export default function Home() {
           >
             <div className="flex">
               <div className="leading-6 align-middle">{item.name} </div>
-              <div className="ml-2 text-gray-500 text-sm leading-6 align-middle"> {item.price}$</div>
+              <div className="ml-2 text-gray-500 text-sm leading-6 align-middle">${item.price}</div>
             </div>
             <div className="text-gray-500 text-sm">
               {item.game}
@@ -174,7 +176,45 @@ export default function Home() {
             VS
           </div>
         </CenterDiv>
+        <CenterDiv className="absolute left-12">
+          <div className={clsx(
+            "mt-48 w-24 h-24 rounded-full",
+            "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
+            "transition-all duration-300 hover:bg-green-500 cursor-pointer",
+            'select-none'
+          )}
+            onClick={() => { loadBgs() }}
+          >
+            Skip
+          </div>
+        </CenterDiv>
       </div>
-    </div>
+    </div >
   )
+}
+
+Home.getInitialProps = ({ req }) => {
+  const { origin } = absoluteUrl(req, "localhost:3000");
+
+  return {
+    origin,
+  }
+}
+
+export default Home
+
+function absoluteUrl(req, setLocalhost) {
+  var protocol = "https:";
+  var host = req
+    ? req.headers["x-forwarded-host"] || req.headers["host"]
+    : window.location.host;
+  if (host.indexOf("localhost") > -1) {
+    if (setLocalhost) host = setLocalhost;
+    protocol = "http:";
+  }
+  return {
+    protocol: protocol,
+    host: host,
+    origin: protocol + "//" + host,
+  };
 }

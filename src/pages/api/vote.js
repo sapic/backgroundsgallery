@@ -2,14 +2,17 @@ import withPassport from '../../lib/withPassport'
 import withDatabase from '../../lib/database'
 
 export default withDatabase(withPassport(async (req, res) => {
+  res.statusCode = 200
+  res.json({ status: 'ok' })
 
-  const { item } = JSON.parse(req.body)
+  const { item, views: bgs } = JSON.parse(req.body)
   const userId = req?.user?.id
 
   console.log('body', item, userId)
 
   const votes = req.db.collection('votes')
   const votesTotal = req.db.collection('votes_total')
+  const views = req.db.collection('views')
   // const ball = await balls.findOne()
   votes.insertOne({
     url: item.url,
@@ -29,6 +32,19 @@ export default withDatabase(withPassport(async (req, res) => {
 
   votesTotal.updateOne(query, update, options);
 
-  res.statusCode = 200
-  res.json({ name: 'John Doe', user: req.user })
+  for (const bg of bgs) {
+    console.log('adding views to bg', bg.url)
+    const query = { url: bg.url };
+    const update = {
+      $set: {
+        url: bg.url,
+      },
+      $inc: {
+        views: 1
+      }
+    };
+    const options = { upsert: true };
+
+    views.updateOne(query, update, options);
+  }
 }))

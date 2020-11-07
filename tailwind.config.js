@@ -73,6 +73,7 @@ module.exports = {
       },
       lineHeight: {
         '16': '4rem',
+        '24': '6rem',
       }
     },
   },
