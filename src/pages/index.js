@@ -87,6 +87,11 @@ function Home({ origin }) {
     loadBgs()
   }
 
+  async function clickOnSkip() {
+    trackVote()
+    loadBgs()
+  }
+
   function ImageContainer(props) {
     const { item, ...restProps } = props
     return (
@@ -205,7 +210,7 @@ function Home({ origin }) {
             "transition-all duration-300 hover:bg-green-500 cursor-pointer",
             'select-none'
           )}
-            onClick={() => { loadBgs() }}
+            onClick={() => { clickOnSkip() }}
           >
             Skip
           </div>

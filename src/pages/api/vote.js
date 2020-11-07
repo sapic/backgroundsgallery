@@ -13,24 +13,26 @@ export default withDatabase(withPassport(async (req, res) => {
   const votes = req.db.collection('votes')
   const votesTotal = req.db.collection('votes_total')
   const views = req.db.collection('views')
-  // const ball = await balls.findOne()
-  votes.insertOne({
-    url: item.url,
-    user_id: userId,
-  })
 
-  const query = { url: item.url };
-  const update = {
-    $set: {
+  if (item) {
+    votes.insertOne({
       url: item.url,
-    },
-    $inc: {
-      votes: 1
-    }
-  };
-  const options = { upsert: true };
+      user_id: userId,
+    })
 
-  votesTotal.updateOne(query, update, options);
+    const query = { url: item.url };
+    const update = {
+      $set: {
+        url: item.url,
+      },
+      $inc: {
+        votes: 1
+      }
+    };
+    const options = { upsert: true };
+
+    votesTotal.updateOne(query, update, options);
+  }
 
   for (const bg of bgs) {
     console.log('adding views to bg', bg.url)
