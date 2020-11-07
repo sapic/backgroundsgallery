@@ -43,12 +43,12 @@ function Home({ origin }) {
   const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const [bgs, setBgs] = useState([])
-  const [enableEnter, setEnableEnter] = useState(false)
+  // const [enableEnter, setEnableEnter] = useState(false)
   // const { get, post, response, loading, error } = useFetch()
 
   // console.log('home')
   // useEffect(() => {
-  if (bgs.length === 0) loadBgs()
+  if (bgs.length === 0 && process.browser) loadBgs()
   // }, [])
 
   async function loadBgs() {
@@ -65,7 +65,10 @@ function Home({ origin }) {
     await Promise.all(loadAwait)
 
     setBgs(bgs)
-    setEnableEnter(true)
+    // if (!enableEnter) {
+    //   setTimeout(() => setEnableEnter(true), 500)
+    // }
+    // setEnableEnter(true)
   }
 
   async function trackVote(item) {
@@ -171,7 +174,6 @@ function Home({ origin }) {
       <div className="w-full h-screen flex pt-16">
         <TransitionGroup
           className="w-full h-full overflow-hidden relative"
-          enter={enableEnter}
         >
           {leftBgs.map((item) => (
             <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
@@ -213,28 +215,28 @@ function Home({ origin }) {
   )
 }
 
-Home.getInitialProps = ({ req }) => {
-  const { origin } = absoluteUrl(req, "localhost:3000");
+// Home.getInitialProps = ({ req }) => {
+//   const { origin } = absoluteUrl(req, "localhost:3000");
 
-  return {
-    origin,
-  }
-}
+//   return {
+//     origin,
+//   }
+// }
 
 export default Home
 
-function absoluteUrl(req, setLocalhost) {
-  var protocol = "https:";
-  var host = req
-    ? req.headers["x-forwarded-host"] || req.headers["host"]
-    : window.location.host;
-  if (host.indexOf("localhost") > -1) {
-    if (setLocalhost) host = setLocalhost;
-    protocol = "http:";
-  }
-  return {
-    protocol: protocol,
-    host: host,
-    origin: protocol + "//" + host,
-  };
-}
+// function absoluteUrl(req, setLocalhost) {
+//   var protocol = "https:";
+//   var host = req
+//     ? req.headers["x-forwarded-host"] || req.headers["host"]
+//     : window.location.host;
+//   if (host.indexOf("localhost") > -1) {
+//     if (setLocalhost) host = setLocalhost;
+//     protocol = "http:";
+//   }
+//   return {
+//     protocol: protocol,
+//     host: host,
+//     origin: protocol + "//" + host,
+//   };
+// }
