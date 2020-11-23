@@ -56,6 +56,13 @@ function Home({ origin, cookies }) {
 
   async function loadBgs() {
     console.log('loadbgs')
+
+    if (window && window.gtag) {
+      window.gtag('event', 'loadbg', {
+        'image': 'true'
+      });
+    }
+
     // const initialTodos = await get('/api/get_random_bgs')
     const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
     console.log('bgs', bgs)
@@ -76,6 +83,13 @@ function Home({ origin, cookies }) {
 
   async function trackVote(item) {
     console.log('trackVote')
+
+    if (window && window.gtag) {
+      window.gtag('event', 'vote', {
+        'image': item ? 'true' : 'false'
+      });
+    }
+
     await fetch('/api/vote', {
       method: 'POST',
       body: JSON.stringify({
