@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import styled from 'styled-components'
 // import useFetch from 'use-http'
 import { useState } from 'react'
+import { parseCookies } from 'nookies'
 
 import {
   CSSTransition,
@@ -13,6 +14,7 @@ import {
 import { useIdentity } from '../lib/withIdentity'
 
 import Header from '../components/Header'
+import Tutorial from '../components/Tutorial'
 
 // const bgs = require('../assets/bgs.json')
 
@@ -39,10 +41,11 @@ function preloadImage(url) {
   })
 }
 
-function Home({ origin }) {
+function Home({ origin, cookies }) {
   const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const [bgs, setBgs] = useState([])
+
   // const [enableEnter, setEnableEnter] = useState(false)
   // const { get, post, response, loading, error } = useFetch()
 
@@ -107,7 +110,7 @@ function Home({ origin }) {
           // "transform scale-105 hover:scale-110 transition-all duration-500"
         )} onClick={() => { clickOnImage(item) }}>
           <VerticalCenterDiv className="absolute w-full">
-            <img alt="" className="w-full user-drag-none" src={props.item.steamUrl}></img>
+            <img alt="" className="w-full user-drag-none vote-container__image" src={props.item.steamUrl}></img>
           </VerticalCenterDiv>
           <a
             className={clsx(
@@ -178,13 +181,13 @@ function Home({ origin }) {
 
       <div className="w-full h-screen flex pt-16">
         <TransitionGroup
-          className="w-full h-full overflow-hidden relative"
+          className="w-full h-full overflow-hidden relative vote-container"
         >
           {leftBgs.map((item) => (
             <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
           ))}
         </TransitionGroup>
-        <TransitionGroup className="w-full h-full overflow-hidden relative">
+        <TransitionGroup className="w-full h-full overflow-hidden relative vote-container">
           {rightBgs.map((item) => (
             <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
           ))}
@@ -198,12 +201,12 @@ function Home({ origin }) {
             <img className="w-full" src={randomBg2.steamUrl}></img>
           </div> */}
 
-        <CenterDiv className="absolute left-8">
+        <CenterDiv className="absolute">
           <div className="w-16 h-16 rounded-full bg-white leading-16 text-center bg-gray-900 text-white shadow-xl">
             VS
           </div>
         </CenterDiv>
-        <CenterDiv className="absolute left-12">
+        <CenterDiv className="absolute">
           <div className={clsx(
             "mt-48 w-24 h-24 rounded-full",
             "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
@@ -215,11 +218,24 @@ function Home({ origin }) {
             Skip
           </div>
         </CenterDiv>
+
+        {/* Popup with instructions */}
+        {!cookies?.disable_hello && <Tutorial />}
       </div>
     </div >
   )
 }
 
+export async function getServerSideProps(ctx) {
+  // Parse
+  const cookies = parseCookies(ctx)
+
+  return {
+    props: {
+      cookies
+    }
+  }
+}
 // Home.getInitialProps = ({ req }) => {
 //   const { origin } = absoluteUrl(req, "localhost:3000");
 
