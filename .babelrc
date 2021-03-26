@@ -9,6 +9,7 @@
       {
         "ssr": true
       }
-    ]
+    ],
+    "macros"
   ]
 }

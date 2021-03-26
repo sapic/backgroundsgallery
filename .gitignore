@@ -33,3 +33,4 @@ yarn-error.log*
 
 # vercel
 .vercel
+set_views_for_all_bgs.js
