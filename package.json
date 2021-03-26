@@ -29,6 +29,7 @@
     "react-transition-group": "^4.4.1",
     "react-virtualized-auto-sizer": "^1.0.5",
     "react-window": "^1.8.6",
+    "react-window-scroller": "^1.0.10",
     "styled-components": "^5.2.1",
     "twin.macro": "^2.3.1",
     "use-http": "^1.0.18"

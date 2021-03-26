@@ -30,7 +30,12 @@ export default function Header() {
         <div className="flex mx-8">
           <Link href="/">
             <a className="flex items-center">
-              Backgrounds battle
+              Battle
+            </a>
+          </Link>
+          <Link href="/top">
+            <a className="flex items-center ml-2">
+              Top
             </a>
           </Link>
         </div>

@@ -7,7 +7,9 @@ import tw from "twin.macro"
 
 import useFetch from 'use-http'
 import { FixedSizeList as List } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer'
+// import AutoSizer from 'react-virtualized-auto-sizer'
+
+import { ReactWindowScroller } from 'react-window-scroller'
 
 
 const MiniImage = styled.img`
@@ -131,7 +133,7 @@ function Top() {
 
       <Header />
 
-      <div className="w-full h-screen flex pt-16 max-w-screen-xl mx-auto flex-col">
+      <div className="w-full flex pt-16 max-w-screen-xl mx-auto flex-col">
         {/* {JSON.stringify(data)} */}
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
           <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>Rating</SortButton>
@@ -139,21 +141,26 @@ function Top() {
           <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>Views</SortButton>
         </div>
 
-        <AutoSizer>
-          {({ height, width }) => (
+        <ReactWindowScroller>
+          {({ ref, outerRef, style, onScroll }) => (
             <List
+              ref={ref}
+              outerRef={outerRef}
+              style={style}
+              onScroll={onScroll}
+
               className="List"
-              height={height}
+              height={typeof width !== 'undefined' ? window.innerHeight : 500}
               itemCount={rows.length}
               itemSize={192}
-              width={width}
+            // width={width}
             >
               {Row}
             </List>
           )}
-        </AutoSizer>
+        </ReactWindowScroller>
       </div>
-    </div >
+    </div>
   )
 }
 

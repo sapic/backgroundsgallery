@@ -6435,6 +6435,13 @@ react-virtualized-auto-sizer@^1.0.5:
   resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.5.tgz#9eeeb8302022de56fbd7a860b08513120ce36509"
   integrity sha512-kivjYVWX15TX2IUrm8F1jaCEX8EXrpy3DD+u41WGqJ1ZqbljWpiwscV+VxOM1l7sSIM1jwi2LADjhhAJkJ9dxA==
 
+react-window-scroller@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/react-window-scroller/-/react-window-scroller-1.0.10.tgz#7281b6ba34a2b147f19ba5ffd6de6fb3bfdb60c8"
+  integrity sha512-pgFX6O51cq7JmNVFcho9990dBHJJGgfGXucby7tviTrKqp/CJaKzt5AONYJ3SqWeBMh+N7/W9tvIl/7oMjq+2Q==
+  dependencies:
+    lodash "^4.17.20"
+
 react-window@^1.8.6:
   version "1.8.6"
   resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.8.6.tgz#d011950ac643a994118632665aad0c6382e2a112"
