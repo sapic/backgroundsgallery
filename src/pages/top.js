@@ -10,6 +10,7 @@ import { FixedSizeList as List } from 'react-window';
 // import AutoSizer from 'react-virtualized-auto-sizer'
 
 import { ReactWindowScroller } from 'react-window-scroller'
+import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
 
 const MiniImage = styled.img`
@@ -46,6 +47,21 @@ const StatsContainer = styled.div`
   white-space: nowrap;
 `
 
+const PaginationContainer = styled.div`
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  margin-left: 650px;
+  ${tw`
+    bg-gray-900 rounded text-white overflow-hidden w-16
+  `}
+`
+
+const PageNumberContainer = styled.div`
+  ${tw`
+    px-4 py-2 cursor-pointer select-none text-center
+  `}
+`
 
 function Top() {
   const options = {} // these options accept all native `fetch` options
@@ -53,13 +69,18 @@ function Top() {
 
   const [sort, setSort] = useState(0)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pages, setPages] = useState([1, 2, 3, 4, 5, 6, 7])
+
+  //document.body.clientHeight
+
   const sortFunction = sort === 0
     ? (a, b) => b.goodness - a.goodness
     : sort === 1
       ? (a, b) => b.votes - a.votes
       : (a, b) => b.views - a.views
 
-  console.log('sort function', sortFunction)
+  // console.log('sort function', sortFunction)
 
   const sortedData = data.sort(sortFunction)
 
@@ -73,7 +94,31 @@ function Top() {
 
     rows[j - 1].push(sortedData[i])
   }
-  console.log("rows", rows)
+
+  // let pages = [1, 2, 3, 4, 5, 6]
+
+  useScrollPosition(
+    ({ currPos }) => {
+      // setElementPosition(currPos)
+      // console.log('scroll to', currPos)
+      const totalHeight = document.body.clientHeight
+
+      const pagesCount = Math.floor(totalHeight / window.innerHeight)
+      const currentPage = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
+      // console.log('current page', currentPage)
+
+      let newPages = currentPage < 5
+        ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
+        : currentPage > pagesCount - 5
+          ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
+          : [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', pagesCount - 1]
+
+      setCurrentPage(currentPage)
+      setPages(newPages)
+    }, [rows]
+  )
+
+  // console.log("rows", rows)
 
   const Row = ({ index, style }) => (
     <RowContainer className="flex" style={style} key={index}>
@@ -133,7 +178,7 @@ function Top() {
 
       <Header />
 
-      <div className="w-full flex pt-16 max-w-screen-xl mx-auto flex-col">
+      <div className="w-full flex pt-16 max-w-screen-xl mx-auto flex-col relative">
         {/* {JSON.stringify(data)} */}
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
           <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>Rating</SortButton>
@@ -159,6 +204,18 @@ function Top() {
             </List>
           )}
         </ReactWindowScroller>
+
+        <PaginationContainer>
+          {pages.map((i, index) => (
+            <PageNumberContainer
+              className={i === currentPage && 'bg-gray-500'}
+              onClick={() => window.scrollTo(0, i * window.innerHeight)}
+              key={i + index}
+            >
+              {i}
+            </PageNumberContainer>
+          ))}
+        </PaginationContainer>
       </div>
     </div>
   )
