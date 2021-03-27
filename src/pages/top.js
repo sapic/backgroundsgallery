@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 import Header from '../components/Header'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import tw from "twin.macro"
 
 import useFetch from 'use-http'
@@ -70,9 +70,15 @@ function Top() {
   const [sort, setSort] = useState(0)
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [pages, setPages] = useState([1, 2, 3, 4, 5, 6, 7])
+  // const [rows, setRows] = useState([])
+  let rows = []
 
-  //document.body.clientHeight
+  // console.log('top changed')
+  // 
+  // useEffect(() => {
+  // console.log('call use effect', data, sort)
+  const r = []
+  let j = 0;
 
   const sortFunction = sort === 0
     ? (a, b) => b.goodness - a.goodness
@@ -80,20 +86,60 @@ function Top() {
       ? (a, b) => b.votes - a.votes
       : (a, b) => b.views - a.views
 
-  // console.log('sort function', sortFunction)
-
   const sortedData = data.sort(sortFunction)
 
-  const rows = []
-  let j = 0;
   for (let i = 0; i < sortedData.length; i++) {
     if (i % 4 === 0) {
-      rows[j] = []
+      r[j] = []
       j++
     }
 
-    rows[j - 1].push(sortedData[i])
+    r[j - 1].push(sortedData[i])
   }
+
+  // setRows(r)
+  rows = r
+  // const totalHeight = 192 * rows.length
+  // const pagesCount = typeof window !== 'undefined' && totalHeight > 0 ? Math.floor(totalHeight / window.innerHeight) : 8
+
+  //   console.log('totalHeight', totalHeight, window.innerHeight)
+  //   setPages([1, 2, 3, 4, 5, '...', pagesCount - 1])
+  // if (typeof window !== 'undefined') {
+  //   console.log('pagesCount', totalHeight, pagesCount, window && window.innerHeight)
+  // }
+  const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', 300])
+  // console.log('pages:', pagesCount, pages)
+  // setPages([1, 2, 3])
+  // setRows(r)
+  // }, [data, sort])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    if (rows.length < 1) {
+      return
+    }
+
+    const totalHeight = 192 * rows.length
+    const pagesCount = Math.floor(totalHeight / window.innerHeight)
+
+    // console.log('totalHeight', totalHeight, window.innerHeight)
+    // const newPages = [1, 2, 3, 4, 5, '...', pagesCount - 1]
+
+    const cr = currentPage
+    let newPages = cr < 5
+      ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
+      : cr > pagesCount - 5
+        ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
+        : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount - 1]
+
+    if (JSON.stringify(pages) !== JSON.stringify(newPages)) {
+      setPages(newPages)
+      // console.log('set pages on effect')
+    }
+  }, [rows.length, pages, currentPage])
 
   // let pages = [1, 2, 3, 4, 5, 6]
 
@@ -104,18 +150,29 @@ function Top() {
       const totalHeight = document.body.clientHeight
 
       const pagesCount = Math.floor(totalHeight / window.innerHeight)
-      const currentPage = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
+      const cr = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
+
+      if (cr === currentPage) {
+        return
+      }
+
+      setCurrentPage(cr)
+      return
       // console.log('current page', currentPage)
 
-      let newPages = currentPage < 5
-        ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
-        : currentPage > pagesCount - 5
-          ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
-          : [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', pagesCount - 1]
+      // let newPages = cr < 5
+      //   ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
+      //   : cr > pagesCount - 5
+      //     ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
+      //     : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount - 1]
 
-      setCurrentPage(currentPage)
-      setPages(newPages)
-    }, [rows]
+      // // console.log('cr', cr, currentPage)
+      // // if (cr !== currentPage) {
+      // setCurrentPage(cr)
+      // setPages(newPages)
+      // console.log('set pages on scroll')
+      // }
+    }, [currentPage]
   )
 
   // console.log("rows", rows)
@@ -210,7 +267,7 @@ function Top() {
             <PageNumberContainer
               className={i === currentPage && 'bg-gray-500'}
               onClick={() => window.scrollTo(0, i * window.innerHeight)}
-              key={i + index}
+              key={i + '' + index}
             >
               {i}
             </PageNumberContainer>
