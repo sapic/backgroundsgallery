@@ -8,7 +8,7 @@ export default withDatabase(withPassport(async (req, res) => {
   const { item, views: bgs } = JSON.parse(req.body)
   const userId = req?.user?.id
 
-  console.log('body', item, userId)
+  // console.log('body', item, userId)
 
   const votes = req.db.collection('votes')
   const votesTotal = req.db.collection('votes_total')
@@ -35,7 +35,7 @@ export default withDatabase(withPassport(async (req, res) => {
   }
 
   for (const bg of bgs) {
-    console.log('adding views to bg', bg.url)
+    // console.log('adding views to bg', bg.url)
     const query = { url: bg.url };
     const update = {
       $set: {

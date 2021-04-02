@@ -11,7 +11,7 @@ import {
   TransitionGroup,
 } from 'react-transition-group';
 
-import { useIdentity } from '../lib/withIdentity'
+// import { useIdentity } from '../lib/withIdentity'
 
 import Header from '../components/Header'
 import Tutorial from '../components/Tutorial'
@@ -42,7 +42,7 @@ function preloadImage(url) {
 }
 
 function Home({ origin, cookies }) {
-  const identity = useIdentity()
+  // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const [bgs, setBgs] = useState([])
 
@@ -159,7 +159,7 @@ function Home({ origin, cookies }) {
   const leftBgs = bgs.filter((_, i) => i % 2 === 0)
   const rightBgs = bgs.filter((_, i) => i % 2 === 1)
 
-  console.log('identity', identity)
+  // console.log('identity', identity)
   // const bgKeys = Object.keys(bgs)
   // const randomBg1 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
   // const randomBg2 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]

@@ -11,12 +11,12 @@ import { Strategy as SteamStrategy } from 'passport-steam'
 
 
 const strategy = (req, res) => {
-  console.log('steam strategy', req.headers.host, req.hostname)
+  // console.log('steam strategy', req.headers.host, req.hostname)
 
   const host = req.headers.host || 'localhost:3000'
   const protocol = host === 'localhost:3000' ? 'http' : 'https'
   const baseUrl = protocol + '://' + host + '/'
-  console.log('baseUrl', baseUrl)
+  // console.log('baseUrl', baseUrl)
 
   return new SteamStrategy(
     {

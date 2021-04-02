@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { useIdentity } from '@/lib/withIdentity'
+import { useRouter } from 'next/router'
+import clsx from 'clsx';
 
 // const loginUrl = () => {
 //   const returnUrl = encodeURIComponent(
@@ -17,6 +19,8 @@ import { useIdentity } from '@/lib/withIdentity'
 
 export default function Header() {
   const identity = useIdentity()
+  const { asPath } = useRouter()
+
   return <header className="flex bg-gray-900 border-b border-gray-800 fixed top-0 inset-x-0 z-100 h-16 items-center text-white">
     <div className="w-full max-w-screen-xl relative mx-auto flex justify-between">
       <div className="flex">
@@ -27,14 +31,20 @@ export default function Header() {
             </a>
           </Link>
         </div>
-        <div className="flex mx-8">
+        <div className="flex mx-4">
           <Link href="/">
-            <a className="flex items-center">
-              Battle
+            <a className={clsx([
+              "flex items-center font-medium text-lg mx-4",
+              asPath === '/' && 'text-blue-300'
+            ])}>
+              Vote
             </a>
           </Link>
           <Link href="/top">
-            <a className="flex items-center ml-2">
+            <a className={clsx([
+              "flex items-center font-medium text-lg mx-4",
+              asPath === '/top' && 'text-blue-300'
+            ])}>
               Top
             </a>
           </Link>

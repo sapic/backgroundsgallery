@@ -183,11 +183,12 @@ function Top() {
         <MiniImage src={item.steamUrl} alt='background'></MiniImage>
         <StatsContainer>
           <div>Views: {item.views} Votes: {item.votes}</div>
-          <div>
+          <div className="-mx-2">
             <a
               href={`https://steamcommunity.com/market/listings/${item.url}`}
               target="_blank"
               rel="noopener noreferrer"
+              className="mx-2 hover:text-blue-300"
             >
               Steam
             </a>
@@ -195,7 +196,7 @@ function Top() {
               href={`https://steam.design/#${item.steamUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-2"
+              className="mx-2 hover:text-blue-300"
             >
               Sapic
             </a>

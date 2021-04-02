@@ -35,7 +35,7 @@ passport.deserializeUser(async (serializedUser, done) => {
 // export middleware to wrap api/auth handlers
 export default fn => (req, res) => {
   passport.use(steam(req, res))
-  console.log('passport handler')
+  // console.log('passport handler')
   // console.log('with passport fn', res.redirect.toString())
   // if (!res.redirect) {
   //   // passport.js needs res.redirect:
