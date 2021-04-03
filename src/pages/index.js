@@ -3,7 +3,7 @@ import Head from 'next/head'
 import clsx from 'clsx';
 import styled from 'styled-components'
 // import useFetch from 'use-http'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { parseCookies } from 'nookies'
 
 import {
@@ -31,10 +31,10 @@ const VerticalCenterDiv = styled.div`
 
 function preloadImage(url) {
   return new Promise((resolve, reject) => {
-    console.log('preload', url)
+    // console.log('preload', url)
     let img = new Image()
     img.onload = () => {
-      console.log('loaded')
+      // console.log('loaded')
       resolve()
     }
     img.src = url
@@ -45,17 +45,14 @@ function Home({ origin, cookies }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const [bgs, setBgs] = useState([])
+  const [bgsQueue, setBgsQueue] = useState([])
 
   // const [enableEnter, setEnableEnter] = useState(false)
   // const { get, post, response, loading, error } = useFetch()
 
   // console.log('home')
-  // useEffect(() => {
-  if (bgs.length === 0 && process.browser) loadBgs()
-  // }, [])
-
   async function loadBgs() {
-    console.log('loadbgs')
+    // console.log('loadbgs')
 
     if (window && window.gtag) {
       window.gtag('event', 'loadbg', {
@@ -64,15 +61,16 @@ function Home({ origin, cookies }) {
     }
 
     // const initialTodos = await get('/api/get_random_bgs')
-    const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
-    console.log('bgs', bgs)
+    // const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
+    const bgs = await getNextBgs()
+    // console.log('bgs', bgs)
 
-    let loadAwait = []
-    for (const bg of bgs) {
-      loadAwait.push(preloadImage(bg.steamUrl))
-    }
+    // let loadAwait = []
+    // for (const bg of bgs) {
+    //   loadAwait.push(preloadImage(bg.steamUrl))
+    // }
 
-    await Promise.all(loadAwait)
+    // await Promise.all(loadAwait)
 
     setBgs(bgs)
     // if (!enableEnter) {
@@ -81,8 +79,47 @@ function Home({ origin, cookies }) {
     // setEnableEnter(true)
   }
 
+  useEffect(() => {
+    if (bgs.length === 0 && process.browser) {
+      // console.log('render and len 0')
+      loadBgs()
+    }
+  })
+
+
+  async function getNextBgs() {
+    if (bgsQueue.length > 0) {
+      const bgs = bgsQueue[0]
+      setBgsQueue(bgsQueue.slice(1))
+      populateQueue()
+
+      // console.log('return from queue')
+      return bgs
+    }
+
+    const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
+    populateQueue()
+
+    // console.log('return from api')
+    return bgs
+  }
+
+  async function populateQueue() {
+    // console.log('populating queue')
+    if (bgsQueue.length < 3) {
+      let queue = []
+      for (let i = 0; i < 3; i++) {
+        const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
+        queue.push(bgs)
+        bgs.map(bg => preloadImage(bg.steamUrl))
+      }
+
+      setBgsQueue((current) => current.concat(queue))
+    }
+  }
+
   async function trackVote(item) {
-    console.log('trackVote')
+    // console.log('trackVote')
 
     if (window && window.gtag) {
       window.gtag('event', 'vote', {
@@ -136,7 +173,7 @@ function Home({ origin, cookies }) {
             onClick={(e) => {
               // e.preventDefault()
               e.stopPropagation()
-              console.log('click info')
+              // console.log('click info')
             }}
             href={`https://steamcommunity.com/market/listings/${item.url}`}
             target="_blank"
