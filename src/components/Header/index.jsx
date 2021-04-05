@@ -21,7 +21,13 @@ export default function Header() {
   const identity = useIdentity()
   const { asPath } = useRouter()
 
-  return <header className="flex bg-gray-900 border-b border-gray-800 fixed top-0 inset-x-0 z-100 h-16 items-center text-white">
+  return <header className={
+    clsx([
+      'flex fixed top-0 inset-x-0 z-100 h-16 items-center text-white',
+      'bg-gray-900 border-b border-gray-800',
+      'px-4 md:px-0'
+    ])
+  }>
     <div className="w-full max-w-screen-xl relative mx-auto flex justify-between">
       <div className="flex">
         <div>
@@ -34,7 +40,7 @@ export default function Header() {
         <div className="flex mx-4">
           <Link href="/">
             <a className={clsx([
-              "flex items-center font-medium text-lg mx-4",
+              "flex items-center font-medium text-lg mx-2 md:mx-4",
               asPath === '/' && 'text-blue-300'
             ])}>
               Vote
@@ -42,7 +48,7 @@ export default function Header() {
           </Link>
           <Link href="/top">
             <a className={clsx([
-              "flex items-center font-medium text-lg mx-4",
+              "flex items-center font-medium text-lg mx-2 md:mx-4",
               asPath === '/top' && 'text-blue-300'
             ])}>
               Top

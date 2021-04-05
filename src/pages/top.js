@@ -88,8 +88,14 @@ function Top() {
 
   const sortedData = data.sort(sortFunction)
 
+  const itemsPerRow = typeof window !== 'undefined'
+    ? window.innerWidth < 560
+      ? 2
+      : 4 // default 4
+    : 4
+
   for (let i = 0; i < sortedData.length; i++) {
-    if (i % 4 === 0) {
+    if (i % itemsPerRow === 0) {
       r[j] = []
       j++
     }
