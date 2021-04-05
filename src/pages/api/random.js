@@ -1,31 +1,42 @@
-// import withDatabase from '../../lib/maybeDatabase'
-const bgs = require('../../assets/bgs.json')
+export default async (req, res) => {
+  const bgs = await getBgItems()
 
-// export default withDatabase((req, res) => {
-export default (req, res) => {
-  const bgKeys = Object.keys(bgs)
-  const randomBg1 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
-  const randomBg2 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
+  const index1 = Math.floor(Math.random() * bgs.length)
+  const random2 = Math.floor(Math.random() * bgs.length)
+
+  // Check if it's same so we don't send 2 same pictures
+  const index2 = random2 !== index1
+    ? random2
+    : random2 > 0
+      ? random2 - 1
+      : random2 + 1
+
+  const randomBg1 = bgs[index1]
+  const randomBg2 = bgs[index2]
   const resbgs = [randomBg1, randomBg2]
 
+
   res.send(resbgs)
+}
 
-  if (req.db) {
-    const views = req.db.collection('views')
+let itemsCache = {
+  items: [],
+  lastUpdate: 0,
+}
+const cacheTime = 60 * 60 * 1000 // 1 hour
 
-    for (const bg of resbgs) {
-      const query = { url: bg.url };
-      const update = {
-        $set: {
-          url: bg.url,
-        },
-        $inc: {
-          views: 1
-        }
-      };
-      const options = { upsert: true };
-
-      views.updateOne(query, update, options);
-    }
+async function getBgItems() {
+  if (Date.now() - itemsCache.lastUpdate < cacheTime) {
+    return itemsCache.items
   }
+
+  const response = await fetch('http://localhost:3000/api/getBgsForRandom').then(r => r.json())
+  if (!response.items) {
+    throw new Error('response error')
+  }
+
+  itemsCache.items = response.items
+  itemsCache.lastUpdate = Date.now()
+
+  return itemsCache.items
 }

@@ -41,10 +41,10 @@ function preloadImage(url) {
   })
 }
 
-function Home({ origin, cookies }) {
+function Home({ origin, cookies, startBgs }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
-  const [bgs, setBgs] = useState([])
+  const [bgs, setBgs] = useState(startBgs)
   const [bgsQueue, setBgsQueue] = useState([])
 
   // const [enableEnter, setEnableEnter] = useState(false)
@@ -97,7 +97,7 @@ function Home({ origin, cookies }) {
       return bgs
     }
 
-    const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
+    const bgs = await fetch('/api/random').then(r => r.json())
     populateQueue()
 
     // console.log('return from api')
@@ -109,7 +109,7 @@ function Home({ origin, cookies }) {
     if (bgsQueue.length < 3) {
       let queue = []
       for (let i = 0; i < 3; i++) {
-        const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
+        const bgs = await fetch('/api/random').then(r => r.json())
         queue.push(bgs)
         bgs.map(bg => preloadImage(bg.steamUrl))
       }
@@ -259,10 +259,12 @@ function Home({ origin, cookies }) {
 export async function getServerSideProps(ctx) {
   // Parse
   const cookies = parseCookies(ctx)
+  const bgs = await fetch('http://localhost:3000/api/random').then(r => r.json())
 
   return {
     props: {
-      cookies
+      cookies,
+      startBgs: bgs,
     }
   }
 }
