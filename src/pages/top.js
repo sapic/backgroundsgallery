@@ -210,7 +210,7 @@ function Top() {
   return (
     <div className="bg-black">
       <Head>
-        <title>Steam.Design BG Battle Top Backgrounds</title>
+        <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Top</title>
       </Head>
 
       <Header />

@@ -204,6 +204,7 @@ function Home({ origin, cookies }) {
   return (
     <div className="bg-black">
       <Head>
+        <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Battle</title>
       </Head>
 
       <Header />

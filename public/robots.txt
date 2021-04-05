@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bgs.steam.design/sitemap.xml
