@@ -43,15 +43,15 @@ export default function Header() {
               "flex items-center font-medium text-lg mx-2 md:mx-4",
               asPath === '/' && 'text-blue-300'
             ])}>
-              Vote
+              Top
             </a>
           </Link>
-          <Link href="/top">
+          <Link href="/battle">
             <a className={clsx([
               "flex items-center font-medium text-lg mx-2 md:mx-4",
-              asPath === '/top' && 'text-blue-300'
+              asPath === '/battle' && 'text-blue-300'
             ])}>
-              Top
+              Battle
             </a>
           </Link>
         </div>

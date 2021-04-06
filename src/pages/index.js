@@ -1,298 +1,267 @@
 import Head from 'next/head'
-// import styles from '../styles/Home.module.css'
-import clsx from 'clsx';
-import styled from 'styled-components'
-// import useFetch from 'use-http'
-import { useState, useEffect } from 'react'
-import { parseCookies } from 'nookies'
-
-import {
-  CSSTransition,
-  TransitionGroup,
-} from 'react-transition-group';
-
-// import { useIdentity } from '../lib/withIdentity'
 
 import Header from '../components/Header'
-import Tutorial from '../components/Tutorial'
+import styled from 'styled-components'
+import { useState, useEffect } from 'react'
+import tw from "twin.macro"
 
-// const bgs = require('../assets/bgs.json')
+import useFetch from 'use-http'
+import { FixedSizeList as List } from 'react-window';
+// import AutoSizer from 'react-virtualized-auto-sizer'
 
-const CenterDiv = styled.div`
-  top: 50%;
+import { ReactWindowScroller } from 'react-window-scroller'
+import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+
+
+const MiniImage = styled.img`
+  width: 100%;
+  height: 256px;
+  object-fit: contain;
+`
+
+// const BodyContainer = styled.div`
+//   margin: 0 auto;
+// `
+
+const RowContainer = styled.div`
+  height: 192px;
+`
+
+const ImageContainer = styled.div`
+  width: 100%;
+  height: 192px;
+  ${tw`relative`}
+`
+
+const SortButton = styled.div`
+  ${tw`p-2 rounded mx-2 cursor-pointer`}
+`
+
+const StatsContainer = styled.div`
+  ${tw`
+    text-white absolute top-16 left-1/2 -translate-x-1/2 bg-gray-500 p-2
+    transform rounded
+    flex-col
+    opacity-0 group-hover:opacity-100
+  `}
+  white-space: nowrap;
+`
+
+const PaginationContainer = styled.div`
+  position: fixed;
+  top: 72px;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  margin-left: 650px;
+  ${tw`
+    bg-gray-900 rounded text-white overflow-hidden w-16
+  `}
 `
 
-const VerticalCenterDiv = styled.div`
-  top: 50%;
-  transform: translateY(-50%);
+const PageNumberContainer = styled.div`
+  ${tw`
+    px-4 py-2 cursor-pointer select-none text-center
+  `}
 `
 
-function preloadImage(url) {
-  return new Promise((resolve, reject) => {
-    // console.log('preload', url)
-    let img = new Image()
-    img.onload = () => {
-      // console.log('loaded')
-      resolve()
+function Top() {
+  const options = {} // these options accept all native `fetch` options
+  const { data = [] } = useFetch('/weightedWithInfo.json', options, [])
+
+  const [sort, setSort] = useState(0)
+
+  const [currentPage, setCurrentPage] = useState(1)
+  // const [rows, setRows] = useState([])
+  let rows = []
+
+  // console.log('top changed')
+  // 
+  // useEffect(() => {
+  // console.log('call use effect', data, sort)
+  const r = []
+  let j = 0;
+
+  const sortFunction = sort === 0
+    ? (a, b) => b.goodness - a.goodness
+    : sort === 1
+      ? (a, b) => b.votes - a.votes
+      : (a, b) => b.views - a.views
+
+  const sortedData = data.sort(sortFunction)
+
+  const itemsPerRow = typeof window !== 'undefined'
+    ? window.innerWidth < 560
+      ? 2
+      : 4 // default 4
+    : 4
+
+  for (let i = 0; i < sortedData.length; i++) {
+    if (i % itemsPerRow === 0) {
+      r[j] = []
+      j++
     }
-    img.src = url
-  })
-}
 
-function Home({ origin, cookies, startBgs }) {
-  // const identity = useIdentity()
-  // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
-  const [bgs, setBgs] = useState(startBgs)
-  const [bgsQueue, setBgsQueue] = useState([])
-
-  // const [enableEnter, setEnableEnter] = useState(false)
-  // const { get, post, response, loading, error } = useFetch()
-
-  // console.log('home')
-  async function loadBgs() {
-    // console.log('loadbgs')
-
-    if (window && window.gtag) {
-      window.gtag('event', 'loadbg', {
-        'image': 'true'
-      });
-    }
-
-    // const initialTodos = await get('/api/get_random_bgs')
-    // const bgs = await fetch('https://random.bgb.workers.dev/').then(r => r.json())
-    const bgs = await getNextBgs()
-    // console.log('bgs', bgs)
-
-    // let loadAwait = []
-    // for (const bg of bgs) {
-    //   loadAwait.push(preloadImage(bg.steamUrl))
-    // }
-
-    // await Promise.all(loadAwait)
-
-    setBgs(bgs)
-    // if (!enableEnter) {
-    //   setTimeout(() => setEnableEnter(true), 500)
-    // }
-    // setEnableEnter(true)
+    r[j - 1].push(sortedData[i])
   }
+
+  // setRows(r)
+  rows = r
+  // const totalHeight = 192 * rows.length
+  // const pagesCount = typeof window !== 'undefined' && totalHeight > 0 ? Math.floor(totalHeight / window.innerHeight) : 8
+
+  //   console.log('totalHeight', totalHeight, window.innerHeight)
+  //   setPages([1, 2, 3, 4, 5, '...', pagesCount - 1])
+  // if (typeof window !== 'undefined') {
+  //   console.log('pagesCount', totalHeight, pagesCount, window && window.innerHeight)
+  // }
+  const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', 300])
+  // console.log('pages:', pagesCount, pages)
+  // setPages([1, 2, 3])
+  // setRows(r)
+  // }, [data, sort])
 
   useEffect(() => {
-    if (bgs.length === 0 && process.browser) {
-      // console.log('render and len 0')
-      loadBgs()
-    }
-  })
-
-
-  async function getNextBgs() {
-    if (bgsQueue.length > 0) {
-      const bgs = bgsQueue[0]
-      setBgsQueue(bgsQueue.slice(1))
-      populateQueue()
-
-      // console.log('return from queue')
-      return bgs
+    if (typeof window === 'undefined') {
+      return
     }
 
-    const bgs = await fetch('/api/random').then(r => r.json())
-    populateQueue()
+    if (rows.length < 1) {
+      return
+    }
 
-    // console.log('return from api')
-    return bgs
-  }
+    const totalHeight = 192 * rows.length
+    const pagesCount = Math.floor(totalHeight / window.innerHeight)
 
-  async function populateQueue() {
-    // console.log('populating queue')
-    if (bgsQueue.length < 3) {
-      let queue = []
-      for (let i = 0; i < 3; i++) {
-        const bgs = await fetch('/api/random').then(r => r.json())
-        queue.push(bgs)
-        bgs.map(bg => preloadImage(bg.steamUrl))
+    // console.log('totalHeight', totalHeight, window.innerHeight)
+    // const newPages = [1, 2, 3, 4, 5, '...', pagesCount - 1]
+
+    const cr = currentPage
+    let newPages = cr < 5
+      ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
+      : cr > pagesCount - 5
+        ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
+        : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount - 1]
+
+    if (JSON.stringify(pages) !== JSON.stringify(newPages)) {
+      setPages(newPages)
+      // console.log('set pages on effect')
+    }
+  }, [rows.length, pages, currentPage])
+
+  // let pages = [1, 2, 3, 4, 5, 6]
+
+  useScrollPosition(
+    ({ currPos }) => {
+      // setElementPosition(currPos)
+      // console.log('scroll to', currPos)
+      const totalHeight = document.body.clientHeight
+
+      const pagesCount = Math.floor(totalHeight / window.innerHeight)
+      const cr = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
+
+      if (cr === currentPage) {
+        return
       }
 
-      setBgsQueue((current) => current.concat(queue))
-    }
-  }
+      setCurrentPage(cr)
+      return
+      // console.log('current page', currentPage)
 
-  async function trackVote(item) {
-    // console.log('trackVote')
+      // let newPages = cr < 5
+      //   ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
+      //   : cr > pagesCount - 5
+      //     ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
+      //     : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount - 1]
 
-    if (window && window.gtag) {
-      window.gtag('event', 'vote', {
-        'image': item ? 'true' : 'false'
-      });
-    }
+      // // console.log('cr', cr, currentPage)
+      // // if (cr !== currentPage) {
+      // setCurrentPage(cr)
+      // setPages(newPages)
+      // console.log('set pages on scroll')
+      // }
+    }, [currentPage]
+  )
 
-    await fetch('/api/vote', {
-      method: 'POST',
-      body: JSON.stringify({
-        item,
-        views: bgs
-      })
-    })
-  }
+  // console.log("rows", rows)
 
-  async function clickOnImage(item) {
-    trackVote(item)
-    loadBgs()
-  }
-
-  async function clickOnSkip() {
-    trackVote()
-    loadBgs()
-  }
-
-  function ImageContainer(props) {
-    const { item, ...restProps } = props
-    return (
-      <CSSTransition
-        key={props.item.steamUrl}
-        timeout={500}
-        classNames="item"
-        {...restProps}
-      >
-        <div className={clsx(
-          "w-full flex flex-col justify-center",
-          "absolute h-full select-none cursor-pointer",
-          // "transform scale-105 hover:scale-110 transition-all duration-500"
-        )} onClick={() => { clickOnImage(item) }}>
-          <VerticalCenterDiv className="absolute w-full">
-            <img alt="" className="w-full user-drag-none vote-container__image" src={props.item.steamUrl}></img>
-          </VerticalCenterDiv>
-          <a
-            className={clsx(
-              'bg-gray-900 text-white p-4 rounded',
-              'shadow-xl absolute bottom-12 md:bottom-48 left-1/2 w-64 md:w-128',
-              'transform', '-translate-x-1/2',
-              'transition-color duration-300 hover:bg-gray-800'
-            )}
-            onClick={(e) => {
-              // e.preventDefault()
-              e.stopPropagation()
-              // console.log('click info')
-            }}
-            href={`https://steamcommunity.com/market/listings/${item.url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className="flex">
-              <div className="leading-6 align-middle">{item.name} </div>
-              <div className="ml-2 text-gray-500 text-sm leading-6 align-middle">${item.price}</div>
-            </div>
-            <div className="text-gray-500 text-sm">
-              {item.game}
-            </div>
-          </a>
-        </div>
-      </CSSTransition>
-    )
-  }
-
-  // const [randomBg1, randomBg2] = bgs
-  const leftBgs = bgs.filter((_, i) => i % 2 === 0)
-  const rightBgs = bgs.filter((_, i) => i % 2 === 1)
-
-  // console.log('identity', identity)
-  // const bgKeys = Object.keys(bgs)
-  // const randomBg1 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
-  // const randomBg2 = bgs[bgKeys[Math.floor(Math.random() * bgKeys.length)]]
+  const Row = ({ index, style }) => (
+    <RowContainer className="flex" style={style} key={index}>
+      {rows[index].map(item => (<ImageContainer key={item.url} className="group">
+        <MiniImage src={item.steamUrl} alt='background'></MiniImage>
+        <StatsContainer>
+          <div>Views: {item.views} Votes: {item.votes}</div>
+          <div className="-mx-2">
+            <a
+              href={`https://steamcommunity.com/market/listings/${item.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-2 hover:text-blue-300"
+            >
+              Steam
+            </a>
+            <a
+              href={`https://steam.design/#${item.steamUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-2 hover:text-blue-300"
+            >
+              Sapic
+            </a>
+          </div>
+        </StatsContainer>
+      </ImageContainer>))}
+      {/* { JSON.stringify(rows[index])} */}
+    </RowContainer>
+  );
 
   return (
     <div className="bg-black">
       <Head>
-        <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Battle</title>
+        <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Top</title>
       </Head>
 
       <Header />
 
-      <div className="w-full h-screen flex pt-16 flex-col md:flex-row">
-        <TransitionGroup
-          className="w-full h-full overflow-hidden relative vote-container"
-        >
-          {leftBgs.map((item) => (
-            <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
-          ))}
-        </TransitionGroup>
-        <TransitionGroup className="w-full h-full overflow-hidden relative vote-container">
-          {rightBgs.map((item) => (
-            <ImageContainer item={item} key={item.steamUrl}></ImageContainer>
-          ))}
-        </TransitionGroup>
-        {/* <TinyCrossfade className="w-1/2 flex flex-col justify-center"> */}
-        {/* <div className="" onClick={() => { loadBgs() }} key={randomBg1.steamUrl}> */}
-        {/* <img className="w-full" src={randomBg1.steamUrl} key={randomBg1.steamUrl} ></img> */}
-        {/* </div> */}
-        {/* </TinyCrossfade> */}
-        {/* <div className="w-1/2 flex flex-col justify-center" onClick={() => { loadBgs() }}>
-            <img className="w-full" src={randomBg2.steamUrl}></img>
-          </div> */}
+      <div className="w-full flex pt-16 max-w-screen-xl mx-auto flex-col relative">
+        {/* {JSON.stringify(data)} */}
+        <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
+          <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>Rating</SortButton>
+          <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>Votes</SortButton>
+          <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>Views</SortButton>
+        </div>
 
-        <CenterDiv className="absolute">
-          <div className={clsx([
-            'w-16 h-16 rounded-full bg-white leading-16 text-center bg-gray-900 text-white shadow-xl',
-            'mr-28 md:mr-0 mt-24 md:mt-0'
-          ])}>
-            VS
-          </div>
-        </CenterDiv>
-        <CenterDiv className="absolute">
-          <div className={clsx(
-            "ml-20 mt-24 md:ml-0 md:mt-48 w-24 h-24 rounded-full",
-            "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
-            "transition-all duration-300 hover:bg-green-500 cursor-pointer",
-            'select-none'
+        <ReactWindowScroller>
+          {({ ref, outerRef, style, onScroll }) => (
+            <List
+              ref={ref}
+              outerRef={outerRef}
+              style={style}
+              onScroll={onScroll}
+
+              className="List"
+              height={typeof width !== 'undefined' ? window.innerHeight : 500}
+              itemCount={rows.length}
+              itemSize={192}
+            // width={width}
+            >
+              {Row}
+            </List>
           )}
-            onClick={() => { clickOnSkip() }}
-          >
-            Skip
-          </div>
-        </CenterDiv>
+        </ReactWindowScroller>
 
-        {/* Popup with instructions */}
-        {!cookies?.disable_hello && <Tutorial />}
+        <PaginationContainer>
+          {pages.map((i, index) => (
+            <PageNumberContainer
+              className={i === currentPage && 'bg-gray-500'}
+              onClick={() => window.scrollTo(0, i * window.innerHeight)}
+              key={i + '' + index}
+            >
+              {i}
+            </PageNumberContainer>
+          ))}
+        </PaginationContainer>
       </div>
-    </div >
+    </div>
   )
 }
 
-export async function getServerSideProps(ctx) {
-  // Parse
-  const cookies = parseCookies(ctx)
-  const bgs = await fetch('http://localhost:3000/api/random').then(r => r.json())
-
-  return {
-    props: {
-      cookies,
-      startBgs: bgs,
-    }
-  }
-}
-// Home.getInitialProps = ({ req }) => {
-//   const { origin } = absoluteUrl(req, "localhost:3000");
-
-//   return {
-//     origin,
-//   }
-// }
-
-export default Home
-
-// function absoluteUrl(req, setLocalhost) {
-//   var protocol = "https:";
-//   var host = req
-//     ? req.headers["x-forwarded-host"] || req.headers["host"]
-//     : window.location.host;
-//   if (host.indexOf("localhost") > -1) {
-//     if (setLocalhost) host = setLocalhost;
-//     protocol = "http:";
-//   }
-//   return {
-//     protocol: protocol,
-//     host: host,
-//     origin: protocol + "//" + host,
-//   };
-// }
+export default Top
