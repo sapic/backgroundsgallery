@@ -62,6 +62,10 @@ const PaginationContainer = styled.div`
   ${tw`
     bg-gray-900 rounded text-white overflow-hidden w-16
   `}
+
+  @media (min-width: 1536px) {
+    margin-left: 650px;
+  }
 `
 
 const PageNumberContainer = styled.div`
