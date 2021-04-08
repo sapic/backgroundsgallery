@@ -97,7 +97,13 @@ function Home({ origin, cookies, startBgs }) {
       return bgs
     }
 
-    const bgs = await fetch('/api/random').then(r => r.json())
+    let bgs
+    try {
+      bgs = await fetch('/api/random').then(r => r.json())
+    } catch(e) {
+      console.log('bgs fetch error', e)
+      return []
+    }
     populateQueue()
 
     // console.log('return from api')
@@ -262,7 +268,13 @@ function Home({ origin, cookies, startBgs }) {
 export async function getServerSideProps(ctx) {
   // Parse
   const cookies = parseCookies(ctx)
-  const bgs = await fetch('http://localhost:3000/api/random').then(r => r.json())
+
+  let bgs = []  
+  try {
+    bgs = await fetch('http://localhost:3000/api/random').then(r => r.json())
+  } catch(e) {
+    console.log('get bgs server side error', e)
+  }
 
   return {
     props: {

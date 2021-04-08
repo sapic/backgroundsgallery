@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link';
 
 import Header from '../components/Header'
 import styled from 'styled-components'
@@ -37,6 +38,12 @@ const SortButton = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer`}
 `
 
+const SortButtonViolet = styled.div`
+  ${tw`p-2 rounded mx-2 cursor-pointer`}
+  background: #aa076b;
+  background: linear-gradient(45deg,#61045f,#aa076b);
+`
+
 const StatsContainer = styled.div`
   ${tw`
     text-white absolute top-16 left-1/2 -translate-x-1/2 bg-gray-500 p-2
@@ -51,7 +58,7 @@ const PaginationContainer = styled.div`
   position: fixed;
   top: 72px;
   left: 50%;
-  margin-left: 650px;
+  margin-left: 510px;
   ${tw`
     bg-gray-900 rounded text-white overflow-hidden w-16
   `}
@@ -221,12 +228,20 @@ function Top() {
 
       <Header />
 
-      <div className="w-full flex pt-16 max-w-screen-xl mx-auto flex-col relative">
+      <div className="w-full flex pt-16 max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         {/* {JSON.stringify(data)} */}
+        <div class="bg-gray-900 py-2 px-4 rounded mt-2">
+          <h1 class="text-white">Find best background for Your Steam Profile based on community votes! Or vote yourself!</h1>
+        </div>
+
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
           <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>Rating</SortButton>
           <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>Votes</SortButton>
           <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>Views</SortButton>
+          <Link href="/battle">
+            <SortButtonViolet>Vote</SortButtonViolet>
+          </Link>
+          
         </div>
 
         <ReactWindowScroller>
