@@ -58,10 +58,19 @@ const PaginationContainer = styled.div`
   position: fixed;
   top: 72px;
   left: 50%;
-  margin-left: 510px;
+  margin-left: 400px;
+  display: none;
   ${tw`
     bg-gray-900 rounded text-white overflow-hidden w-16
   `}
+
+  @media (min-width: 964px) {
+    display: block;
+  }
+
+  @media (min-width: 1280px) {
+    margin-left: 510px;
+  }
 
   @media (min-width: 1536px) {
     margin-left: 650px;
@@ -232,10 +241,10 @@ function Top() {
 
       <Header />
 
-      <div className="w-full flex pt-16 max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
+      <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         {/* {JSON.stringify(data)} */}
-        <div class="bg-gray-900 py-2 px-4 rounded mt-2">
-          <h1 class="text-white">Find best background for Your Steam Profile based on community votes! Or vote yourself!</h1>
+        <div className="bg-gray-900 py-2 px-4 rounded mt-2">
+          <h1 className="text-white">Find best background for Your Steam Profile based on community votes! Or vote yourself!</h1>
         </div>
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
@@ -245,7 +254,7 @@ function Top() {
           <Link href="/battle">
             <SortButtonViolet>Vote</SortButtonViolet>
           </Link>
-          
+
         </div>
 
         <ReactWindowScroller>

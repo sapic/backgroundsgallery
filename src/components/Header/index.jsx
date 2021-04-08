@@ -28,7 +28,10 @@ export default function Header() {
       'px-4 md:px-0'
     ])
   }>
-    <div className="w-full max-w-screen-lg 2xl:max-w-screen-xl relative mx-auto flex justify-between">
+    <div className={clsx([
+      "w-full relative mx-auto flex justify-between",
+      "max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl"
+    ])}>
       <div className="flex">
         <div>
           <Link href="/">
