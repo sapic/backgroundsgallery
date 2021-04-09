@@ -45,7 +45,7 @@ export default function Header() {
         <div className="flex mx-4">
           <Link href="/">
             <a className={clsx([
-              "flex items-center font-medium text-lg mx-2 md:mx-4",
+              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
               asPath === '/' && 'text-blue-300'
             ])}>
               {t('header.top')}
@@ -53,7 +53,7 @@ export default function Header() {
           </Link>
           <Link href="/battle">
             <a className={clsx([
-              "flex items-center font-medium text-lg mx-2 md:mx-4",
+              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
               asPath === '/battle' && 'text-blue-300'
             ])}>
               {t('header.battle')}
@@ -67,11 +67,11 @@ export default function Header() {
         ? (
           <div className="flex items-center">
             <img className="w-12 h-12 rounded-full" alt="" src={identity.photos[0].value} ></img>
-            <a className="ml-4 h-6 align-middle" href="/api/logout">{t('header.logout')}</a>
+            <a className="ml-4 align-middle text-sm md:text-lg" href="/api/logout">{t('header.logout')}</a>
           </div>
         )
-        : <div className="flex flex-col justify-center">
-          <a className="h-6" href="/api/auth/steam">{t('header.login')}</a>
+        : <div className="flex flex-col justify-center text-sm md:text-lg">
+          <a href="/api/auth/steam">{t('header.login')}</a>
         </div>
       }
     </div>

@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { parseCookies } from 'nookies'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
+import tw from "twin.macro"
 
 import {
   CSSTransition,
@@ -29,6 +30,11 @@ const CenterDiv = styled.div`
 const VerticalCenterDiv = styled.div`
   top: 50%;
   transform: translateY(-50%);
+`
+
+const BackgroundsContainer = styled.div`
+  ${tw`w-full h-screen flex pt-16 flex-col md:flex-row`}
+  height: -webkit-fill-available;
 `
 
 function preloadImage(url) {
@@ -220,7 +226,7 @@ function Home({ origin, cookies, startBgs }) {
 
       <Header />
 
-      <div className="w-full h-screen flex pt-16 flex-col md:flex-row">
+      <BackgroundsContainer>
         <TransitionGroup
           className="w-full h-full overflow-hidden relative vote-container"
         >
@@ -265,7 +271,7 @@ function Home({ origin, cookies, startBgs }) {
 
         {/* Popup with instructions */}
         {!cookies?.disable_hello && <Tutorial />}
-      </div>
+      </BackgroundsContainer>
     </div >
   )
 }
