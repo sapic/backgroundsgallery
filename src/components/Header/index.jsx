@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useIdentity } from '@/lib/withIdentity'
 import { useRouter } from 'next/router'
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next'
 
 // const loginUrl = () => {
 //   const returnUrl = encodeURIComponent(
@@ -20,6 +21,7 @@ import clsx from 'clsx';
 export default function Header() {
   const identity = useIdentity()
   const { asPath } = useRouter()
+  const { t } = useTranslation()
 
   return <header className={
     clsx([
@@ -46,7 +48,7 @@ export default function Header() {
               "flex items-center font-medium text-lg mx-2 md:mx-4",
               asPath === '/' && 'text-blue-300'
             ])}>
-              Top
+              {t('header.top')}
             </a>
           </Link>
           <Link href="/battle">
@@ -54,7 +56,7 @@ export default function Header() {
               "flex items-center font-medium text-lg mx-2 md:mx-4",
               asPath === '/battle' && 'text-blue-300'
             ])}>
-              Battle
+              {t('header.battle')}
             </a>
           </Link>
         </div>
@@ -65,11 +67,11 @@ export default function Header() {
         ? (
           <div className="flex items-center">
             <img className="w-12 h-12 rounded-full" alt="" src={identity.photos[0].value} ></img>
-            <a className="ml-4 h-6 align-middle" href="/api/logout"> Logout </a>
+            <a className="ml-4 h-6 align-middle" href="/api/logout">{t('header.logout')}</a>
           </div>
         )
         : <div className="flex flex-col justify-center">
-          <a className="h-6" href="/api/auth/steam">Login through Steam</a>
+          <a className="h-6" href="/api/auth/steam">{t('header.login')}</a>
         </div>
       }
     </div>

@@ -1,0 +1,20 @@
+{
+  "skipImages": "Skip",
+  "header": {
+    "top": "Best Backgrounds",
+    "battle": "Vote",
+    "login": "Login through Steam",
+    "logout": "Logout"
+  },
+  "top": {
+    "imageViews": "Views",
+    "imageVotes": "Votes",
+    "steamLink": "Steam",
+    "sapicLink": "Crop",
+    "headerText": "Find best background for Your Steam Profile based on community votes! Or vote yourself!",
+    "sortRating": "Rating",
+    "sortVotes": "Votes",
+    "sortViews": "Views",
+    "sortVote": "Vote"
+  }
+}

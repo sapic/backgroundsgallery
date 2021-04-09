@@ -5,6 +5,8 @@ import Header from '../components/Header'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import tw from "twin.macro"
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 
 import useFetch from 'use-http'
 import { FixedSizeList as List } from 'react-window';
@@ -84,7 +86,9 @@ const PageNumberContainer = styled.div`
 `
 
 function Top() {
-  const options = {} // these options accept all native `fetch` options
+  const { t } = useTranslation()
+
+  const options = {} // these options accept all native `fetch` options\
   const { data = [] } = useFetch('/weightedWithInfo.json', options, [])
 
   const [sort, setSort] = useState(0)
@@ -208,7 +212,7 @@ function Top() {
       {rows[index].map(item => (<ImageContainer key={item.url} className="group">
         <MiniImage src={item.steamUrl} alt='background'></MiniImage>
         <StatsContainer>
-          <div>Views: {item.views} Votes: {item.votes}</div>
+          <div>{t('top.imageViews')}: {item.views} {t('top.imageVotes')}: {item.votes}</div>
           <div className="-mx-2">
             <a
               href={`https://steamcommunity.com/market/listings/${item.url}`}
@@ -216,7 +220,7 @@ function Top() {
               rel="noopener noreferrer"
               className="mx-2 hover:text-blue-300"
             >
-              Steam
+              {t('top.steamLink')}
             </a>
             <a
               href={`https://steam.design/#${item.steamUrl}`}
@@ -224,7 +228,7 @@ function Top() {
               rel="noopener noreferrer"
               className="mx-2 hover:text-blue-300"
             >
-              Sapic
+              {t('top.sapicLink')}
             </a>
           </div>
         </StatsContainer>
@@ -237,6 +241,8 @@ function Top() {
     <div className="bg-black">
       <Head>
         <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Top</title>
+        <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/" />
+        <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/" />
       </Head>
 
       <Header />
@@ -244,15 +250,15 @@ function Top() {
       <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         {/* {JSON.stringify(data)} */}
         <div className="bg-gray-900 py-2 px-4 rounded mt-2">
-          <h1 className="text-white">Find best background for Your Steam Profile based on community votes! Or vote yourself!</h1>
+          <h1 className="text-white">{t('top.headerText')}</h1>
         </div>
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
-          <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>Rating</SortButton>
-          <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>Votes</SortButton>
-          <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>Views</SortButton>
+          <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>{t('top.sortRating')}</SortButton>
+          <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>{t('top.sortVotes')}</SortButton>
+          <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>{t('top.sortViews')}</SortButton>
           <Link href="/battle">
-            <SortButtonViolet>Vote</SortButtonViolet>
+            <SortButtonViolet>{t('top.sortVote')}</SortButtonViolet>
           </Link>
 
         </div>
@@ -288,8 +294,16 @@ function Top() {
           ))}
         </PaginationContainer>
       </div>
-    </div>
+    </div >
   )
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common', 'footer']),
+    }, // will be passed to the page component as props
+  }
 }
 
 export default Top

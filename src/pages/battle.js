@@ -5,6 +5,8 @@ import styled from 'styled-components'
 // import useFetch from 'use-http'
 import { useState, useEffect } from 'react'
 import { parseCookies } from 'nookies'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 
 import {
   CSSTransition,
@@ -44,6 +46,7 @@ function preloadImage(url) {
 function Home({ origin, cookies, startBgs }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
+  const { t } = useTranslation('common')
   const [bgs, setBgs] = useState(startBgs)
   const [bgsQueue, setBgsQueue] = useState([])
 
@@ -100,7 +103,7 @@ function Home({ origin, cookies, startBgs }) {
     let bgs
     try {
       bgs = await fetch('/api/random').then(r => r.json())
-    } catch(e) {
+    } catch (e) {
       console.log('bgs fetch error', e)
       return []
     }
@@ -211,6 +214,8 @@ function Home({ origin, cookies, startBgs }) {
     <div className="bg-black">
       <Head>
         <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Battle</title>
+        <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/battle" />
+        <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/battle" />
       </Head>
 
       <Header />
@@ -254,7 +259,7 @@ function Home({ origin, cookies, startBgs }) {
           )}
             onClick={() => { clickOnSkip() }}
           >
-            Skip
+            {t('skipImages')}
           </div>
         </CenterDiv>
 
@@ -269,10 +274,10 @@ export async function getServerSideProps(ctx) {
   // Parse
   const cookies = parseCookies(ctx)
 
-  let bgs = []  
+  let bgs = []
   try {
     bgs = await fetch('http://localhost:3000/api/random').then(r => r.json())
-  } catch(e) {
+  } catch (e) {
     console.log('get bgs server side error', e)
   }
 
@@ -280,6 +285,7 @@ export async function getServerSideProps(ctx) {
     props: {
       cookies,
       startBgs: bgs,
+      ...await serverSideTranslations(ctx.locale, ['common', 'footer']),
     }
   }
 }

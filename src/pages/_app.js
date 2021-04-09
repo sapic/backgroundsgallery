@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { appWithTranslation } from 'next-i18next'
 
 import '../styles/globals.css'
 import withIdentity from '../lib/withIdentity'
@@ -12,4 +13,4 @@ function MyApp({ Component, pageProps }) {
   </>)
 }
 
-export default withIdentity(MyApp)
+export default appWithTranslation(withIdentity(MyApp))

@@ -1,0 +1,20 @@
+{
+  "skipImages": "Пропустить",
+  "header": {
+    "top": "Лучшие фоны",
+    "battle": "Голосование",
+    "login": "Войти через Steam",
+    "logout": "Выйти"
+  },
+  "top": {
+    "imageViews": "Просмотры",
+    "imageVotes": "Голоса",
+    "steamLink": "Steam",
+    "sapicLink": "Обрезать",
+    "headerText": "Найди лучший фон для своего профиля Steam на основе голосов сообщества! Или проголосуй сам!",
+    "sortRating": "Рейтинг",
+    "sortVotes": "Голоса",
+    "sortViews": "Просмотры",
+    "sortVote": "Голосование"
+  }
+}

@@ -1,3 +1,5 @@
+const { i18n } = require('./next-i18next.config')
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -11,6 +13,9 @@ module.exports =
     experimental: {
       modern: true,
     },
+
+    i18n,
+
     webpack(config, options) {
       config.module.rules.push({
         test: /\.(png|jpe?g|gif|svg)$/i,
