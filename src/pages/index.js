@@ -299,7 +299,6 @@ function Top() {
 }
 
 export async function getStaticProps({ locale }) {
-  console.log('get static props', locale)
   return {
     props: {
       ...await serverSideTranslations(locale, ['common']),
