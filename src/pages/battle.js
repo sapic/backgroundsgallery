@@ -102,11 +102,10 @@ function Home({ origin, cookies, startBgs }) {
 
   async function getNextBgs() {
     if (bgsQueue.length > 0) {
-      const bgs = bgsQueue[0]
-      setBgsQueue(bgsQueue.slice(1))
+      const bgs = bgsQueue.shift()
+      setBgsQueue(bgsQueue)
       populateQueue()
 
-      // console.log('return from queue')
       return bgs
     }
 
@@ -119,12 +118,10 @@ function Home({ origin, cookies, startBgs }) {
     }
     populateQueue()
 
-    // console.log('return from api')
     return bgs
   }
 
   async function populateQueue() {
-    // console.log('populating queue')
     if (bgsQueue.length < 3) {
       let queue = []
       for (let i = 0; i < 3; i++) {
@@ -133,7 +130,11 @@ function Home({ origin, cookies, startBgs }) {
         bgs.map(bg => preloadImage(bg.steamUrl))
       }
 
-      setBgsQueue((current) => current.concat(queue))
+      for (const bgs of queue) {
+        bgsQueue.push(bgs)
+      }
+
+      setBgsQueue(bgsQueue)
     }
   }
 
