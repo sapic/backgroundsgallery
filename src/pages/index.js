@@ -89,7 +89,7 @@ function Top() {
   const { t } = useTranslation()
 
   const options = {} // these options accept all native `fetch` options\
-  const { data = [] } = useFetch('/weightedWithInfo.json', options, [])
+  const { data = [] } = useFetch('/api/votesInfo', options, [])
 
   const [sort, setSort] = useState(0)
 

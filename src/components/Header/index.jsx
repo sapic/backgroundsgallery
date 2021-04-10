@@ -23,6 +23,8 @@ export default function Header() {
   const { asPath } = useRouter()
   const { t } = useTranslation()
 
+  console.log('asPath', asPath)
+
   return <header className={
     clsx([
       'flex fixed top-0 inset-x-0 z-100 h-16 items-center text-white',
@@ -46,7 +48,7 @@ export default function Header() {
           <Link href="/">
             <a className={clsx([
               "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
-              asPath === '/' && 'text-blue-300'
+              (asPath === '/' || asPath === '/index') && 'text-blue-300'
             ])}>
               {t('header.top')}
             </a>
