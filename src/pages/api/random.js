@@ -48,25 +48,50 @@ let itemsCache = {
   lastUpdate: 0,
 }
 const cacheTime = 60 * 60 * 1000 // 1 hour
+const refreshCacheTime = 30 * 60 * 1000 // 30 mins
 
 async function getBgItems() {
   if (Date.now() - itemsCache.lastUpdate < cacheTime) {
+    if (Date.now() - itemsCache.lastUpdate > refreshCacheTime) {
+      updateCache()
+    }
+
     return itemsCache.items
   }
 
-  const response = await fetch('http://localhost:3000/api/votesInfo').then(r => r.json())
-  if (!response || response.length < 1) {
-    throw new Error('response error')
+  return updateCache()
+}
+// Promise to return if we're already calculating, so we don't do it twice
+let alreadyReturning = null
+async function updateCache() {
+  if (alreadyReturning) {
+    return alreadyReturning
   }
 
-  itemsCache.items = response
+  alreadyReturning = (async () => {
+    console.log('fetch weighted')
+    const response = await fetch('http://localhost:3000/api/votesInfo').then(r => r.json())
+    if (!response || response.length < 1) {
+      throw new Error('response error')
+    }
 
-  // Generate sort arrays
-  itemsCache.viewsAscSort = response.sort((a, b) => a.views - b.views)
-  itemsCache.votesAscSort = response.sort((a, b) => a.votes - b.votes)
-  itemsCache.ratingAscSort = response.sort((a, b) => a.goodness - b.goodness)
+    itemsCache.items = response
 
-  itemsCache.lastUpdate = Date.now()
+    // Generate sort arrays
+    itemsCache.viewsAscSort = response.sort((a, b) => a.views - b.views)
+    itemsCache.votesAscSort = response.sort((a, b) => a.votes - b.votes)
+    itemsCache.ratingAscSort = response.sort((a, b) => a.goodness - b.goodness)
 
-  return itemsCache.items
+    itemsCache.lastUpdate = Date.now()
+
+    return itemsCache.items
+  })()
+
+  return alreadyReturning
 }
+
+// callInit
+async function init() {
+  await getBgItems()
+}
+init()

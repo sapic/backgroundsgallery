@@ -14,6 +14,7 @@ let itemsCache = {
   lastUpdate: 0,
 }
 const cacheTime = 60 * 60 * 1000 // 1 hour
+const refreshCacheTime = 30 * 60 * 1000 // 30 mins
 
 // callInit
 withDatabase((req) => {
@@ -23,6 +24,10 @@ withDatabase((req) => {
 async function getItems(req) {
   // If cache fresh - return from it
   if (Date.now() - itemsCache.lastUpdate < cacheTime) {
+    if (Date.now() - itemsCache.lastUpdate > refreshCacheTime) {
+      updateCache()
+    }
+
     return itemsCache.items
   } else if (itemsCache.items.length > 0) {
     // If cache old, but have items - return them and update cache in bg
