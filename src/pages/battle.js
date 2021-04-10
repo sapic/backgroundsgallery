@@ -291,7 +291,7 @@ export async function getServerSideProps(ctx) {
     props: {
       cookies,
       startBgs: bgs,
-      ...await serverSideTranslations(ctx.locale, ['common', 'footer']),
+      ...await serverSideTranslations(ctx.locale, ['common']),
     }
   }
 }

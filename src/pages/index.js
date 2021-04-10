@@ -299,9 +299,10 @@ function Top() {
 }
 
 export async function getStaticProps({ locale }) {
+  console.log('get static props', locale)
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common', 'footer']),
+      ...await serverSideTranslations(locale, ['common']),
     }, // will be passed to the page component as props
   }
 }
