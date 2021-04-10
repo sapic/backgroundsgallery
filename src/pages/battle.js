@@ -35,9 +35,10 @@ const VerticalCenterDiv = styled.div`
 const BackgroundsContainer = styled.div`
   ${tw`w-full flex pt-16 flex-col md:flex-row`}
   height: 100vh;
-  /* height: -webkit-fill-available;
-  height: -moz-available;
-  height: fill-available; */
+
+  @media (max-width: 964px) {
+    max-height: -webkit-fill-available;
+  }
 `
 
 function preloadImage(url) {
@@ -186,7 +187,8 @@ function Home({ origin, cookies, startBgs }) {
               'bg-gray-900 text-white p-4 rounded',
               'shadow-xl absolute bottom-12 md:bottom-48 left-1/2 w-64 md:w-128',
               'transform', '-translate-x-1/2',
-              'transition-color duration-300 hover:bg-gray-800'
+              'transition-color duration-300 hover:bg-gray-800',
+              'hidden md:block'
             )}
             onClick={(e) => {
               // e.preventDefault()
@@ -254,14 +256,14 @@ function Home({ origin, cookies, startBgs }) {
         <CenterDiv className="absolute">
           <div className={clsx([
             'w-16 h-16 rounded-full bg-white leading-16 text-center bg-gray-900 text-white shadow-xl',
-            'mr-28 md:mr-0 mt-24 md:mt-0'
+            'mr-28 md:mr-0 mt-0 md:mt-0'
           ])}>
             VS
           </div>
         </CenterDiv>
         <CenterDiv className="absolute">
           <div className={clsx(
-            "ml-20 mt-24 md:ml-0 md:mt-48 w-24 h-24 rounded-full",
+            "ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full",
             "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
             "transition-all duration-300 hover:bg-green-500 cursor-pointer",
             'select-none'
