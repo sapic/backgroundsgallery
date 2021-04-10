@@ -33,8 +33,11 @@ const VerticalCenterDiv = styled.div`
 `
 
 const BackgroundsContainer = styled.div`
-  ${tw`w-full h-screen flex pt-16 flex-col md:flex-row`}
-  height: -webkit-fill-available;
+  ${tw`w-full flex pt-16 flex-col md:flex-row`}
+  height: 100vh;
+  /* height: -webkit-fill-available;
+  height: -moz-available;
+  height: fill-available; */
 `
 
 function preloadImage(url) {
