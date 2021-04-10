@@ -1,17 +1,16 @@
 import withDatabase from '../../lib/database'
 
 const bgs = require('../../assets/bgs_full.json')
-const weightesPlaceholder = require('../../assets/weightedWithInfo.json')
+// const weightesPlaceholder = require('../../assets/weightedWithInfo.json')
 
 export default withDatabase(async (req, res) => {
   const bgs = await getItems(req)
-  console.log("get api len", bgs.length)
 
   res.send(bgs)
 })
 
 let itemsCache = {
-  items: weightesPlaceholder,
+  items: [],
   lastUpdate: 0,
 }
 const cacheTime = 60 * 60 * 1000 // 1 hour
@@ -27,7 +26,6 @@ async function getItems(req) {
     return itemsCache.items
   } else if (itemsCache.items.length > 0) {
     // If cache old, but have items - return them and update cache in bg
-    console.log('cache old')
     updateCache(req)
     return itemsCache.items
   }
@@ -50,8 +48,6 @@ async function updateCache(req) {
     const viewsDocs = await views.find().toArray()
     const votesDocs = await votesTotal.find().toArray()
 
-    console.log('viewsDocs', viewsDocs.length, votesDocs.length)
-
     const combined = {}
     const result = []
 
@@ -67,8 +63,6 @@ async function updateCache(req) {
       }
       combined[votes.url].votes = votes.votes
     }
-
-    console.log('combined len', Object.keys(combined).length)
 
     let max = 0
     for (const key of Object.keys(combined)) {
