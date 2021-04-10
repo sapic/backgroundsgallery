@@ -20,10 +20,8 @@ import { useTranslation } from 'next-i18next'
 
 export default function Header() {
   const identity = useIdentity()
-  const { asPath } = useRouter()
+  const { pathname } = useRouter()
   const { t } = useTranslation()
-
-  console.log('asPath', asPath)
 
   return <header className={
     clsx([
@@ -48,7 +46,7 @@ export default function Header() {
           <Link href="/">
             <a className={clsx([
               "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
-              (asPath === '/' || asPath === '/index') && 'text-blue-300'
+              (pathname === '/') && 'text-blue-300'
             ])}>
               {t('header.top')}
             </a>
@@ -56,7 +54,7 @@ export default function Header() {
           <Link href="/battle">
             <a className={clsx([
               "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
-              asPath === '/battle' && 'text-blue-300'
+              pathname === '/battle' && 'text-blue-300'
             ])}>
               {t('header.battle')}
             </a>
