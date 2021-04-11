@@ -48,6 +48,7 @@ function Home({ origin, cookies, startBgs }) {
   const { t } = useTranslation('common')
   const [bgs, setBgs] = useState(startBgs)
   const [bgsQueue, setBgsQueue] = useState([])
+  const [isChanging, setIsChanging] = useState(false)
 
   async function loadBgs() {
     if (window && window.gtag) {
@@ -125,14 +126,35 @@ function Home({ origin, cookies, startBgs }) {
   }
 
   async function clickOnImage(item) {
+    if (isChanging) {
+      return
+    }
+
+    setIsChanging(true)
     trackVote(item)
-    loadBgs()
+    await loadBgs()
+    await delay(500)
+    setIsChanging(false)
   }
 
   async function clickOnSkip() {
     trackVote()
     loadBgs()
   }
+
+  useKeypress('ArrowLeft', () => {
+    if (bgs[0]) {
+      clickOnImage(bgs[0])
+    }
+  })
+  useKeypress('ArrowRight', () => {
+    if (bgs[1]) {
+      clickOnImage(bgs[1])
+    }
+  })
+  useKeypress('ArrowUp', () => {
+    clickOnSkip()
+  })
 
   return (
     <div className="bg-black">
@@ -178,6 +200,10 @@ function Home({ origin, cookies, startBgs }) {
   )
 }
 
+const delay = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms)
+})
+
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx)
 
@@ -195,6 +221,16 @@ export async function getServerSideProps(ctx) {
       ...await serverSideTranslations(ctx.locale, ['common']),
     }
   }
+}
+
+function useKeypress(key, action) {
+  useEffect(() => {
+    function onKeyup(e) {
+      if (e.key === key) action()
+    }
+    window.addEventListener('keyup', onKeyup);
+    return () => window.removeEventListener('keyup', onKeyup);
+  })
 }
 
 export default Home
