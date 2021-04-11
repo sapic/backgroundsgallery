@@ -116,12 +116,30 @@ function Home({ origin, cookies, startBgs }) {
       });
     }
 
+    let deviceId
+    if (document && document.cookie) {
+      let val = getCookie('bgsspid')
+
+      if (val) {
+        deviceId = val
+      } else {
+        deviceId = randomId()
+      }
+
+      const expiryDate = new Date();
+      expiryDate.setTime(expiryDate.getTime() + (30 * 24 * 60 * 60 * 1000));
+      document.cookie = `bgsspid=${deviceId}; expires=${expiryDate.toUTCString()}; path = /`
+    }
+
     await fetch('/api/vote', {
       method: 'POST',
       body: JSON.stringify({
         item,
         views: bgs
-      })
+      }),
+      headers: {
+        'Device-Id': deviceId,
+      }
     })
   }
 
@@ -203,6 +221,18 @@ function Home({ origin, cookies, startBgs }) {
 const delay = (ms) => new Promise((resolve) => {
   setTimeout(resolve, ms)
 })
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function randomId() {
+  const array = window.crypto.getRandomValues(new Uint8Array(16))
+  const hash = Array.prototype.map.call(new Uint8Array(array.buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+  return hash
+}
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx)

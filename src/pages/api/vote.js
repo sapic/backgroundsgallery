@@ -14,11 +14,21 @@ export default withDatabase(withPassport(async (req, res) => {
   const votesTotal = req.db.collection('votes_total')
   const views = req.db.collection('views')
 
+  const deviceId = req.headers['device-id']
+
+
   if (item) {
-    votes.insertOne({
+    const toInsert = {
       url: item.url,
       user_id: userId,
-    })
+      deviceId,
+    }
+
+    if (deviceId) {
+      toInsert.deviceId = deviceId
+    }
+
+    votes.insertOne(toInsert)
 
     const query = { url: item.url };
     const update = {
