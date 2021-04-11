@@ -25,30 +25,30 @@ async function getItems(req) {
   // If cache fresh - return from it
   if (Date.now() - itemsCache.lastUpdate < cacheTime) {
     if (Date.now() - itemsCache.lastUpdate > refreshCacheTime) {
-      updateCache()
+      updateCache(req.db)
     }
 
     return itemsCache.items
   } else if (itemsCache.items.length > 0) {
     // If cache old, but have items - return them and update cache in bg
-    updateCache(req)
+    updateCache(req.db)
     return itemsCache.items
   }
 
   // Cache old and empty - return refresh result
-  return updateCache(req)
+  return updateCache(req.db)
 }
 
 // Promise to return if we're already calculating, so we don't do it twice
 let alreadyReturning = null
-async function updateCache(req) {
+async function updateCache(db) {
   if (alreadyReturning) {
     return alreadyReturning
   }
 
-  alreadyReturning = (async (req) => {
-    const views = req.db.collection('views')
-    const votesTotal = req.db.collection('votes_total')
+  alreadyReturning = (async (db) => {
+    const views = db.collection('views')
+    const votesTotal = db.collection('votes_total')
 
     const viewsDocs = await views.find().toArray()
     const votesDocs = await votesTotal.find().toArray()
@@ -102,7 +102,7 @@ async function updateCache(req) {
 
     alreadyReturning = null
     return itemsCache.items
-  })(req)
+  })(db)
 
   return alreadyReturning
 }
