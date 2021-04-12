@@ -126,7 +126,7 @@ function Home({ origin, startBgs }) {
     }
 
     setCookie('bgsspid', deviceId, {
-      days: 30,
+      maxAge: 30 * 24 * 60 * 60,
     })
 
     await fetch('/api/vote', {
