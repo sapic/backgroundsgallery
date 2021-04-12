@@ -1,6 +1,7 @@
 import withDatabase from '../../lib/database'
 
 const bgs = require('../../assets/bgs_full.json')
+let alreadyReturning = null
 // const weightesPlaceholder = require('../../assets/weightedWithInfo.json')
 
 export default withDatabase(async (req, res) => {
@@ -40,7 +41,6 @@ async function getItems(req) {
 }
 
 // Promise to return if we're already calculating, so we don't do it twice
-let alreadyReturning = null
 async function updateCache(db) {
   if (alreadyReturning) {
     return alreadyReturning

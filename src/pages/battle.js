@@ -4,10 +4,11 @@ import clsx from 'clsx';
 import styled from 'styled-components'
 // import useFetch from 'use-http'
 import { useState, useEffect } from 'react'
-import { parseCookies } from 'nookies'
+// import { parseCookies } from 'nookies'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import tw from "twin.macro"
+import { useCookies } from 'react-cookie'
 
 import Header from '../components/Header'
 import Tutorial from '../components/Tutorial'
@@ -42,13 +43,14 @@ function preloadImage(url) {
   })
 }
 
-function Home({ origin, cookies, startBgs }) {
+function Home({ origin, startBgs }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const { t } = useTranslation('common')
   const [bgs, setBgs] = useState(startBgs)
   const [bgsQueue, setBgsQueue] = useState([])
   const [isChanging, setIsChanging] = useState(false)
+  const [cookies, setCookie] = useCookies(['bgsspid', 'disable_hello']);
 
   async function loadBgs() {
     if (window && window.gtag) {
@@ -108,8 +110,6 @@ function Home({ origin, cookies, startBgs }) {
   }
 
   async function trackVote(item) {
-    // console.log('trackVote')
-
     if (window && window.gtag) {
       window.gtag('event', 'vote', {
         'image': item ? 'true' : 'false'
@@ -117,19 +117,17 @@ function Home({ origin, cookies, startBgs }) {
     }
 
     let deviceId
-    if (document && document.cookie) {
-      let val = getCookie('bgsspid')
+    let val = cookies.bgsspid
 
-      if (val) {
-        deviceId = val
-      } else {
-        deviceId = randomId()
-      }
-
-      const expiryDate = new Date();
-      expiryDate.setTime(expiryDate.getTime() + (30 * 24 * 60 * 60 * 1000));
-      document.cookie = `bgsspid=${deviceId}; expires=${expiryDate.toUTCString()}; path = /`
+    if (val) {
+      deviceId = val
+    } else {
+      deviceId = randomId()
     }
+
+    setCookie('bgsspid', deviceId, {
+      days: 30,
+    })
 
     await fetch('/api/vote', {
       method: 'POST',
@@ -222,11 +220,11 @@ const delay = (ms) => new Promise((resolve) => {
   setTimeout(resolve, ms)
 })
 
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
+// function getCookie(name) {
+//   const value = `; ${document.cookie}`;
+//   const parts = value.split(`; ${name}=`);
+//   if (parts.length === 2) return parts.pop().split(';').shift();
+// }
 
 function randomId() {
   const array = window.crypto.getRandomValues(new Uint8Array(16))
@@ -235,7 +233,7 @@ function randomId() {
 }
 
 export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx)
+  // const cookies = parseCookies(ctx)
 
   let bgs = []
   try {
@@ -246,7 +244,7 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
-      cookies,
+      // cookies,
       startBgs: bgs,
       ...await serverSideTranslations(ctx.locale, ['common']),
     }

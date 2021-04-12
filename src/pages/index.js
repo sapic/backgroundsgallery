@@ -94,13 +94,9 @@ function Top() {
   const [sort, setSort] = useState(0)
 
   const [currentPage, setCurrentPage] = useState(1)
-  // const [rows, setRows] = useState([])
   let rows = []
 
-  // console.log('top changed')
-  // 
-  // useEffect(() => {
-  // console.log('call use effect', data, sort)
+
   const r = []
   let j = 0;
 
@@ -127,22 +123,10 @@ function Top() {
     r[j - 1].push(sortedData[i])
   }
 
-  // setRows(r)
+
   rows = r
-  // const totalHeight = 192 * rows.length
-  // const pagesCount = typeof window !== 'undefined' && totalHeight > 0 ? Math.floor(totalHeight / window.innerHeight) : 8
 
-  //   console.log('totalHeight', totalHeight, window.innerHeight)
-  //   setPages([1, 2, 3, 4, 5, '...', pagesCount - 1])
-  // if (typeof window !== 'undefined') {
-  //   console.log('pagesCount', totalHeight, pagesCount, window && window.innerHeight)
-  // }
   const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', 300])
-  // console.log('pages:', pagesCount, pages)
-  // setPages([1, 2, 3])
-  // setRows(r)
-  // }, [data, sort])
-
   useEffect(() => {
     if (typeof window === 'undefined') {
       return
@@ -155,9 +139,6 @@ function Top() {
     const totalHeight = 192 * rows.length
     const pagesCount = Math.floor(totalHeight / window.innerHeight)
 
-    // console.log('totalHeight', totalHeight, window.innerHeight)
-    // const newPages = [1, 2, 3, 4, 5, '...', pagesCount - 1]
-
     const cr = currentPage
     let newPages = cr < 5
       ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
@@ -167,16 +148,11 @@ function Top() {
 
     if (JSON.stringify(pages) !== JSON.stringify(newPages)) {
       setPages(newPages)
-      // console.log('set pages on effect')
     }
   }, [rows.length, pages, currentPage])
 
-  // let pages = [1, 2, 3, 4, 5, 6]
-
   useScrollPosition(
     ({ currPos }) => {
-      // setElementPosition(currPos)
-      // console.log('scroll to', currPos)
       const totalHeight = document.body.clientHeight
 
       const pagesCount = Math.floor(totalHeight / window.innerHeight)
@@ -188,20 +164,6 @@ function Top() {
 
       setCurrentPage(cr)
       return
-      // console.log('current page', currentPage)
-
-      // let newPages = cr < 5
-      //   ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
-      //   : cr > pagesCount - 5
-      //     ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
-      //     : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount - 1]
-
-      // // console.log('cr', cr, currentPage)
-      // // if (cr !== currentPage) {
-      // setCurrentPage(cr)
-      // setPages(newPages)
-      // console.log('set pages on scroll')
-      // }
     }, [currentPage]
   )
 

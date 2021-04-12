@@ -3,7 +3,9 @@ import { useIdentity } from '@/lib/withIdentity'
 import { useRouter } from 'next/router'
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next'
+import { useCookies } from 'react-cookie';
 
+// import useCookie from '@/lib/useCookie'
 // const loginUrl = () => {
 //   const returnUrl = encodeURIComponent(
 //     process.env.NODE_ENV === 'production'
@@ -22,6 +24,7 @@ export default function Header() {
   const identity = useIdentity()
   const { pathname } = useRouter()
   const { t } = useTranslation()
+  const [cookies] = useCookies(['bgsspid'])
 
   return <header className={
     clsx([
@@ -59,6 +62,14 @@ export default function Header() {
               {t('header.battle')}
             </a>
           </Link>
+          {(identity || cookies.bgsspid) && <Link href="/history">
+            <a className={clsx([
+              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
+              pathname === '/history' && 'text-blue-300'
+            ])}>
+              {t('header.history')}
+            </a>
+          </Link>}
         </div>
       </div>
 
