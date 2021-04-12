@@ -31,11 +31,14 @@ export const redirectToLogin = (ctx) => {
 
 // any is needed to use as JSX element
 const withIdentity = (App) => {
+  console.log("withIdentity1")
+
   return class IdentityProvider extends React.Component {
     static displayName = `IdentityProvider(MyApp)`
     static async getInitialProps(
       ctx
     ) {
+      console.log('IdentityProvider get initial props')
       // Get inner app's props
       let appProps
       if (NextApp.getInitialProps) {
@@ -45,6 +48,7 @@ const withIdentity = (App) => {
       }
 
       const { passportSession } = nextCookie(ctx.ctx)
+      console.log('passport session', passportSession)
 
       // Redirect to login if page is protected but no session exists
       // if (!passportSession) {
@@ -83,6 +87,7 @@ const withIdentity = (App) => {
 
       return (
         <IdentityContext.Provider value={session}>
+          <div>Identity</div>
           <App {...appProps} />
         </IdentityContext.Provider>
       )

@@ -4,6 +4,7 @@ import useFetch from 'use-http'
 
 function Device(props) {
   const { deviceId } = props
+  console.log('deviceId', deviceId)
   let rows = []
   const options = {} // these options accept all native `fetch` options\
 
@@ -32,7 +33,7 @@ function Device(props) {
     <div className="bg-gray-900 py-2 px-4 rounded mt-2">
       <h1 className="text-white">View your Device votes history</h1>
     </div>
-    {rows.map((row) => <Row row={row} />)}
+    {rows.map((row, i) => <Row row={row} key={i} />)}
   </>
   )
 }

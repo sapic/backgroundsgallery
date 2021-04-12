@@ -62,14 +62,14 @@ export default function Header() {
               {t('header.battle')}
             </a>
           </Link>
-          {(identity || cookies.bgsspid) && <Link href="/history">
+          {/* {(identity || cookies.bgsspid) && <Link href="/history">
             <a className={clsx([
               "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
               pathname === '/history' && 'text-blue-300'
             ])}>
               {t('header.history')}
             </a>
-          </Link>}
+          </Link>} */}
         </div>
       </div>
 

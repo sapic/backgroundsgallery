@@ -37,7 +37,7 @@ function User(props) {
     ])}>
       <h1 className="text-white">View your Steam ID votes history</h1>
     </div>
-    {rows.map((row) => <Row row={row} />)}
+    {rows.map((row, i) => <Row row={row} key={i} />)}
   </>
   )
 }
