@@ -53,10 +53,9 @@ export default fn => (req, res) => {
   return new Promise(resolve => {
     cookieSession({
       name: 'passportSession',
-      signed: true,
+      signed: false,
       domain: url.parse(req.url).host,
-      maxAge: 72 * 60 * 60 * 1000, // 72 hours,
-      secret: '[C<Y`M@_ll}W[%sHlyb{5>..Kn?.Wg',
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
     })(req, res, () =>
       passport.initialize()(req, res, () =>
         passport.session()(req, res, () => {
