@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
-import nextCookie from 'next-cookies'
+// import nextCookie from 'next-cookies'
 import redirect from './redirect'
 import NextApp from 'next/app'
+import { CookiesProvider, Cookies } from "react-cookie";
 
+const isBrowser = () => typeof window !== "undefined";
 
 // export interface UserIdentity {
 //   id: number
@@ -34,6 +36,14 @@ const withIdentity = (App) => {
   console.log("withIdentity1")
 
   return class IdentityProvider extends React.Component {
+    static getCookies(ctx) {
+      if (ctx && ctx.req && ctx.req.headers.cookie) {
+        return new Cookies(ctx.req.headers.cookie);
+      }
+
+      return new Cookies();
+    }
+
     static displayName = `IdentityProvider(MyApp)`
     static async getInitialProps(
       ctx
@@ -47,8 +57,9 @@ const withIdentity = (App) => {
         appProps = { pageProps: {} }
       }
 
-      const { passportSession } = nextCookie(ctx.ctx)
-      console.log('passport session', passportSession)
+      const cookies = this.getCookies(ctx.ctx);
+      const { passportSession } = cookies.cookies
+      console.log('passport session', passportSession, cookies)
 
       // Redirect to login if page is protected but no session exists
       // if (!passportSession) {
@@ -79,17 +90,20 @@ const withIdentity = (App) => {
       return {
         ...appProps,
         session,
+        cookies,
       }
     }
 
     render() {
-      const { session, ...appProps } = this.props
+      const { session, cookies, ...appProps } = this.props
 
       return (
-        <IdentityContext.Provider value={session}>
-          <div>Identity</div>
-          <App {...appProps} />
-        </IdentityContext.Provider>
+        <CookiesProvider cookies={isBrowser() ? undefined : cookies}>
+          <IdentityContext.Provider value={session}>
+            <div>Identity</div>
+            <App {...appProps} />
+          </IdentityContext.Provider>
+        </CookiesProvider>
       )
     }
   }

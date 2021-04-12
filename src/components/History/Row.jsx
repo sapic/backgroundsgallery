@@ -35,7 +35,7 @@ export function Row(props) {
 
   return (
     <RowContainer className="flex">
-      {row.map(item => (<ImageContainer key={item.url} className="group">
+      {row.map((item, i) => (<ImageContainer key={i + item.url} className="group">
         <MiniImage src={item.steamUrl} alt='background'></MiniImage>
         <StatsContainer>
           <div>{t('top.imageViews')}: {item.views} {t('top.imageVotes')}: {item.votes}</div>
