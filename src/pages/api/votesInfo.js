@@ -5,7 +5,7 @@ let alreadyReturning = null
 // const weightesPlaceholder = require('../../assets/weightedWithInfo.json')
 
 export default withDatabase(async (req, res) => {
-  const bgs = await getItems(req)
+  const bgs = await getItems(req.db)
 
   res.send(bgs)
 })
@@ -19,25 +19,25 @@ const refreshCacheTime = 30 * 60 * 1000 // 30 mins
 
 // callInit
 withDatabase((req) => {
-  getItems(req)
+  getItems(req.db)
 })({})
 
-async function getItems(req) {
+async function getItems(db) {
   // If cache fresh - return from it
   if (Date.now() - itemsCache.lastUpdate < cacheTime) {
     if (Date.now() - itemsCache.lastUpdate > refreshCacheTime) {
-      updateCache(req.db)
+      updateCache(db)
     }
 
     return itemsCache.items
   } else if (itemsCache.items.length > 0) {
     // If cache old, but have items - return them and update cache in bg
-    updateCache(req.db)
+    updateCache(db)
     return itemsCache.items
   }
 
   // Cache old and empty - return refresh result
-  return updateCache(req.db)
+  return updateCache(db)
 }
 
 // Promise to return if we're already calculating, so we don't do it twice
