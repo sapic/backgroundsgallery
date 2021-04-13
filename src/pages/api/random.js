@@ -19,8 +19,8 @@ function runMiddleware(req, res, fn) {
   })
 }
 
-const apiUrl = process.env.API_URL && process.env.API_URL !== ''
-  ? process.env.API_URL
+const apiUrl = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== ''
+  ? process.env.NEXT_PUBLIC_API_URL
   : 'http://localhost:3000'
 
 export default async (req, res) => {
