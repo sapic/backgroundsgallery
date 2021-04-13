@@ -34,8 +34,10 @@ export default async (req, res) => {
       sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
       break
     case 1:
+      sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
+
       // 1000 most voted
-      sortArray = itemsCache.votesAscSort.slice(itemsCache.votesAscSort.length - 1000)
+      // sortArray = itemsCache.votesAscSort.slice(itemsCache.votesAscSort.length - 1000)
       break
     case 2:
       // 1000 most popular(votes/views)
