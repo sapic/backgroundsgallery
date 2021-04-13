@@ -12,7 +12,6 @@ function History() {
 
   const [cookies] = useCookies(['bgsspid']);
   const deviceId = cookies.bgsspid
-  console.log('render history', deviceId)
 
   return (
     <div className="bg-black">

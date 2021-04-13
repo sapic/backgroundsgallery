@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link';
 
-import Header from '../components/Header'
+import Header from '@/components/Header'
+import ImagePreview from '@/components/ImagePreview'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import tw from "twin.macro"
@@ -19,7 +20,7 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 const MiniImage = styled.img`
   width: 100%;
   height: 256px;
-  object-fit: contain;
+  object-fit: cover;
 `
 
 // const BodyContainer = styled.div`
@@ -167,34 +168,14 @@ function Top() {
     }, [currentPage]
   )
 
-  // console.log("rows", rows)
-
   const Row = ({ index, style }) => (
     <RowContainer className="flex" style={style} key={index}>
-      {rows[index].map(item => (<ImageContainer key={item.url} className="group">
-        <MiniImage src={item.steamUrl} alt='background'></MiniImage>
-        <StatsContainer>
-          <div>{t('top.imageViews')}: {item.views} {t('top.imageVotes')}: {item.votes}</div>
-          <div className="-mx-2">
-            <a
-              href={`https://steamcommunity.com/market/listings/${item.url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-2 hover:text-blue-300"
-            >
-              {t('top.steamLink')}
-            </a>
-            <a
-              href={`https://steam.design/#${item.steamUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-2 hover:text-blue-300"
-            >
-              {t('top.sapicLink')}
-            </a>
-          </div>
-        </StatsContainer>
-      </ImageContainer>))}
+      {rows[index].map((item, i) => (
+        <ImagePreview
+          key={i + item.url}
+          item={item}
+        />
+      ))}
       {/* { JSON.stringify(rows[index])} */}
     </RowContainer>
   );

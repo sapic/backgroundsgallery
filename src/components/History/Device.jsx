@@ -4,7 +4,6 @@ import useFetch from 'use-http'
 
 function Device(props) {
   const { deviceId } = props
-  console.log('deviceId', deviceId)
   let rows = []
   const options = {} // these options accept all native `fetch` options\
 
