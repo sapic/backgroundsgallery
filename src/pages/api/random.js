@@ -1,4 +1,5 @@
 import Cors from 'cors'
+import { apiUrl } from '@/lib/getApiUrl'
 
 const cors = Cors({
   origin: "*",
@@ -18,10 +19,6 @@ function runMiddleware(req, res, fn) {
     })
   })
 }
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== ''
-  ? process.env.NEXT_PUBLIC_API_URL
-  : 'http://localhost:3000'
 
 export default async (req, res) => {
   // Run the middleware

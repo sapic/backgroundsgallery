@@ -16,6 +16,8 @@ import { FixedSizeList as List } from 'react-window';
 import { ReactWindowScroller } from 'react-window-scroller'
 import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
+import { apiUrl } from '@/lib/getApiUrl'
+
 // const BodyContainer = styled.div`
 //   margin: 0 auto;
 // `
@@ -67,7 +69,7 @@ function Top() {
   const { t } = useTranslation()
 
   const options = {} // these options accept all native `fetch` options\
-  const { data = [] } = useFetch('/api/votesInfo', options, [])
+  const { data = [] } = useFetch(`${apiUrl}/api/votesInfo`, options, [])
 
   const [sort, setSort] = useState(0)
 
