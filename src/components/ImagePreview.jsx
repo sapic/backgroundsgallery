@@ -32,9 +32,9 @@ export default function ImagePreview({ item }) {
       alt='background'
     />
     <StatsContainer>
-      {(item.views || item.votes) && (<div class="-mx-1">
-        {item.views && <span class="mx-1">{t('top.imageViews')}: {item.views}</span>}
-        {item.votes && <span class="mx-1">{t('top.imageVotes')}: {item.votes}</span>}
+      {(item.views || item.votes) && (<div className="-mx-1">
+        {item.views && <span className="mx-1">{t('top.imageViews')}: {item.views}</span>}
+        {item.votes && <span className="mx-1">{t('top.imageVotes')}: {item.votes}</span>}
       </div>)}
 
       <div className="-mx-2">

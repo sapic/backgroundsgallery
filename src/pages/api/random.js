@@ -1,4 +1,32 @@
+import Cors from 'cors'
+
+const cors = Cors({
+  origin: "*",
+  methods: ['GET', 'HEAD'],
+})
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result)
+      }
+
+      return resolve(result)
+    })
+  })
+}
+
+const apiUrl = process.env.API_URL && process.env.API_URL !== ''
+  ? process.env.API_URL
+  : 'http://localhost:3000'
+
 export default async (req, res) => {
+  // Run the middleware
+  await runMiddleware(req, res, cors)
+
   await getBgItems()
 
   const returnRatingType = Math.floor(Math.random() * 3)
@@ -70,7 +98,7 @@ async function updateCache() {
 
   alreadyReturning = (async () => {
     console.log('fetch weighted')
-    const response = await fetch('http://localhost:3000/api/votesInfo').then(r => r.json())
+    const response = await fetch(`${apiUrl}/api/votesInfo`).then(r => r.json())
     if (!response || response.length < 1) {
       throw new Error('response error')
     }

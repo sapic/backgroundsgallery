@@ -16,25 +16,12 @@ import { FixedSizeList as List } from 'react-window';
 import { ReactWindowScroller } from 'react-window-scroller'
 import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
-
-const MiniImage = styled.img`
-  width: 100%;
-  height: 256px;
-  object-fit: cover;
-`
-
 // const BodyContainer = styled.div`
 //   margin: 0 auto;
 // `
 
 const RowContainer = styled.div`
   height: 192px;
-`
-
-const ImageContainer = styled.div`
-  width: 100%;
-  height: 192px;
-  ${tw`relative`}
 `
 
 const SortButton = styled.div`
@@ -45,16 +32,6 @@ const SortButtonViolet = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer`}
   background: #aa076b;
   background: linear-gradient(45deg,#61045f,#aa076b);
-`
-
-const StatsContainer = styled.div`
-  ${tw`
-    text-white absolute top-16 left-1/2 -translate-x-1/2 bg-gray-500 p-2
-    transform rounded
-    flex-col
-    opacity-0 group-hover:opacity-100
-  `}
-  white-space: nowrap;
 `
 
 const PaginationContainer = styled.div`
