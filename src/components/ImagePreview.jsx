@@ -6,11 +6,16 @@ const ImageContainer = styled.div`
   width: 25%;
   height: 192px;
   ${tw`relative`}
+
+  @media (max-width: 560px) {
+    width: 50%;
+  }
 `
 
 const MiniImage = styled.img`
   width: 100%;
   height: 256px;
+  /* filter: brightness(2); */
   object-fit: cover;
 `
 
