@@ -14,9 +14,10 @@ import Header from '../components/Header'
 import Tutorial from '../components/Tutorial'
 import { BackgroundsScroller } from '../components/BackgroundsScroller'
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== ''
-  ? process.env.NEXT_PUBLIC_API_URL
-  : 'http://localhost:3000'
+const apiUrl = ''
+// process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== ''
+//   ? process.env.NEXT_PUBLIC_API_URL
+// : 'http://localhost:3000'
 
 // const bgs = require('../assets/bgs.json')
 
