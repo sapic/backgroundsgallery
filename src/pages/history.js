@@ -17,6 +17,13 @@ function History() {
     <div className="bg-black">
       <Head>
         <title>Backgrounds.Steam.Design | Best Steam Backgrounds | History</title>
+
+        <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/" />
+        <meta name="twitter:title" key="twittertitle" content="Backgrounds.Steam.Design | History" />
+
+        <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design | History" />
+        <meta property="og:url" key="ogurl" content="https://bgs.steam.design/" />
+
         <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/" />
         <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/" />
       </Head>

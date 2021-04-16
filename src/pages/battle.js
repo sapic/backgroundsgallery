@@ -178,6 +178,13 @@ function Home({ origin, startBgs }) {
     <div className="bg-black">
       <Head>
         <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Battle</title>
+
+        <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/battle" />
+        <meta name="twitter:title" key="twittertitle" content="Backgrounds.Steam.Design | Battle" />
+
+        <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design | Battle" />
+        <meta property="og:url" key="ogurl" content="https://bgs.steam.design/battle" />
+
         <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/battle" />
         <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/battle" />
       </Head>
