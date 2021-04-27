@@ -1,14 +1,15 @@
-import withDatabase from '../../lib/database'
+import withDatabase from '@/lib/database'
+import withCors from '@/lib/withCors'
 
-const bgs = require('../../assets/bgs_full.json')
+const bgs = require('@/assets/bgs_full.json')
 let alreadyReturning = null
 // const weightesPlaceholder = require('../../assets/weightedWithInfo.json')
 
-export default withDatabase(async (req, res) => {
+export default withCors(withDatabase(async (req, res) => {
   const bgs = await getItems(req)
 
   res.send(bgs)
-})
+}))
 
 let itemsCache = {
   items: [],
