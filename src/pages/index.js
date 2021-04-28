@@ -324,7 +324,7 @@ function Top({ startTop }) {
 
   useEffect(() => {
     console.log('just effect', window.scrollY)
-    scrollHandler({ currPos: { x: window.scrollX, y: window.scrollY } })
+    scrollHandler({ currPos: { x: -window.scrollX, y: -window.scrollY } })
   }, [])
 
   const Row = ({ data, index, style }) => {
