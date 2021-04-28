@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Header from '@/components/Header'
 import ImagePreview from '@/components/ImagePreview'
 import styled from 'styled-components'
-import { useState, useEffect, useMemo, } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import tw from "twin.macro"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
@@ -303,26 +303,26 @@ function Top({ startTop }) {
     }
   }, [rowsCount, pages, currentPage])
 
-  useScrollPosition(
-    ({ currPos }) => {
-      console.log('use scroll pos')
-      const totalHeight = document.body.clientHeight
+  const scrollHandler = useCallback(({ currPos }) => {
+    console.log('use scroll pos')
+    const totalHeight = document.body.clientHeight
 
-      const pagesCount = Math.floor(totalHeight / window.innerHeight)
-      const cr = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
+    const pagesCount = Math.floor(totalHeight / window.innerHeight)
+    const cr = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
 
-      if (cr === currentPage) {
-        return
-      }
-
-      setCurrentPage(cr)
+    if (cr === currentPage) {
       return
-    }, [currentPage]
-  )
+    }
+
+    setCurrentPage(cr)
+    return
+  }, [currentPage])
+
+  useScrollPosition(scrollHandler)
 
   useEffect(() => {
-    console.log('just effect')
-    setCurrentPage(1)
+    console.log('just effect', window.scrollY)
+    scrollHandler({ currPos: { x: window.scrollX, y: window.scrollY } })
   }, [])
 
   const Row = ({ data, index, style }) => {
