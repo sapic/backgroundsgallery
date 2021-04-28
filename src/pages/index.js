@@ -304,13 +304,14 @@ function Top({ startTop }) {
   }, [rowsCount, pages, currentPage])
 
   const scrollHandler = useCallback(({ currPos }) => {
-    console.log('use scroll pos')
+    console.log('use scroll pos', currPos)
     const totalHeight = document.body.clientHeight
 
     const pagesCount = Math.floor(totalHeight / window.innerHeight)
     const cr = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
 
     if (cr === currentPage) {
+      console.log('current page is the same', cr, currentPage)
       return
     }
 
