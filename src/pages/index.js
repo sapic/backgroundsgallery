@@ -4,19 +4,17 @@ import Link from 'next/link';
 import Header from '@/components/Header'
 import ImagePreview from '@/components/ImagePreview'
 import styled from 'styled-components'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, } from 'react'
 import tw from "twin.macro"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
 import useFetch from 'use-http'
-import { FixedSizeList as List } from 'react-window';
-// import AutoSizer from 'react-virtualized-auto-sizer'
-
-import { ReactWindowScroller } from 'react-window-scroller'
 import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
 import { apiUrl } from '@/lib/getApiUrl'
+
+import TopList from '@/components/TopList'
 
 // const BodyContainer = styled.div`
 //   margin: 0 auto;
@@ -82,143 +80,157 @@ const ImagePlaceholderInside = styled.div`
 `
 
 function Top({ startTop }) {
-  // console.log('start top', startTop.meta)
-  const rowsCount = Math.floor(startTop.meta.count / 4)
-  // let users = startTop.items
-
-  // const allItems = [startTop]
-
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const [sort, setSort] = useState(0)
 
-  // const options = {} // these options accept all native `fetch` options\
-  // const { data = [] } = useFetch(`${apiUrl}/api/votesInfo`, options, [])
-
   const wHeight = typeof window !== 'undefined' ? window.innerHeight : 1000
-  // const itemsPerPage = Math.ceil(4 * ((wHeight / 192)))
+  const itemsPerRow = typeof window !== 'undefined'
+    ? window.innerWidth < 560
+      ? 2
+      : 4 // default 4
+    : 4
+
+  const rowsCount = Math.floor(startTop.meta.count / itemsPerRow)
   const totalHeight = 192 * rowsCount
   const pagesCount = Math.floor(totalHeight / wHeight)
   const itemsPerPage = startTop.meta.count / pagesCount
   const currentOffset = Math.floor(itemsPerPage * (currentPage - 2)) - 1
   const currentLimit = Math.ceil(itemsPerPage) * 3
-  console.log("limit, offset, screen", currentLimit, currentOffset, wHeight)
+  // console.log("limit, offset, screen", currentLimit, currentOffset, wHeight)
 
+  const [allData, setAllData] = useState([startTop])
+  const { get, response, } = useFetch({ data: [] })
+
+  const loadInitialTodos = async () => {
+    // const { ok } = response // BAD, DO NOT DO THIS
+    const newUsers = await get(`/api/top?offset=${currentOffset}&limit=${currentLimit}&sort=${sort}`)
+    if (!response.ok) return
+
+    let currUsers = allData
+
+    let resultArray = []
+    // console.log("got new users", newUsers, currUsers)
+    if (!currUsers || !currUsers[0] || !currUsers[0].meta) {
+      setAllData([newUsers])
+      return
+    }
+
+    // Return new because no old exists
+    if (currUsers.length === 0) {
+      // console.log('return only new cause 0')
+      setAllData([newUsers])
+      return
+    }
+
+    // console.log('currUsers', currUsers)
+
+    // Return new because old has different sort
+    if (currUsers[0].meta.sort !== newUsers.meta.sort) {
+      // console.log('return only new because of sort')
+      setAllData([newUsers])
+      return
+    }
+
+    let newUsersMerged = false
+    for (const currentResponse of currUsers) {
+      if (newUsersMerged) {
+        resultArray.push(currentResponse)
+        continue
+      }
+
+      const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
+        (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
+
+      if (isNewInsideOld) {
+        // console.log('isNewInsideOld', newUsers, currentResponse)
+        // console.log('new inside old', currUsers)
+        setAllData(currUsers)
+        // return currUsers
+        return
+      }
+
+      const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
+        (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
+
+      const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
+        (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
+
+      if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
+        resultArray.push(currentResponse)
+        // console.log('result array push not intersect')
+        continue
+      }
+
+      const mergeBeforeAndAfter = (before, after, isAfter) => {
+        const newItems = isAfter
+          ? [
+            ...before.items,
+            ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
+          ]
+          : [
+            ...before.items.slice(0, after.meta.offset - before.meta.offset),
+            ...after.items
+            // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
+          ]
+
+        const newResponse = {
+          items: newItems,
+          meta: {
+            ...before.meta,
+            limit: newItems.length,
+          }
+        }
+
+        // console.log('merged', before, after, newResponse)
+        // return newResponse
+        // setAllData([newResponse])
+        return newResponse
+      }
+
+      // we have intersection
+      if (isNewResponseIntersectingAfter) {
+        const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
+        resultArray.push(newResponse)
+        newUsersMerged = true
+        // console.log('merged after', currentResponse, newUsers, newResponse)
+        continue
+      }
+
+      if (isNewResponseIntersectingBefore) {
+        // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
+        const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
+        resultArray.push(newResponse)
+        // console.log('result array push intersect before')
+        newUsersMerged = true
+        // console.log('merged before', currentResponse, newUsers, newResponse)
+        continue
+      }
+    }
+
+    if (!newUsersMerged) {
+      resultArray.push(newUsers)
+      // console.log("users not merged", resultArray)
+    }
+
+    setAllData(resultArray)
+    return
+  }
+  // }, [get, response, allData, currentLimit, currentOffset, sort])
 
   // console.log('itemsPerPage', startTop.meta.count / pagesCount)
 
-  let { data: allData } = useFetch(`${apiUrl}/api/top?offset=${currentOffset}&limit=${currentLimit}&sort=${sort}`, {
-    onNewData: (currUsers, newUsers) => {
-      let resultArray = []
-      console.log("got new users", newUsers)
 
-      // Return new because no old exists
-      if (currUsers.length === 0) {
-        return [newUsers]
-      }
+  useEffect(() => {
+    // console.log('allData changed +++++++++++++++')
+  }, [allData])
 
-      // Return new because old has different sort
-      if (currUsers[0].meta.sort !== newUsers.meta.sort) {
-        return [newUsers]
-      }
-
-      let newUsersMerged = false
-      for (const currentResponse of currUsers) {
-        if (newUsersMerged) {
-          resultArray.push(currentResponse)
-          continue
-        }
-
-        const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
-          (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
-
-        if (isNewInsideOld) {
-          // console.log('isNewInsideOld', newUsers, currentResponse)
-          return currUsers
-        }
-
-        const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
-          (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
-
-        const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
-          (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
-
-        if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
-          resultArray.push(currentResponse)
-          continue
-        }
-
-        const mergeBeforeAndAfter = (before, after, isAfter) => {
-          const newItems = isAfter
-            ? [
-              ...before.items,
-              ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-            ]
-            : [
-              ...before.items.slice(0, after.meta.offset - before.meta.offset),
-              ...after.items
-              // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-            ]
-
-          const newResponse = {
-            items: newItems,
-            meta: {
-              ...before.meta,
-              limit: newItems.length,
-            }
-          }
-
-          // console.log('merged', before, after, newResponse)
-          return newResponse
-        }
-
-        // we have intersection
-        if (isNewResponseIntersectingAfter) {
-          const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
-          resultArray.push(newResponse)
-          newUsersMerged = true
-          // console.log('merged after', currentResponse, newUsers, newResponse)
-          continue
-          // const newItems = [
-          //   ...currentResponse.items,
-          //   ...newUsers.items.slice((currentResponse.meta.offset + currentResponse.meta.limit) - newUsers.meta.offset)
-          // ]
-          // const newResponse = {
-          //   items: newItems,
-          //   meta: {
-          //     ...currentResponse.meta,
-          //     limit: newItems.length,
-          //   }
-          // }
-          // resultArray.push(newResponse)
-          // newUsersMerged = true
-        }
-
-        if (isNewResponseIntersectingBefore) {
-          // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
-          const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
-          resultArray.push(newResponse)
-          newUsersMerged = true
-          // console.log('merged before', currentResponse, newUsers, newResponse)
-          continue
-        }
-      }
-
-      if (!newUsersMerged) {
-        resultArray.push(newUsers)
-        // console.log("users not merged", resultArray)
-      }
-
-      return resultArray
-      //[...currUsers, newUsers]
-    },
-    data: [startTop]
-  }, [currentPage, sort]) // onMount AND onUpdate whenever `page` changes
+  useEffect(() => { loadInitialTodos() }, [currentPage, sort]) // componentDidMount
 
   // console.log('allData', allData)
 
   const filledArray = useMemo(() => {
-    console.log('calculate filledArray')
+    // console.log('calculate filledArray', allData)
     const res = []
     for (const response of allData) {
       const { items, meta } = response
@@ -250,29 +262,9 @@ function Top({ startTop }) {
     return res
   }, [allData])
 
-
-  // console.log('filledArray', filledArray)
-
-
-
   const rows = useMemo(() => {
-    console.log('calculate rows')
     const r = []
     let j = 0;
-
-    // const sortFunction = sort === 0
-    //   ? (a, b) => b.goodness - a.goodness
-    //   : sort === 1
-    //     ? (a, b) => b.votes - a.votes
-    //     : (a, b) => b.views - a.views
-
-    // const sortedData = data.sort(sortFunction)
-
-    const itemsPerRow = typeof window !== 'undefined'
-      ? window.innerWidth < 560
-        ? 2
-        : 4 // default 4
-      : 4
 
     for (let i = 0; i < filledArray.length; i++) {
       if (i % itemsPerRow === 0) {
@@ -282,13 +274,8 @@ function Top({ startTop }) {
 
       r[j - 1].push(filledArray[i])
     }
-
-    // console.log('filledArray', filledArray, r)
-
-
-    // rows = r
     return r
-  }, [filledArray])
+  }, [filledArray, itemsPerRow])
 
   const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', 300])
   useEffect(() => {
@@ -332,11 +319,6 @@ function Top({ startTop }) {
   )
 
   const Row = ({ data, index, style }) => {
-    // console.log('render row &', index, data[index], index * 4)
-    // useEffect(() => {
-    //   console.log('row effect', rows)
-    // }, [currentPage])
-
     if (!data[index]) {
       return <RowContainer className="flex" style={style} key={index}>
         {[0, 1, 2, 3].map((i) => <ImagePlaceholder key={i}>
@@ -359,11 +341,11 @@ function Top({ startTop }) {
             item={item}
           />
         })}
-        {/* { JSON.stringify(rows[index])} */}
       </RowContainer>
     )
   }
 
+  const ddd = [...rows]
   return (
     <div className="bg-black">
       <Head>
@@ -397,25 +379,12 @@ function Top({ startTop }) {
 
         </div>
 
-        <ReactWindowScroller>
-          {({ ref, outerRef, style, onScroll }) => (
-            <List
-              ref={ref}
-              outerRef={outerRef}
-              style={style}
-              onScroll={onScroll}
-
-              className="List"
-              height={typeof width !== 'undefined' ? window.innerHeight : 500}
-              itemCount={rowsCount}
-              itemSize={192}
-              itemData={rows}
-            // width={width}
-            >
-              {Row}
-            </List>
-          )}
-        </ReactWindowScroller>
+        <TopList
+          data={ddd}
+          rowsCount={rowsCount}
+          row={Row}
+          allData={allData}
+        />
 
         <PaginationContainer>
           {pages.map((i, index) => (
