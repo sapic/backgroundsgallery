@@ -279,6 +279,7 @@ function Top({ startTop }) {
 
   const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', 300])
   useEffect(() => {
+    console.log("pages effect")
     if (typeof window === 'undefined') {
       return
     }
@@ -304,6 +305,7 @@ function Top({ startTop }) {
 
   useScrollPosition(
     ({ currPos }) => {
+      console.log('use scroll pos')
       const totalHeight = document.body.clientHeight
 
       const pagesCount = Math.floor(totalHeight / window.innerHeight)
@@ -317,6 +319,11 @@ function Top({ startTop }) {
       return
     }, [currentPage]
   )
+
+  useEffect(() => {
+    console.log('just effect')
+    setCurrentPage(1)
+  }, [])
 
   const Row = ({ data, index, style }) => {
     if (!data[index]) {
