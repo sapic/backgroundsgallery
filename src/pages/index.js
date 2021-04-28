@@ -315,6 +315,7 @@ function Top({ startTop }) {
       return
     }
 
+    console.log('set current page', cr)
     setCurrentPage(cr)
     return
   }, [currentPage])
