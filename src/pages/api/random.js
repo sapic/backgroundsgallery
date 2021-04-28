@@ -89,9 +89,9 @@ async function updateCache() {
     itemsCache.items = response
 
     // Generate sort arrays
-    itemsCache.viewsAscSort = response.sort((a, b) => a.views - b.views)
-    itemsCache.votesAscSort = response.sort((a, b) => a.votes - b.votes)
-    itemsCache.ratingAscSort = response.sort((a, b) => a.goodness - b.goodness)
+    itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
+    itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
+    itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
 
     itemsCache.lastUpdate = Date.now()
 
