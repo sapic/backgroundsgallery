@@ -99,14 +99,7 @@ async function updateCache() {
     itemsCache.items = response
 
     // Generate sort arrays
-    let i = 0
-    itemsCache.viewsAscSort = [...response].sort((a, b) => {
-      if (i === 0) {
-        console.log('viewsAscSort', a, b)
-        i++
-      }
-      return a.views - b.views
-    })
+    itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
     itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
     itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
 
