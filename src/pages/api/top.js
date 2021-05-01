@@ -22,7 +22,7 @@ export default withCors(async (req, res) => {
   offset = parseInt(offset)
   sort = parseInt(sort)
 
-  if (typeof limit !== 'number' || limit < 0 || limit > 100 || isNaN(limit)) {
+  if (typeof limit !== 'number' || limit < 0 || limit > 100000 || isNaN(limit)) {
     limit = 100
   }
 

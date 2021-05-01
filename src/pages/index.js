@@ -84,7 +84,7 @@ function Top({ startTop }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [sort, setSort] = useState(0)
 
-  const wHeight = typeof window !== 'undefined' ? window.innerHeight : 1000
+  // const wHeight = typeof window !== 'undefined' ? window.innerHeight : 1000
   const itemsPerRow = typeof window !== 'undefined'
     ? window.innerWidth < 560
       ? 2
@@ -92,140 +92,250 @@ function Top({ startTop }) {
     : 4
 
   const rowsCount = Math.floor(startTop.meta.count / itemsPerRow)
-  const totalHeight = 192 * rowsCount
-  const pagesCount = Math.floor(totalHeight / wHeight)
-  const itemsPerPage = startTop.meta.count / pagesCount
-  const currentOffset = Math.floor(itemsPerPage * (currentPage - 2)) - 1
-  const currentLimit = Math.ceil(itemsPerPage) * 3
+  // const totalHeight = 192 * rowsCount
+  // const pagesCount = Math.floor(totalHeight / wHeight)
+  // const itemsPerPage = startTop.meta.count / pagesCount
+  // const currentOffset = Math.floor(itemsPerPage * (currentPage - 2)) - 1
+  // const currentLimit = Math.ceil(itemsPerPage) * 3
   // console.log("limit, offset, screen", currentLimit, currentOffset, wHeight)
 
-  const [allData, setAllData] = useState([startTop])
-  const { get, response, } = useFetch({ data: [] })
+  // const [allData, setAllData] = useState([startTop])
+  const { data: allData } = useFetch(`${apiUrl}/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`, {
+    onNewData: (currUsers, newUsers) => {
+      // const newUsers = await get(`/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`)
+      // if (!response.ok) return currUsers
 
-  const loadInitialTodos = async () => {
-    // const { ok } = response // BAD, DO NOT DO THIS
-    const newUsers = await get(`/api/top?offset=${currentOffset}&limit=${currentLimit}&sort=${sort}`)
-    if (!response.ok) return
-
-    let currUsers = allData
-
-    let resultArray = []
-    // console.log("got new users", newUsers, currUsers)
-    if (!currUsers || !currUsers[0] || !currUsers[0].meta) {
-      setAllData([newUsers])
-      return
-    }
-
-    // Return new because no old exists
-    if (currUsers.length === 0) {
-      // console.log('return only new cause 0')
-      setAllData([newUsers])
-      return
-    }
-
-    // console.log('currUsers', currUsers)
-
-    // Return new because old has different sort
-    if (currUsers[0].meta.sort !== newUsers.meta.sort) {
-      // console.log('return only new because of sort')
-      setAllData([newUsers])
-      return
-    }
-
-    let newUsersMerged = false
-    for (const currentResponse of currUsers) {
-      if (newUsersMerged) {
-        resultArray.push(currentResponse)
-        continue
+      let resultArray = []
+      // console.log("got new users", newUsers, currUsers)
+      if (!currUsers || !currUsers[0] || !currUsers[0].meta) {
+        return [newUsers]
       }
 
-      const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
-        (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
-
-      if (isNewInsideOld) {
-        // console.log('isNewInsideOld', newUsers, currentResponse)
-        // console.log('new inside old', currUsers)
-        setAllData(currUsers)
-        // return currUsers
-        return
+      // Return new because no old exists
+      if (currUsers.length === 0) {
+        // console.log('return only new cause 0')
+        return [newUsers]
       }
 
-      const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
-        (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
+      // console.log('currUsers', currUsers)
 
-      const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
-        (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
-
-      if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
-        resultArray.push(currentResponse)
-        // console.log('result array push not intersect')
-        continue
+      // Return new because old has different sort
+      if (currUsers[0].meta.sort !== newUsers.meta.sort) {
+        // console.log('return only new because of sort')
+        return [newUsers]
       }
 
-      const mergeBeforeAndAfter = (before, after, isAfter) => {
-        const newItems = isAfter
-          ? [
-            ...before.items,
-            ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-          ]
-          : [
-            ...before.items.slice(0, after.meta.offset - before.meta.offset),
-            ...after.items
-            // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-          ]
-
-        const newResponse = {
-          items: newItems,
-          meta: {
-            ...before.meta,
-            limit: newItems.length,
-          }
+      let newUsersMerged = false
+      for (const currentResponse of currUsers) {
+        if (newUsersMerged) {
+          resultArray.push(currentResponse)
+          continue
         }
 
-        // console.log('merged', before, after, newResponse)
-        // return newResponse
-        // setAllData([newResponse])
-        return newResponse
+        const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
+          (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
+
+        if (isNewInsideOld) {
+          // console.log('isNewInsideOld', newUsers, currentResponse)
+          // console.log('new inside old', currUsers)
+          // setAllData(currUsers)
+          return currUsers
+          // return
+        }
+
+        const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
+          (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
+
+        const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
+          (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
+
+        if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
+          resultArray.push(currentResponse)
+          // console.log('result array push not intersect')
+          continue
+        }
+
+        const mergeBeforeAndAfter = (before, after, isAfter) => {
+          const newItems = isAfter
+            ? [
+              ...before.items,
+              ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
+            ]
+            : [
+              ...before.items.slice(0, after.meta.offset - before.meta.offset),
+              ...after.items
+              // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
+            ]
+
+          const newResponse = {
+            items: newItems,
+            meta: {
+              ...before.meta,
+              limit: newItems.length,
+            }
+          }
+
+          // console.log('merged', before, after, newResponse)
+          // return newResponse
+          // setAllData([newResponse])
+          return newResponse
+        }
+
+        // we have intersection
+        if (isNewResponseIntersectingAfter) {
+          const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
+          resultArray.push(newResponse)
+          newUsersMerged = true
+          // console.log('merged after', currentResponse, newUsers, newResponse)
+          continue
+        }
+
+        if (isNewResponseIntersectingBefore) {
+          // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
+          const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
+          resultArray.push(newResponse)
+          // console.log('result array push intersect before')
+          newUsersMerged = true
+          // console.log('merged before', currentResponse, newUsers, newResponse)
+          continue
+        }
       }
 
-      // we have intersection
-      if (isNewResponseIntersectingAfter) {
-        const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
-        resultArray.push(newResponse)
-        newUsersMerged = true
-        // console.log('merged after', currentResponse, newUsers, newResponse)
-        continue
+      if (!newUsersMerged) {
+        resultArray.push(newUsers)
+        // console.log("users not merged", resultArray)
       }
 
-      if (isNewResponseIntersectingBefore) {
-        // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
-        const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
-        resultArray.push(newResponse)
-        // console.log('result array push intersect before')
-        newUsersMerged = true
-        // console.log('merged before', currentResponse, newUsers, newResponse)
-        continue
-      }
-    }
+      // setAllData(resultArray)
+      return resultArray
+    },
+    data: [startTop]
+  }, [startTop, sort])
 
-    if (!newUsersMerged) {
-      resultArray.push(newUsers)
-      // console.log("users not merged", resultArray)
-    }
+  // const loadInitialTodos = async () => {
+  //   // const { ok } = response // BAD, DO NOT DO THIS
+  //   const newUsers = await get(`/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`)
+  //   if (!response.ok) return
 
-    setAllData(resultArray)
-    return
-  }
+  //   let currUsers = allData
+
+  //   let resultArray = []
+  //   // console.log("got new users", newUsers, currUsers)
+  //   if (!currUsers || !currUsers[0] || !currUsers[0].meta) {
+  //     setAllData([newUsers])
+  //     return
+  //   }
+
+  //   // Return new because no old exists
+  //   if (currUsers.length === 0) {
+  //     // console.log('return only new cause 0')
+  //     setAllData([newUsers])
+  //     return
+  //   }
+
+  //   // console.log('currUsers', currUsers)
+
+  //   // Return new because old has different sort
+  //   if (currUsers[0].meta.sort !== newUsers.meta.sort) {
+  //     // console.log('return only new because of sort')
+  //     setAllData([newUsers])
+  //     return
+  //   }
+
+  //   let newUsersMerged = false
+  //   for (const currentResponse of currUsers) {
+  //     if (newUsersMerged) {
+  //       resultArray.push(currentResponse)
+  //       continue
+  //     }
+
+  //     const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
+  //       (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
+
+  //     if (isNewInsideOld) {
+  //       // console.log('isNewInsideOld', newUsers, currentResponse)
+  //       // console.log('new inside old', currUsers)
+  //       setAllData(currUsers)
+  //       // return currUsers
+  //       return
+  //     }
+
+  //     const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
+  //       (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
+
+  //     const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
+  //       (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
+
+  //     if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
+  //       resultArray.push(currentResponse)
+  //       // console.log('result array push not intersect')
+  //       continue
+  //     }
+
+  //     const mergeBeforeAndAfter = (before, after, isAfter) => {
+  //       const newItems = isAfter
+  //         ? [
+  //           ...before.items,
+  //           ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
+  //         ]
+  //         : [
+  //           ...before.items.slice(0, after.meta.offset - before.meta.offset),
+  //           ...after.items
+  //           // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
+  //         ]
+
+  //       const newResponse = {
+  //         items: newItems,
+  //         meta: {
+  //           ...before.meta,
+  //           limit: newItems.length,
+  //         }
+  //       }
+
+  //       // console.log('merged', before, after, newResponse)
+  //       // return newResponse
+  //       // setAllData([newResponse])
+  //       return newResponse
+  //     }
+
+  //     // we have intersection
+  //     if (isNewResponseIntersectingAfter) {
+  //       const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
+  //       resultArray.push(newResponse)
+  //       newUsersMerged = true
+  //       // console.log('merged after', currentResponse, newUsers, newResponse)
+  //       continue
+  //     }
+
+  //     if (isNewResponseIntersectingBefore) {
+  //       // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
+  //       const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
+  //       resultArray.push(newResponse)
+  //       // console.log('result array push intersect before')
+  //       newUsersMerged = true
+  //       // console.log('merged before', currentResponse, newUsers, newResponse)
+  //       continue
+  //     }
+  //   }
+
+  //   if (!newUsersMerged) {
+  //     resultArray.push(newUsers)
+  //     // console.log("users not merged", resultArray)
+  //   }
+
+  //   setAllData(resultArray)
+  //   return
+  // }
   // }, [get, response, allData, currentLimit, currentOffset, sort])
 
   // console.log('itemsPerPage', startTop.meta.count / pagesCount)
 
 
-  useEffect(() => {
-    // console.log('allData changed +++++++++++++++')
-  }, [allData])
+  // useEffect(() => {
+  //   // console.log('allData changed +++++++++++++++')
+  // }, [allData])
 
-  useEffect(() => { loadInitialTodos() }, [currentPage, sort]) // componentDidMount
+  // useEffect(() => { loadInitialTodos() }, [sort]) // componentDidMount
 
   // console.log('allData', allData)
 
@@ -322,10 +432,10 @@ function Top({ startTop }) {
 
   useScrollPosition(scrollHandler)
 
-  useEffect(() => {
-    console.log('just effect', window.scrollY)
-    scrollHandler({ currPos: { x: -window.scrollX, y: -window.scrollY } })
-  }, [])
+  // useEffect(() => {
+  //   console.log('just effect', window.scrollY)
+  //   scrollHandler({ currPos: { x: -window.scrollX, y: -window.scrollY } })
+  // }, [])
 
   const Row = ({ data, index, style }) => {
     if (!data[index]) {

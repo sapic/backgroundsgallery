@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next'
 const ImageContainer = styled.div`
   width: 25%;
   height: 192px;
+  display: flex;
   ${tw`relative`}
 
   @media (max-width: 560px) {
@@ -12,11 +13,14 @@ const ImageContainer = styled.div`
   }
 `
 
-const MiniImage = styled.img`
+const MiniImage = styled.div`
   width: 100%;
-  height: 256px;
+  /* height: 256px; */
   /* filter: brightness(2); */
-  object-fit: cover;
+  /* object-fit: contain; */
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
 `
 
 const StatsContainer = styled.div`
@@ -33,7 +37,9 @@ export default function ImagePreview({ item }) {
   const { t } = useTranslation()
   return <ImageContainer className="group">
     <MiniImage
-      src={`https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f`}
+      style={{
+        backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`
+      }}
       alt='background'
     />
     <StatsContainer>
