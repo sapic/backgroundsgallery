@@ -60,7 +60,7 @@ const StarIcon = styled(StarSvg)`
 
 export default function ImagePreview({ item }) {
   // const { t } = useTranslation()
-  return <Link href={`/backgrounds/${item.url}`}>
+  return <Link href={`/backgrounds/${item.url}`} passHref>
     <ImageContainer className="group">
       <MiniImage
         style={{
