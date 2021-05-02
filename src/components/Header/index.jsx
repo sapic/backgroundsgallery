@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next'
 import { useCookies } from 'react-cookie';
 
+import LogoSvg from '@/assets/images/logo.svg'
+
 // import useCookie from '@/lib/useCookie'
 // const loginUrl = () => {
 //   const returnUrl = encodeURIComponent(
@@ -38,13 +40,14 @@ export default function Header() {
       "max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl"
     ])}>
       <div className="flex">
-        <div>
-          <Link href="/">
-            <a className="flex items-center">
-              <img className="w-12 h-12" src={require('@/assets/images/logo-asset.svg')} alt=""></img>
-            </a>
-          </Link>
-        </div>
+        {/* <div> */}
+        <Link href="/">
+          <a className="flex items-center">
+            <LogoSvg className="w-12 h-12" />
+            {/* <img className="w-12 h-12" src={require('@/assets/images/logo-asset.svg')} alt=""></img> */}
+          </a>
+        </Link>
+        {/* </div> */}
         <div className="flex mx-4">
           <Link href="/">
             <a className={clsx([
