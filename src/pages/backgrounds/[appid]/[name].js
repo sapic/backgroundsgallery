@@ -16,22 +16,33 @@ const PageContainer = styled.div`
     w-full max-w-md
     flex flex-col
     pt-16 mx-auto relative
+
+    md:max-w-screen-md md:flex-row
+    xl:max-w-screen-lg 2xl:max-w-screen-xl
   `}
 `
 
 const BackgroundContainer = styled.div`
+  width: 100%;
   height: 0;
   overflow: hidden;
   padding-top: 65%;
   background-size: contain;
-  background-position: 50% 50%;
   background-repeat: no-repeat;
+
+  ${tw`bg-center md:bg-top`}
 `
 
 const InfoContainer = styled.div`
+  height: max-content;
+
   ${tw`
     rounded bg-gray-900 text-gray-100
-    py-2 px-4 m-2
+    pt-2 pb-4 px-4 m-2
+    md:w-80
+    flex flex-col
+
+    md:mx-0
   `}
 `
 
@@ -117,9 +128,7 @@ function Background({ bgInfo }) {
     <PageContainer className="">
       <BackgroundContainer style={{
         backgroundImage: `url(${bgInfo.steamUrl})`
-      }}>
-        <img src={bgInfo.steamUrl} alt="" />
-      </BackgroundContainer>
+      }} />
 
       <InfoContainer>
         <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
@@ -141,20 +150,24 @@ function Background({ bgInfo }) {
         </StatsContainer>
 
         <LinksContainer>
-          <BgLink>
+          <BgLink
+            href={`https://steam.design/#${bgInfo.steamUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <LogoIcon />
             <span>Crop this background</span>
           </BgLink>
-          <BgLink>
+          <BgLink
+            href={`https://steamcommunity.com/market/listings/${bgInfo.url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <SteamIcon />
             <span>Buy on Steam</span>
           </BgLink>
         </LinksContainer>
       </InfoContainer>
-
-
-      {/* {deviceId && <DeviceHistory deviceId={deviceId} />}
-      {identity && <UserHistory identity={identity} className={deviceId && 'mt-16'} />} */}
     </PageContainer>
   </div >
 }
@@ -162,7 +175,6 @@ function Background({ bgInfo }) {
 export async function getServerSideProps({ locale, params }) {
   let bgInfo = {}
   const url = encodeURIComponent(`${params.appid}/${params.name}`)
-  console.log('url', `${apiUrl}/api/bgInfo?url=${url}`)
   try {
     bgInfo = await fetch(`${apiUrl}/api/bgInfo?url=${url}`).then(r => r.json())
   } catch (e) {

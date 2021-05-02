@@ -23,9 +23,6 @@ const ImageContainer = styled.a`
 
 const MiniImage = styled.div`
   width: 100%;
-  /* height: 256px; */
-  /* filter: brightness(2); */
-  /* object-fit: contain; */
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -38,7 +35,6 @@ const StatsOverlay = styled.div`
     flex-row flex items-center
   `}
   white-space: nowrap;
-  /* background: rgba(0, 0, 0, 0.3); */
 `
 
 const StatsItem = styled.div`
@@ -73,8 +69,6 @@ export default function ImagePreview({ item }) {
         alt='background'
       />
       <StatsOverlay className="">
-        {/* <StatsIcon src={require('@/assets/images/eye.svg')} alt="" /> */}
-        {/* <EyeSvg style={{ fill: 'currentColor', color: 'red' }} /> */}
         {item.views && <StatsItem className="mx-2">
           <EyeIcon className="mr-1" />
           <span className="">{item.views}</span>
@@ -83,38 +77,7 @@ export default function ImagePreview({ item }) {
           <StarIcon className="mr-1" />
           <span className="">{item.votes}</span>
         </StatsItem>}
-        {/* <EyeIcon /> */}
-        {/* {(item.views || item.votes) && (<div className="-mx-1">
-          {item.views && <span className="mx-1">{t('top.imageViews')}: {item.views}</span>}
-          {item.votes && <span className="mx-1">{t('top.imageVotes')}: {item.votes}</span>}
-        </div>)} */}
       </StatsOverlay>
-
-      {/* <StatsContainer>
-        {(item.views || item.votes) && (<div className="-mx-1">
-          {item.views && <span className="mx-1">{t('top.imageViews')}: {item.views}</span>}
-          {item.votes && <span className="mx-1">{t('top.imageVotes')}: {item.votes}</span>}
-        </div>)}
-
-        <div className="-mx-2">
-          <a
-            href={`https://steamcommunity.com/market/listings/${item.url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mx-2 hover:text-blue-300"
-          >
-            {t('top.steamLink')}
-          </a>
-          <a
-            href={`https://steam.design/#${item.steamUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mx-2 hover:text-blue-300"
-          >
-            {t('top.sapicLink')}
-          </a>
-        </div>
-      </StatsContainer> */}
     </ImageContainer>
   </Link>
 }

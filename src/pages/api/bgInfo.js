@@ -19,6 +19,7 @@ export default withCors(async (req, res) => {
   const encoded = encodeURIComponent(toEncode)
     .replace(/\(/g, '%28')
     .replace(/\)/g, '%29')
+    .replace(/'/g, '%27')
 
   const combined = `${left}-${encoded}`
 
