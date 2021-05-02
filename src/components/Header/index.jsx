@@ -41,7 +41,7 @@ export default function Header() {
         <div>
           <Link href="/">
             <a className="flex items-center">
-              <img className="w-12 h-12" src={require('@/assets/images/logo.svg')} alt=""></img>
+              <img className="w-12 h-12" src={require('@/assets/images/logo-asset.svg')} alt=""></img>
             </a>
           </Link>
         </div>

@@ -17,8 +17,22 @@ module.exports =
     i18n,
 
     webpack(config, options) {
+      // config.module.rules.push({
+      //   test: /\.(png|jpe?g|gif|svg)$/i,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         publicPath: '/_next',
+      //         name: 'static/media/[name].[hash].[ext]',
+      //         esModule: false
+      //       },
+      //     },
+      //   ],
+      // })
+
       config.module.rules.push({
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /-asset\.svg$/i,
         use: [
           {
             loader: 'file-loader',
@@ -30,6 +44,28 @@ module.exports =
           },
         ],
       })
+
+      config.module.rules.unshift({
+        test: /\.svg$/,
+        exclude: /(node_modules)|(asset\.svg)/,
+        // issuer: {
+        //   // test: /\.(js|ts)x?$/,
+        // },
+        use: ['@svgr/webpack'],
+      })
+      // config.module.rules.push({
+      //   test: /\.svg$/,
+      //   use: ["@svgr/webpack"]
+      // });
+
+      console.log(config.module.rules)
+
+
+
       return config
     },
+
+    images: {
+      domains: ['google.com']
+    }
   })
