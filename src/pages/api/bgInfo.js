@@ -15,11 +15,12 @@ export default withCors(async (req, res) => {
   await getBgItems()
   const [left, ...rest] = req.query.url.split('-')
 
-  const toEncode = rest.join('')
+  const toEncode = rest.join('-')
   const encoded = encodeURIComponent(toEncode)
     .replace(/\(/g, '%28')
     .replace(/\)/g, '%29')
     .replace(/'/g, '%27')
+    .replace(/!/g, '%21')
 
   const combined = `${left}-${encoded}`
 
