@@ -96,6 +96,7 @@ async function updateCache() {
 
     itemsCache.lastUpdate = Date.now()
 
+    alreadyReturning = null
     return itemsCache.items
   })()
 
