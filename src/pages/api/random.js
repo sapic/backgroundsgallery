@@ -1,18 +1,33 @@
-import { apiUrl } from '@/lib/getApiUrl'
 import withCors from '@/lib/withCors'
+import Cacher from '@/lib/votesCacher'
+
+
+const cacher = new Cacher({
+  cacheTime: 60 * 60 * 1000,// 1 hour
+  refreshCacheTime: 30 * 60 * 1000,// 30 mins
+  parseFunction(response) {
+    let itemsCache = {}
+
+    itemsCache.items = response
+
+    // Generate sort arrays
+    itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
+    itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
+    itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
+
+    return itemsCache
+  }
+})
 
 export default withCors(async (req, res) => {
-  // // Run the middleware
-  // await runMiddleware(req, res, cors)
-
-  await getBgItems()
+  const items = await cacher.getItems()
 
   const returnRatingType = Math.floor(Math.random() * 2)
   let sortArray
 
   switch (returnRatingType) {
     case 0:
-      sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
+      sortArray = items.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
       break
     case 1:
       // sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
@@ -21,7 +36,7 @@ export default withCors(async (req, res) => {
       // sortArray = itemsCache.votesAscSort.slice(itemsCache.votesAscSort.length - 1000)
 
       // 1000 most popular(votes/views)
-      sortArray = itemsCache.ratingAscSort.slice(itemsCache.ratingAscSort.length - 1000)
+      sortArray = items.ratingAscSort.slice(items.ratingAscSort.length - 1000)
       break
     // case 2:
     //   // 1000 most popular(votes/views)
@@ -45,66 +60,15 @@ export default withCors(async (req, res) => {
   const resbgs = [randomBg1, randomBg2]
 
   res.setHeader('Random-Type', returnRatingType);
-  res.setHeader('Random-Cache-Updated', itemsCache.lastUpdate)
+  res.setHeader('Random-Cache-Updated', cacher.lastUpdate)
 
   res.send(resbgs)
 })
 
-let itemsCache = {
-  items: [],
 
-  viewsAscSort: [],
-  votesAscSort: [],
-  ratingAscSort: [],
-
-  lastUpdate: 0,
-}
-const cacheTime = 60 * 60 * 1000 // 1 hour
-const refreshCacheTime = 30 * 60 * 1000 // 30 mins
-
-async function getBgItems() {
-  if (Date.now() - itemsCache.lastUpdate < cacheTime) {
-    if (Date.now() - itemsCache.lastUpdate > refreshCacheTime) {
-      updateCache()
-    }
-
-    return itemsCache.items
-  }
-
-  return updateCache()
-}
-// Promise to return if we're already calculating, so we don't do it twice
-let alreadyReturning = null
-async function updateCache() {
-  if (alreadyReturning) {
-    return alreadyReturning
-  }
-
-  alreadyReturning = (async () => {
-    console.log('fetch weighted')
-    const response = await fetch(`${apiUrl}/api/votesInfo`).then(r => r.json())
-    if (!response || response.length < 1) {
-      throw new Error('response error')
-    }
-
-    itemsCache.items = response
-
-    // Generate sort arrays
-    itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
-    itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
-    itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
-
-    itemsCache.lastUpdate = Date.now()
-
-    alreadyReturning = null
-    return itemsCache.items
-  })()
-
-  return alreadyReturning
-}
 
 // callInit
 async function init() {
-  await getBgItems()
+  await cacher.updateCache()
 }
 init()
