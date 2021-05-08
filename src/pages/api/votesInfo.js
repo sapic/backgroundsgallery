@@ -8,6 +8,8 @@ let alreadyReturning = null
 export default withCors(withDatabase(async (req, res) => {
   const bgs = await getItems(req)
 
+  req.setHeader('Random-Cache-Updated', itemsCache.lastUpdate)
+
   res.send(bgs)
 }))
 

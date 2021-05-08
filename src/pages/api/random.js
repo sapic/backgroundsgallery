@@ -45,6 +45,7 @@ export default withCors(async (req, res) => {
   const resbgs = [randomBg1, randomBg2]
 
   res.setHeader('Random-Type', returnRatingType);
+  req.setHeader('Random-Cache-Updated', itemsCache.lastUpdate)
 
   res.send(resbgs)
 })
