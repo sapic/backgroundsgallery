@@ -13,11 +13,13 @@ export default class Cacher {
     this.cacheTime = cacheTime
     this.refreshTime = refreshTime
     this.parseFunction = parseFunction
+
+    this.updateCache()
   }
 
   async getItems() {
     if (Date.now() - this.lastUpdate < this.cacheTime) {
-      if (Date.now() - this.lastUpdate > this.refreshCacheTime) {
+      if (Date.now() - this.lastUpdate > this.refreshTime) {
         this.updateCache()
       }
 
@@ -58,4 +60,36 @@ function defaultParseFunction(response) {
   itemsCache.items = response
 
   return itemsCache
+}
+
+function parseWithSorts(response) {
+  let itemsCache = {}
+
+  itemsCache.items = response
+
+  // Generate sort arrays
+  itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
+  itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
+  itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
+
+  return itemsCache
+}
+
+function parseToObject(response) {
+  const newItems = {}
+  for (const item of response) {
+    newItems[item.url] = item
+  }
+
+  const itemsCache = {}
+
+  itemsCache.items = newItems
+
+  return itemsCache
+}
+
+export {
+  defaultParseFunction,
+  parseWithSorts,
+  parseToObject,
 }

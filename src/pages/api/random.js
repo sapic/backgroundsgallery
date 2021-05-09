@@ -1,22 +1,10 @@
 import withCors from '@/lib/withCors'
-import Cacher from '@/lib/votesCacher'
-
+import Cacher, { parseWithSorts } from '@/lib/votesCacher'
 
 const cacher = new Cacher({
   cacheTime: 60 * 60 * 1000,// 1 hour
-  refreshCacheTime: 30 * 60 * 1000,// 30 mins
-  parseFunction(response) {
-    let itemsCache = {}
-
-    itemsCache.items = response
-
-    // Generate sort arrays
-    itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
-    itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
-    itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
-
-    return itemsCache
-  }
+  refreshTime: 30 * 60 * 1000,// 30 mins
+  parseFunction: parseWithSorts,
 })
 
 export default withCors(async (req, res) => {
@@ -64,11 +52,3 @@ export default withCors(async (req, res) => {
 
   res.send(resbgs)
 })
-
-
-
-// callInit
-async function init() {
-  await cacher.updateCache()
-}
-init()

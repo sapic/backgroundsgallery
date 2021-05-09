@@ -1,22 +1,17 @@
-import { apiUrl } from '@/lib/getApiUrl'
 import withCors from '@/lib/withCors'
+import Cacher, { parseWithSorts } from '@/lib/votesCacher'
 
-let itemsCache = {
-  items: [],
+const cacher = new Cacher({
+  cacheTime: 60 * 60 * 1000,// 1 hour
+  refreshTime: 30 * 60 * 1000,// 30 mins
+  parseFunction: parseWithSorts,
+})
 
-  viewsAscSort: [],
-  votesAscSort: [],
-  ratingAscSort: [],
-
-  lastUpdate: 0,
-}
-const cacheTime = 60 * 60 * 1000 // 1 hour
-const refreshCacheTime = 30 * 60 * 1000 // 30 mins
 
 const allowedTypes = [0, 1, 2]
 
 export default withCors(async (req, res) => {
-  await getBgItems()
+  const itemsCache = await cacher.getItems()
   let { limit, offset, sort } = req.query
   limit = parseInt(limit)
   offset = parseInt(offset)
@@ -69,50 +64,3 @@ export default withCors(async (req, res) => {
     }
   })
 })
-
-async function getBgItems() {
-  if (Date.now() - itemsCache.lastUpdate < cacheTime) {
-    if (Date.now() - itemsCache.lastUpdate > refreshCacheTime) {
-      updateCache()
-    }
-
-    return itemsCache.items
-  }
-
-  return updateCache()
-}
-
-// Promise to return if we're already calculating, so we don't do it twice
-let alreadyReturning = null
-async function updateCache() {
-  if (alreadyReturning) {
-    return alreadyReturning
-  }
-
-  alreadyReturning = (async () => {
-    console.log('fetch weighted')
-    const response = await fetch(`${apiUrl}/api/votesInfo`).then(r => r.json())
-    if (!response || response.length < 1) {
-      throw new Error('response error')
-    }
-
-    itemsCache.items = response
-
-    // Generate sort arrays
-    itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
-    itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
-    itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
-
-    itemsCache.lastUpdate = Date.now()
-
-    return itemsCache.items
-  })()
-
-  return alreadyReturning
-}
-
-// callInit
-async function init() {
-  await getBgItems()
-}
-init()
