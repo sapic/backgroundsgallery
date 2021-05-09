@@ -47,6 +47,8 @@ export default withCors(async (req, res) => {
   const randomBg2 = sortArray[index2]
   const resbgs = [randomBg1, randomBg2]
 
+  console.log('sort array', sortArray[0])
+
   res.setHeader('Random-Type', returnRatingType);
   res.setHeader('Random-Cache-Updated', cacher.lastUpdate)
 

@@ -2,27 +2,29 @@ import Head from 'next/head'
 import Link from 'next/link';
 
 import Header from '@/components/Header'
-import ImagePreview from '@/components/ImagePreview'
+import ImagePreview from '@/components/ImagePreviewVirtuoso'
 import styled from 'styled-components'
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import tw from "twin.macro"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
 import useFetch from 'use-http'
-import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+// import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
 import { apiUrl } from '@/lib/getApiUrl'
 
-import TopList from '@/components/TopList'
+// import TopList from '@/components/TopList'
+import { useRouter } from 'next/router'
+import { Virtuoso } from 'react-virtuoso'
 
 // const BodyContainer = styled.div`
 //   margin: 0 auto;
 // `
 
-const RowContainer = styled.div`
-  height: 192px;
-`
+// const RowContainer = styled.div`
+//   height: 192px;
+// `
 
 const SortButton = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer`}
@@ -57,9 +59,9 @@ const PaginationContainer = styled.div`
   }
 `
 
-const PageNumberContainer = styled.div`
+const PageNumberContainer = styled.a`
   ${tw`
-    px-4 py-2 cursor-pointer select-none text-center
+    flex px-4 py-2 cursor-pointer select-none text-center items-center justify-center
   `}
 `
 
@@ -79,12 +81,64 @@ const ImagePlaceholderInside = styled.div`
   ${tw`bg-gray-500`}
 `
 
-function Top({ startTop }) {
-  const { t } = useTranslation()
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sort, setSort] = useState(0)
+const ItemContainer = styled.div`
+    /* padding: 0.5rem; */
+    width: 100%;
+    display: flex;
+    flex: none;
+    align-content: stretch;
 
-  // const wHeight = typeof window !== 'undefined' ? window.innerHeight : 1000
+    @media (max-width: 1024px) {
+      width: 50%;
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  `
+
+// const ItemWrapper = styled.div`
+//     flex: 1;
+//     text-align: center;
+//     font-size: 80%;
+//     padding: 1rem 1rem;
+//     border: 1px solid var(--ifm-hr-border-color);
+//     white-space: nowrap;
+//   `
+
+const ListContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+  `
+
+
+function Row({ item, ...props }) {
+  return item
+    ? <ImagePreview
+      key={item.url}
+      item={item}
+    />
+    : <ImagePlaceholder>
+      <ImagePlaceholderInside></ImagePlaceholderInside>
+    </ImagePlaceholder>
+}
+
+function Top({ startTop }) {
+  const router = useRouter()
+  const { page: spageFromQuery } = router.query
+  const virtuosoRef = useRef(null)
+  const { t } = useTranslation()
+  const [visibleRange, setVisibleRange] = useState({
+    startIndex: 0,
+    endIndex: 0,
+  })
+
+  const pageFromQuery = parseInt(spageFromQuery)
+
+  const [currentPage, setCurrentPage] = useState(pageFromQuery || 1)
+  const [sort, setSort] = useState(0)
+  const [initialScrollHappened, setInitialScrollHappened] = useState(false)
+
   const itemsPerRow = typeof window !== 'undefined'
     ? window.innerWidth < 560
       ? 2
@@ -92,256 +146,33 @@ function Top({ startTop }) {
     : 4
 
   const rowsCount = Math.floor(startTop.meta.count / itemsPerRow)
-  // const totalHeight = 192 * rowsCount
-  // const pagesCount = Math.floor(totalHeight / wHeight)
-  // const itemsPerPage = startTop.meta.count / pagesCount
-  // const currentOffset = Math.floor(itemsPerPage * (currentPage - 2)) - 1
-  // const currentLimit = Math.ceil(itemsPerPage) * 3
-  // console.log("limit, offset, screen", currentLimit, currentOffset, wHeight)
+
+  const itemsPerPage = 32
+  const rowsPerPage = itemsPerPage / itemsPerRow
+  const pagesCount = Math.floor(startTop.meta.count / itemsPerPage)
+
+  useEffect(() => {
+    if (!initialScrollHappened && pageFromQuery) {
+      setInitialScrollHappened(true)
+      setTimeout(() => {
+        const indexToSroll = pageFromQuery === 1 ? 0 : ((pageFromQuery - 1) * rowsPerPage)
+        const scrollOfset = (192 * indexToSroll) - 65
+
+        virtuosoRef.current.scrollTo({ top: scrollOfset })
+      }, 64)
+    }
+  }, [initialScrollHappened, pageFromQuery, rowsPerPage])
 
   // const [allData, setAllData] = useState([startTop])
   const { data: allData } = useFetch(`${apiUrl}/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`, {
-    onNewData: (currUsers, newUsers) => {
-      // const newUsers = await get(`/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`)
-      // if (!response.ok) return currUsers
-
-      let resultArray = []
-      // console.log("got new users", newUsers, currUsers)
-      if (!currUsers || !currUsers[0] || !currUsers[0].meta) {
-        return [newUsers]
-      }
-
-      // Return new because no old exists
-      if (currUsers.length === 0) {
-        // console.log('return only new cause 0')
-        return [newUsers]
-      }
-
-      // console.log('currUsers', currUsers)
-
-      // Return new because old has different sort
-      if (currUsers[0].meta.sort !== newUsers.meta.sort) {
-        // console.log('return only new because of sort')
-        return [newUsers]
-      }
-
-      let newUsersMerged = false
-      for (const currentResponse of currUsers) {
-        if (newUsersMerged) {
-          resultArray.push(currentResponse)
-          continue
-        }
-
-        const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
-          (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
-
-        if (isNewInsideOld) {
-          // console.log('isNewInsideOld', newUsers, currentResponse)
-          // console.log('new inside old', currUsers)
-          // setAllData(currUsers)
-          return currUsers
-          // return
-        }
-
-        const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
-          (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
-
-        const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
-          (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
-
-        if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
-          resultArray.push(currentResponse)
-          // console.log('result array push not intersect')
-          continue
-        }
-
-        const mergeBeforeAndAfter = (before, after, isAfter) => {
-          const newItems = isAfter
-            ? [
-              ...before.items,
-              ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-            ]
-            : [
-              ...before.items.slice(0, after.meta.offset - before.meta.offset),
-              ...after.items
-              // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-            ]
-
-          const newResponse = {
-            items: newItems,
-            meta: {
-              ...before.meta,
-              limit: newItems.length,
-            }
-          }
-
-          // console.log('merged', before, after, newResponse)
-          // return newResponse
-          // setAllData([newResponse])
-          return newResponse
-        }
-
-        // we have intersection
-        if (isNewResponseIntersectingAfter) {
-          const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
-          resultArray.push(newResponse)
-          newUsersMerged = true
-          // console.log('merged after', currentResponse, newUsers, newResponse)
-          continue
-        }
-
-        if (isNewResponseIntersectingBefore) {
-          // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
-          const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
-          resultArray.push(newResponse)
-          // console.log('result array push intersect before')
-          newUsersMerged = true
-          // console.log('merged before', currentResponse, newUsers, newResponse)
-          continue
-        }
-      }
-
-      if (!newUsersMerged) {
-        resultArray.push(newUsers)
-        // console.log("users not merged", resultArray)
-      }
-
-      // setAllData(resultArray)
-      return resultArray
+    onNewData: (_, newData) => {
+      return [newData]
     },
     data: [startTop]
   }, [startTop, sort])
 
-  // const loadInitialTodos = async () => {
-  //   // const { ok } = response // BAD, DO NOT DO THIS
-  //   const newUsers = await get(`/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`)
-  //   if (!response.ok) return
-
-  //   let currUsers = allData
-
-  //   let resultArray = []
-  //   // console.log("got new users", newUsers, currUsers)
-  //   if (!currUsers || !currUsers[0] || !currUsers[0].meta) {
-  //     setAllData([newUsers])
-  //     return
-  //   }
-
-  //   // Return new because no old exists
-  //   if (currUsers.length === 0) {
-  //     // console.log('return only new cause 0')
-  //     setAllData([newUsers])
-  //     return
-  //   }
-
-  //   // console.log('currUsers', currUsers)
-
-  //   // Return new because old has different sort
-  //   if (currUsers[0].meta.sort !== newUsers.meta.sort) {
-  //     // console.log('return only new because of sort')
-  //     setAllData([newUsers])
-  //     return
-  //   }
-
-  //   let newUsersMerged = false
-  //   for (const currentResponse of currUsers) {
-  //     if (newUsersMerged) {
-  //       resultArray.push(currentResponse)
-  //       continue
-  //     }
-
-  //     const isNewInsideOld = (newUsers.meta.offset >= currentResponse.meta.offset) &&
-  //       (newUsers.meta.offset + newUsers.meta.limit <= currentResponse.meta.offset + currentResponse.meta.limit)
-
-  //     if (isNewInsideOld) {
-  //       // console.log('isNewInsideOld', newUsers, currentResponse)
-  //       // console.log('new inside old', currUsers)
-  //       setAllData(currUsers)
-  //       // return currUsers
-  //       return
-  //     }
-
-  //     const isNewResponseIntersectingAfter = (newUsers.meta.offset < currentResponse.meta.offset + currentResponse.meta.limit) &&
-  //       (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset + currentResponse.meta.limit)
-
-  //     const isNewResponseIntersectingBefore = (newUsers.meta.offset < currentResponse.meta.offset) &&
-  //       (newUsers.meta.offset + newUsers.meta.limit > currentResponse.meta.offset)
-
-  //     if (!isNewResponseIntersectingAfter && !isNewResponseIntersectingBefore) {
-  //       resultArray.push(currentResponse)
-  //       // console.log('result array push not intersect')
-  //       continue
-  //     }
-
-  //     const mergeBeforeAndAfter = (before, after, isAfter) => {
-  //       const newItems = isAfter
-  //         ? [
-  //           ...before.items,
-  //           ...after.items.slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-  //         ]
-  //         : [
-  //           ...before.items.slice(0, after.meta.offset - before.meta.offset),
-  //           ...after.items
-  //           // .slice((before.meta.offset + before.meta.limit) - after.meta.offset)
-  //         ]
-
-  //       const newResponse = {
-  //         items: newItems,
-  //         meta: {
-  //           ...before.meta,
-  //           limit: newItems.length,
-  //         }
-  //       }
-
-  //       // console.log('merged', before, after, newResponse)
-  //       // return newResponse
-  //       // setAllData([newResponse])
-  //       return newResponse
-  //     }
-
-  //     // we have intersection
-  //     if (isNewResponseIntersectingAfter) {
-  //       const newResponse = mergeBeforeAndAfter(currentResponse, newUsers, true)
-  //       resultArray.push(newResponse)
-  //       newUsersMerged = true
-  //       // console.log('merged after', currentResponse, newUsers, newResponse)
-  //       continue
-  //     }
-
-  //     if (isNewResponseIntersectingBefore) {
-  //       // console.log('isNewResponseIntersectingBefore', currentResponse, newUsers)
-  //       const newResponse = mergeBeforeAndAfter(newUsers, currentResponse, false)
-  //       resultArray.push(newResponse)
-  //       // console.log('result array push intersect before')
-  //       newUsersMerged = true
-  //       // console.log('merged before', currentResponse, newUsers, newResponse)
-  //       continue
-  //     }
-  //   }
-
-  //   if (!newUsersMerged) {
-  //     resultArray.push(newUsers)
-  //     // console.log("users not merged", resultArray)
-  //   }
-
-  //   setAllData(resultArray)
-  //   return
-  // }
-  // }, [get, response, allData, currentLimit, currentOffset, sort])
-
-  // console.log('itemsPerPage', startTop.meta.count / pagesCount)
-
-
-  // useEffect(() => {
-  //   // console.log('allData changed +++++++++++++++')
-  // }, [allData])
-
-  // useEffect(() => { loadInitialTodos() }, [sort]) // componentDidMount
-
-  // console.log('allData', allData)
-
   const filledArray = useMemo(() => {
-    // console.log('calculate filledArray', allData)
-    const res = []
+    const res = new Array(startTop.meta.count)
     for (const response of allData) {
       const { items, meta } = response
       if (items.length < 1) {
@@ -349,28 +180,13 @@ function Top({ startTop }) {
       }
 
       const { offset } = meta
-
-      if (res.length < offset + items.length) {
-        const diff = (offset + items.length) - res.length
-        for (let i = 0; i < diff; i++) {
-          res.push(null)
-        }
-      }
-
-      let i = 0;
-      for (const item of items) {
-        // if (i === 0) {
-        //   console.log('i0', item, i, offset, meta, filledArray)
-        // }
-        if (!res[offset + i]) {
-          res[offset + i] = item
-        }
-        i++
+      for (let i = 0; i < items.length; i++) {
+        res[offset + i] = items[i]
       }
     }
 
     return res
-  }, [allData])
+  }, [allData, startTop.meta.count])
 
   const rows = useMemo(() => {
     const r = []
@@ -387,9 +203,23 @@ function Top({ startTop }) {
     return r
   }, [filledArray, itemsPerRow])
 
-  const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', 300])
+  const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', pagesCount + 1])
   useEffect(() => {
-    console.log("pages effect")
+    const newPageStart = ((visibleRange.startIndex + 1) / rowsPerPage) + 1
+    const newPageEnd = ((visibleRange.endIndex + 1) / rowsPerPage) + 1
+    const avg = Math.floor((newPageStart + newPageEnd) / 2)
+
+    if (avg !== currentPage) {
+      setCurrentPage(avg)
+      router.push(`/?page=${avg}`, `/?page=${avg}`, {
+        scroll: false,
+        shallow: true,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleRange, currentPage, rowsPerPage])
+
+  useEffect(() => {
     if (typeof window === 'undefined') {
       return
     }
@@ -398,73 +228,18 @@ function Top({ startTop }) {
       return
     }
 
-    const totalHeight = 192 * rowsCount
-    const pagesCount = Math.floor(totalHeight / window.innerHeight)
-
     const cr = currentPage
     let newPages = cr < 5
-      ? [1, 2, 3, 4, 5, '...', pagesCount - 1]
+      ? [1, 2, 3, 4, 5, '...', pagesCount]
       : cr > pagesCount - 5
-        ? [1, '...', pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1]
-        : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount - 1]
+        ? [1, '...', pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
+        : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount]
 
     if (JSON.stringify(pages) !== JSON.stringify(newPages)) {
       setPages(newPages)
     }
-  }, [rowsCount, pages, currentPage])
+  }, [currentPage, pages, rowsCount, startTop, pagesCount])
 
-  const scrollHandler = useCallback(({ currPos }) => {
-    console.log('use scroll pos', currPos)
-    const totalHeight = document.body.clientHeight
-
-    const pagesCount = Math.floor(totalHeight / window.innerHeight)
-    const cr = Math.floor(((-currPos.y) / totalHeight) * pagesCount) + 1
-
-    if (cr === currentPage) {
-      console.log('current page is the same', cr, currentPage)
-      return
-    }
-
-    console.log('set current page', cr)
-    setCurrentPage(cr)
-    return
-  }, [currentPage])
-
-  useScrollPosition(scrollHandler)
-
-  // useEffect(() => {
-  //   console.log('just effect', window.scrollY)
-  //   scrollHandler({ currPos: { x: -window.scrollX, y: -window.scrollY } })
-  // }, [])
-
-  const Row = ({ data, index, style }) => {
-    if (!data[index]) {
-      return <RowContainer className="flex" style={style} key={index}>
-        {[0, 1, 2, 3].map((i) => <ImagePlaceholder key={i}>
-          <ImagePlaceholderInside />
-        </ImagePlaceholder>
-        )
-        }
-      </RowContainer>
-    }
-    return (
-      <RowContainer className="flex" style={style} key={index}>
-        {data[index].map((item, i) => {
-          if (!item) {
-            return <ImagePlaceholder key={i}>
-              <ImagePlaceholderInside />
-            </ImagePlaceholder>
-          }
-          return <ImagePreview
-            key={i + item.url}
-            item={item}
-          />
-        })}
-      </RowContainer>
-    )
-  }
-
-  const ddd = [...rows]
   return (
     <div className="bg-black">
       <Head>
@@ -498,18 +273,47 @@ function Top({ startTop }) {
 
         </div>
 
-        <TopList
-          data={ddd}
-          rowsCount={rowsCount}
-          row={Row}
-          allData={allData}
+        <Virtuoso
+          ref={virtuosoRef}
+          useWindowScroll
+          rangeChanged={setVisibleRange}
+          totalCount={rows.length}
+          overscan={0}
+          // initialTopMostItemIndex={40}
+          fixedItemHeight={192}
+          initialItemCount={16}
+          components={{
+            Item: ItemContainer,
+            List: ListContainer,
+            ScrollSeekPlaceholder: ({ height, index }) => (
+              <ItemContainer className="flex">
+                <ImagePlaceholder />
+              </ItemContainer>
+            ),
+          }}
+
+          itemContent={index => <div className="flex w-full">
+            {rows[index].map((item, i) => <Row item={item} key={i} />)}
+          </div>}
         />
 
         <PaginationContainer>
           {pages.map((i, index) => (
             <PageNumberContainer
+              href={`/?page=${i}`}
               className={i === currentPage && 'bg-gray-500'}
-              onClick={() => window.scrollTo(0, i * window.innerHeight)}
+              onClick={(e) => {
+                e.preventDefault()
+
+                const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
+                const scrollOfset = (192 * indexToSroll) - 65
+                virtuosoRef.current.scrollTo({ top: scrollOfset })
+
+                router.push(`/?page=${i}`, `/?page=${i}`, {
+                  scroll: false,
+                  shallow: true,
+                })
+              }}
               key={i + '' + index}
             >
               {i}
@@ -521,10 +325,16 @@ function Top({ startTop }) {
   )
 }
 
-export async function getServerSideProps({ locale }) {
+export async function getServerSideProps({ locale, query }) {
   let top = {}
+  let offset = 0
+
+  if (query.page) {
+    offset = 32 * (query.page - 1)
+  }
+
   try {
-    top = await fetch(`${apiUrl}/api/top`).then(r => r.json())
+    top = await fetch(`${apiUrl}/api/top?limit=32&offset=${offset}`).then(r => r.json())
   } catch (e) {
     console.log('get bgs server side error', e)
   }
