@@ -59,9 +59,9 @@ const PaginationContainer = styled.div`
   }
 `
 
-const PageNumberContainer = styled.div`
+const PageNumberContainer = styled.a`
   ${tw`
-    px-4 py-2 cursor-pointer select-none text-center
+    flex px-4 py-2 cursor-pointer select-none text-center items-center justify-center
   `}
 `
 
@@ -172,7 +172,6 @@ function Top({ startTop }) {
   }, [startTop, sort])
 
   const filledArray = useMemo(() => {
-    console.log('calculate filledArray', allData)
     const res = new Array(startTop.meta.count)
     for (const response of allData) {
       const { items, meta } = response
@@ -210,9 +209,14 @@ function Top({ startTop }) {
     const newPageEnd = ((visibleRange.endIndex + 1) / rowsPerPage) + 1
     const avg = Math.floor((newPageStart + newPageEnd) / 2)
 
-    if (newPageStart !== currentPage) {
+    if (avg !== currentPage) {
       setCurrentPage(avg)
+      router.push(`/?page=${avg}`, `/?page=${avg}`, {
+        scroll: false,
+        shallow: true,
+      })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleRange, currentPage, rowsPerPage])
 
   useEffect(() => {
@@ -296,11 +300,19 @@ function Top({ startTop }) {
         <PaginationContainer>
           {pages.map((i, index) => (
             <PageNumberContainer
+              href={`/?page=${i}`}
               className={i === currentPage && 'bg-gray-500'}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
+
                 const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
                 const scrollOfset = (192 * indexToSroll) - 65
                 virtuosoRef.current.scrollTo({ top: scrollOfset })
+
+                router.push(`/?page=${i}`, `/?page=${i}`, {
+                  scroll: false,
+                  shallow: true,
+                })
               }}
               key={i + '' + index}
             >
