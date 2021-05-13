@@ -111,6 +111,9 @@ const ListContainer = styled.div`
     flex-wrap: wrap;
   `
 
+const InvisibleListContainer = styled.div`
+  display: none;
+`
 
 function Row({ item, ...props }) {
   return item
@@ -145,7 +148,7 @@ function Top({ startTop }) {
       : 4 // default 4
     : 4
 
-  const rowsCount = Math.floor(startTop.meta.count / itemsPerRow)
+  // const rowsCount = Math.floor(startTop.meta.count / itemsPerRow)
 
   const itemsPerPage = 32
   const rowsPerPage = itemsPerPage / itemsPerRow
@@ -203,7 +206,7 @@ function Top({ startTop }) {
     return r
   }, [filledArray, itemsPerRow])
 
-  const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', pagesCount + 1])
+  // const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', pagesCount + 1])
   useEffect(() => {
     const newPageStart = ((visibleRange.startIndex + 1) / rowsPerPage) + 1
     const newPageEnd = ((visibleRange.endIndex + 1) / rowsPerPage) + 1
@@ -219,26 +222,16 @@ function Top({ startTop }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleRange, currentPage, rowsPerPage])
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    if (rowsCount < 1) {
-      return
-    }
-
+  const pages = useMemo(() => {
     const cr = currentPage
     let newPages = cr < 5
-      ? [1, 2, 3, 4, 5, '...', pagesCount]
+      ? [1, 2, 3, 4, 5, 6, pagesCount]
       : cr > pagesCount - 5
-        ? [1, '...', pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
-        : [1, '...', cr - 1, cr, cr + 1, '...', pagesCount]
+        ? [1, pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
+        : [1, cr - 2, cr - 1, cr, cr + 1, cr + 2, pagesCount]
 
-    if (JSON.stringify(pages) !== JSON.stringify(newPages)) {
-      setPages(newPages)
-    }
-  }, [currentPage, pages, rowsCount, startTop, pagesCount])
+    return newPages
+  }, [currentPage, pagesCount])
 
   return (
     <div className="bg-black">
@@ -299,28 +292,34 @@ function Top({ startTop }) {
 
         <PaginationContainer>
           {pages.map((i, index) => (
-            <PageNumberContainer
-              href={`/?page=${i}`}
-              className={i === currentPage && 'bg-gray-500'}
-              onClick={(e) => {
-                e.preventDefault()
+            i === '...'
+              ? <div className="flex px-4 py-2 select-none text-center items-center justify-center">...</div>
+              : <PageNumberContainer
+                href={`/?page=${i}`}
+                className={i === currentPage && 'bg-gray-500'}
+                onClick={(e) => {
+                  e.preventDefault()
 
-                const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
-                const scrollOfset = (192 * indexToSroll) - 65
-                virtuosoRef.current.scrollTo({ top: scrollOfset })
+                  const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
+                  const scrollOfset = (192 * indexToSroll) - 65
+                  virtuosoRef.current.scrollTo({ top: scrollOfset })
 
-                router.push(`/?page=${i}`, `/?page=${i}`, {
-                  scroll: false,
-                  shallow: true,
-                })
-              }}
-              key={i + '' + index}
-            >
-              {i}
-            </PageNumberContainer>
+                  router.push(`/?page=${i}`, `/?page=${i}`, {
+                    scroll: false,
+                    shallow: true,
+                  })
+                }}
+                key={i + '' + index}
+              >
+                {i}
+              </PageNumberContainer>
           ))}
         </PaginationContainer>
       </div>
+
+      <InvisibleListContainer>
+        {startTop.items.map(item => <a key={item.url} href={`/backgrounds/${item.url}`}>{item.name}</a>)}
+      </InvisibleListContainer>
     </div >
   )
 }
