@@ -119,7 +119,7 @@ function Background({ bgInfo }) {
   const description = `Best steam backgrounds collection! | Steam Background - ${bgInfo.name} | ${bgInfo.game}`
 
   // 753/1110690-...
-  const gameId = bgInfo.split('-')[0].split('/')[1]
+  const gameId = bgInfo.url.split('-')[0].split('/')[1]
 
   return <div className="bg-black">
     <Head>
