@@ -17,5 +17,9 @@
     "sortVotes": "Votes",
     "sortViews": "Views",
     "sortVote": "Vote"
+  },
+  "bg": {
+    "cropBg": "Crop this background",
+    "buyBg": "Buy on Steam"
   }
 }

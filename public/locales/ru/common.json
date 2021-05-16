@@ -17,5 +17,9 @@
     "sortVotes": "Голоса",
     "sortViews": "Просмотры",
     "sortVote": "Голосование"
+  },
+  "bg": {
+    "cropBg": "Вырезать фон",
+    "buyBg": "Купить в Steam"
   }
 }

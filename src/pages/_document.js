@@ -39,7 +39,6 @@ export default class MyDocument extends Document {
           <link rel="manifest" href="/manifest.webmanifest" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="apple-mobile-web-app-title" content="Backgrounds.Steam.Design" />
-          <meta name="description" content="Best steam backgrounds collection! Find your favorite!" />
           <meta name="keywords" content="steam, profile, crop, steam profile, background crop, background crop tool, background, backgrounds, steamdesign, design, best backgrounds, top, backgrounds top, background top, vote, background battle"></meta>
           <meta name="application-name" content="Backgrounds.Steam.Design" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
@@ -65,6 +64,8 @@ export default class MyDocument extends Document {
           />
         </DocumentHead>
         <Head>
+          <meta name="description" key="description" content="Best steam backgrounds collection! Find your favorite!" />
+
           <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design" />
           <meta property="og:type" key="ogtype" content="website" />
           <meta property="og:image" key="ogimage" content="/SocialBanner.png" />

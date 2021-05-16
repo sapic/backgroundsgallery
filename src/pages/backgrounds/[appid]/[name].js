@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Header from '@/components/Header'
 import styled from 'styled-components'
 import tw from "twin.macro"
+import { useTranslation } from 'next-i18next'
 
 import EyeSvg from '@/assets/images/eye.svg'
 import StarSvg from '@/assets/images/star.svg'
@@ -51,7 +52,7 @@ const BackgroundTitle = styled.h1`
 `
 
 const BackgroundGame = styled.h3`
-  ${tw`text-sm`}
+  ${tw`my-2 cursor-pointer hover:text-blue-300`}
 `
 
 const StatsContainer = styled.div`
@@ -105,13 +106,22 @@ const BgLink = styled.a`
   `}
 `
 
+function SteamGameItemsUrl(appId) {
+  return `https://steamcommunity.com/market/search?q=&category_753_Game%5B%5D=tag_app_${appId}&category_753_item_class%5B%5D=tag_item_class_3&appid=753`
+}
+
+
 function Background({ bgInfo }) {
+  const { t } = useTranslation()
+
   const shareUrl = `https://bgs.steam.design/backgrounds/${bgInfo.url}`
   const shareName = `Backgrounds.Steam.Design | ${bgInfo.name}`
+  const description = `Best steam backgrounds collection! | Steam Background - ${bgInfo.name} | ${bgInfo.game}`
 
   return <div className="bg-black">
     <Head>
       <title>{shareName}</title>
+      <meta name="description" key="description" content={description} />
 
       <meta name="twitter:url" key="twitterurl" content={shareUrl} />
       <meta name="twitter:title" key="twittertitle" content={shareName} />
@@ -119,8 +129,9 @@ function Background({ bgInfo }) {
       <meta property="og:url" key="ogurl" content={shareUrl} />
       <meta property="og:title" key="ogtitle" content={shareName} />
 
-      {/* <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/" />
-      <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/" /> */}
+      <link rel="alternate" hrefLang="en" href={`https://bgs.steam.design/en/backgrounds/${bgInfo.url}`} />
+      <link rel="alternate" hrefLang="ru" href={`https://bgs.steam.design/ru/backgrounds/${bgInfo.url}`} />
+      <link rel="canonical" href={shareUrl}></link>
     </Head>
 
     <Header />
@@ -132,7 +143,16 @@ function Background({ bgInfo }) {
 
       <InfoContainer>
         <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
-        <BackgroundGame>{bgInfo.game}</BackgroundGame>
+
+        <BackgroundGame>
+          <a
+            href={SteamGameItemsUrl(908050)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {bgInfo.game}
+          </a>
+        </BackgroundGame>
 
         <StatsContainer>
           {bgInfo.views && <StatsItem className="mx-2">
@@ -156,7 +176,7 @@ function Background({ bgInfo }) {
             rel="noopener noreferrer"
           >
             <LogoIcon />
-            <span>Crop this background</span>
+            <span>{t('bg.cropBg')}</span>
           </BgLink>
           <BgLink
             href={`https://steamcommunity.com/market/listings/${bgInfo.url}`}
@@ -164,7 +184,7 @@ function Background({ bgInfo }) {
             rel="noopener noreferrer"
           >
             <SteamIcon />
-            <span>Buy on Steam</span>
+            <span>{t('bg.buyBg')}</span>
           </BgLink>
         </LinksContainer>
       </InfoContainer>
