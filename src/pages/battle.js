@@ -209,7 +209,7 @@ function Home({ origin, startBgs }) {
           <div className={clsx(
             "ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full",
             "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
-            "transition-all duration-300 hover:bg-green-500 cursor-pointer",
+            "transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer",
             'select-none'
           )}
             onClick={() => { clickOnSkip() }}

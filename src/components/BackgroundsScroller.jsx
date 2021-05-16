@@ -16,7 +16,7 @@ function ImageContainer(props) {
   return (
     <CSSTransition
       key={props.item.steamUrl}
-      timeout={500}
+      timeout={600}
       classNames="item"
       {...restProps}
     >
@@ -33,7 +33,7 @@ function ImageContainer(props) {
             'bg-gray-900 text-white p-4 rounded',
             'shadow-xl absolute bottom-12 md:bottom-48 left-1/2 w-64 md:w-128',
             'transform', '-translate-x-1/2',
-            'transition-color duration-300 hover:bg-gray-800',
+            'transition-color duration-300 ease-out hover:bg-gray-800',
             'hidden md:block'
           )}
           onClick={(e) => {
