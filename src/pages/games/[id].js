@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import { Row } from '@/components/history/Row'
+import { Row } from '@/components/History/Row'
 
 function Game({ gameBgs, gameId }) {
   const itemsPerRow = typeof window !== 'undefined'
