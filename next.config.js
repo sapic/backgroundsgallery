@@ -13,9 +13,9 @@ module.exports =
     experimental: {
       modern: true,
     },
-    future: {
-      webpack5: true,
-    },
+    // future: {
+    //   webpack5: true,
+    // },
 
     i18n,
 
