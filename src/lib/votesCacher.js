@@ -75,6 +75,27 @@ function parseWithSorts(response) {
   return itemsCache
 }
 
+function parseWithGameId(response) {
+  let itemsCache = {}
+
+  const withGameId = {}
+
+  for (const bg of response) {
+    const gameId = bg.url.split('-')[0].split('/')[1]
+
+    if (withGameId[gameId]) {
+      withGameId[gameId].push(bg)
+    } else {
+      withGameId[gameId] = [bg]
+    }
+  }
+
+  itemsCache.items = response
+  itemsCache.games = withGameId
+
+  return itemsCache
+}
+
 function parseToObject(response) {
   const newItems = {}
   for (const item of response) {
@@ -92,4 +113,5 @@ export {
   defaultParseFunction,
   parseWithSorts,
   parseToObject,
+  parseWithGameId,
 }

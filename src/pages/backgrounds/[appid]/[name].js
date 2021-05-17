@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import styled from 'styled-components'
 import tw from "twin.macro"
 import { useTranslation } from 'next-i18next'
+import Link from 'next/link';
 
 import EyeSvg from '@/assets/images/eye.svg'
 import StarSvg from '@/assets/images/star.svg'
@@ -106,11 +107,6 @@ const BgLink = styled.a`
   `}
 `
 
-function SteamGameItemsUrl(appId) {
-  return `https://steamcommunity.com/market/search?q=&category_753_Game%5B%5D=tag_app_${appId}&category_753_item_class%5B%5D=tag_item_class_3&appid=753`
-}
-
-
 function Background({ bgInfo }) {
   const { t } = useTranslation()
 
@@ -148,13 +144,11 @@ function Background({ bgInfo }) {
         <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
 
         <BackgroundGame>
-          <a
-            href={SteamGameItemsUrl(gameId)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {bgInfo.game}
-          </a>
+          <Link href={`/games/${gameId}`}>
+            <a>
+              {bgInfo.game}
+            </a>
+          </Link>
         </BackgroundGame>
 
         <StatsContainer>
@@ -191,7 +185,7 @@ function Background({ bgInfo }) {
           </BgLink>
         </LinksContainer>
       </InfoContainer>
-    </PageContainer>
+    </PageContainer >
   </div >
 }
 
