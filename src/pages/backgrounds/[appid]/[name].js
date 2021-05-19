@@ -53,11 +53,11 @@ const BackgroundTitle = styled.h1`
 `
 
 const BackgroundGame = styled.h3`
-  ${tw`my-2 cursor-pointer hover:text-blue-300`}
+  ${tw`cursor-pointer font-semibold hover:text-blue-300`}
 `
 
 const StatsContainer = styled.div`
-  ${tw`flex -mx-2`}
+  ${tw`flex -mx-2 mt-2`}
 `
 
 const LinksContainer = styled.div`
@@ -111,7 +111,7 @@ function Background({ bgInfo }) {
   const { t } = useTranslation()
 
   const shareUrl = `https://bgs.steam.design/backgrounds/${bgInfo.url}`
-  const shareName = `Backgrounds.Steam.Design | ${bgInfo.name}`
+  const shareName = `Backgrounds.Steam.Design | ${bgInfo.game} - ${bgInfo.name}`
   const description = `Best steam backgrounds collection! | Steam Background - ${bgInfo.name} | ${bgInfo.game}`
 
   // 753/1110690-...
@@ -130,7 +130,7 @@ function Background({ bgInfo }) {
 
       <link rel="alternate" hrefLang="en" href={`https://bgs.steam.design/en/backgrounds/${bgInfo.url}`} />
       <link rel="alternate" hrefLang="ru" href={`https://bgs.steam.design/ru/backgrounds/${bgInfo.url}`} />
-      <link rel="canonical" href={shareUrl}></link>
+      <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
     </Head>
 
     <Header />
@@ -151,21 +151,6 @@ function Background({ bgInfo }) {
           </Link>
         </BackgroundGame>
 
-        <StatsContainer>
-          {bgInfo.views && <StatsItem className="mx-2">
-            <EyeIcon className="mr-1" />
-            <span className="">{bgInfo.views}</span>
-          </StatsItem>}
-          {bgInfo.votes && <StatsItem className="mx-2">
-            <StarIcon className="mr-1" />
-            <span className="">{bgInfo.votes}</span>
-          </StatsItem>}
-          {bgInfo.price && <StatsItem className="mx-2">
-            <span className="font-bold mr-1">$</span>
-            <span className="">{bgInfo.price}</span>
-          </StatsItem>}
-        </StatsContainer>
-
         <LinksContainer>
           <BgLink
             href={`https://steam.design/#${bgInfo.steamUrl}`}
@@ -184,6 +169,21 @@ function Background({ bgInfo }) {
             <span>{t('bg.buyBg')}</span>
           </BgLink>
         </LinksContainer>
+
+        <StatsContainer>
+          {bgInfo.views && <StatsItem className="mx-2">
+            <EyeIcon className="mr-1" />
+            <span className="">{bgInfo.views}</span>
+          </StatsItem>}
+          {bgInfo.votes && <StatsItem className="mx-2">
+            <StarIcon className="mr-1" />
+            <span className="">{bgInfo.votes}</span>
+          </StatsItem>}
+          {bgInfo.price && <StatsItem className="mx-2">
+            <span className="font-bold mr-1">$</span>
+            <span className="">{bgInfo.price}</span>
+          </StatsItem>}
+        </StatsContainer>
       </InfoContainer>
     </PageContainer >
   </div >
