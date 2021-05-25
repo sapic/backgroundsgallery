@@ -62,6 +62,15 @@ export default class MyDocument extends Document {
           `
             }}
           />
+
+          {/* plausible */}
+          <script
+            async
+            defer
+            data-domain="bgs.steam.design"
+            src="https://plausible.steam.design/js/plausible.js"
+          />
+
         </DocumentHead>
         <Head>
           <meta name="description" key="description" content="Best steam backgrounds collection! Find your favorite!" />
