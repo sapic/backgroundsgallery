@@ -1,9 +1,16 @@
 import withPassport from '../../lib/withPassport'
 import withDatabase from '../../lib/database'
 
+const disableVoting = process.env.DISABLE_VOTING ? true : false
+
 export default withDatabase(withPassport(async (req, res) => {
   res.statusCode = 200
   res.json({ status: 'ok' })
+
+  if (disableVoting) {
+    console.log('disable voting true')
+    return
+  }
 
   const { item, views: bgs } = JSON.parse(req.body)
   const userId = req?.user?.id
