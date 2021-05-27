@@ -10,13 +10,14 @@ const cacher = new Cacher({
 export default withCors(async (req, res) => {
   const items = await cacher.getItems()
 
-  const returnRatingType = 1 // return best ones for now
-  // Math.floor(Math.random() * 2)
+  const returnRatingType = Math.floor(Math.random() * 2)
   let sortArray
 
   switch (returnRatingType) {
     case 0:
-      sortArray = items.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
+      // 1000 most popular after first 1000(votes/views)
+      sortArray = items.ratingAscSort.slice(items.ratingAscSort.length - 2000, items.ratingAscSort.length - 1000)
+      // sortArray = items.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
       break
     case 1:
       // sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
