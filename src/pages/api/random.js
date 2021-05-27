@@ -10,7 +10,8 @@ const cacher = new Cacher({
 export default withCors(async (req, res) => {
   const items = await cacher.getItems()
 
-  const returnRatingType = Math.floor(Math.random() * 2)
+  const returnRatingType = 1 // return best ones for now
+  // Math.floor(Math.random() * 2)
   let sortArray
 
   switch (returnRatingType) {
