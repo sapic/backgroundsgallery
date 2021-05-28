@@ -8,11 +8,11 @@ export default class Cacher {
   constructor({
     cacheTime,
     refreshTime,
-    parseFunction = defaultParseFunction
+    parseFunctions = []
   }) {
     this.cacheTime = cacheTime
     this.refreshTime = refreshTime
-    this.parseFunction = parseFunction
+    this.parseFunctions = parseFunctions
 
     this.updateCache()
   }
@@ -41,7 +41,11 @@ export default class Cacher {
         throw new Error('response error')
       }
 
-      const items = await this.parseFunction(response)
+      let items = { items: response }
+      for (const func of this.parseFunctions) {
+        items = await func(items)
+      }
+
       this.cached = items
 
       this.lastUpdate = Date.now()
@@ -54,18 +58,8 @@ export default class Cacher {
   }
 }
 
-function defaultParseFunction(response) {
-  let itemsCache = {}
-
-  itemsCache.items = response
-
-  return itemsCache
-}
-
-function parseWithSorts(response) {
-  let itemsCache = {}
-
-  itemsCache.items = response
+function parseWithSorts(itemsCache) {
+  let response = itemsCache.items
 
   // Generate sort arrays
   itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
@@ -75,8 +69,8 @@ function parseWithSorts(response) {
   return itemsCache
 }
 
-function parseWithGameId(response) {
-  let itemsCache = {}
+function parseWithGameId(itemsCache) {
+  let response = itemsCache.items
 
   const withGameId = {}
 
@@ -90,27 +84,26 @@ function parseWithGameId(response) {
     }
   }
 
-  itemsCache.items = response
   itemsCache.games = withGameId
 
   return itemsCache
 }
 
-function parseToObject(response) {
+function parseToObject(itemsCache) {
+  let response = itemsCache.items
+
   const newItems = {}
   for (const item of response) {
     newItems[item.url] = item
   }
 
-  const itemsCache = {}
-
-  itemsCache.items = newItems
+  itemsCache.urls = newItems
 
   return itemsCache
 }
 
 export {
-  defaultParseFunction,
+  // defaultParseFunction,
   parseWithSorts,
   parseToObject,
   parseWithGameId,
