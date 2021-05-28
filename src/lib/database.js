@@ -14,6 +14,13 @@ async function database(req, res, next) {
   return next()
 }
 
+async function getDatabaseClient() {
+  return client
+}
+
 export default fn => (req, res) =>
   database(req, res, () => fn(req, res))
 
+export {
+  getDatabaseClient
+}

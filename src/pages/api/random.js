@@ -2,7 +2,7 @@ import withCors from '@/lib/withCors'
 import withCacher from '@/lib/withCacher'
 
 export default withCacher(withCors(async (req, res) => {
-  const items = await req.cacher.getItems()
+  const items = await req.Cacher.getItems()
 
   const returnRatingType = Math.floor(Math.random() * 2)
   let sortArray
@@ -44,7 +44,7 @@ export default withCacher(withCors(async (req, res) => {
   const resbgs = [randomBg1, randomBg2]
 
   res.setHeader('Random-Type', returnRatingType);
-  res.setHeader('Random-Cache-Updated', req.cacher.lastUpdate)
+  res.setHeader('Random-Cache-Updated', req.Cacher.lastUpdate)
 
   res.send(resbgs)
 }))

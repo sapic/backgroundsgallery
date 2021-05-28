@@ -4,6 +4,8 @@ import Cacher, {
   parseToObject
 } from './votesCacher'
 
+import { getDatabaseClient } from './database'
+
 const cacher = new Cacher({
   cacheTime: 60 * 60 * 1000,// 1 hour
   refreshTime: 30 * 60 * 1000,// 30 mins
@@ -12,6 +14,7 @@ const cacher = new Cacher({
     parseWithGameId,
     parseToObject
   ],
+  getDbClient: getDatabaseClient,
 })
 
 // export middleware to wrap api/auth handlers

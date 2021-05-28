@@ -1,4 +1,6 @@
-import { apiUrl } from '@/lib/getApiUrl'
+// import { apiUrl } from '@/lib/getApiUrl'
+
+const bgs = require('@/assets/bgs_full.json')
 
 export default class Cacher {
   cached = {}
@@ -6,6 +8,7 @@ export default class Cacher {
   alreadyReturning = null
 
   constructor({
+    getDbClient,
     cacheTime,
     refreshTime,
     parseFunctions = []
@@ -13,6 +16,7 @@ export default class Cacher {
     this.cacheTime = cacheTime
     this.refreshTime = refreshTime
     this.parseFunctions = parseFunctions
+    this.getDbClient = getDbClient
 
     this.updateCache()
   }
@@ -35,13 +39,62 @@ export default class Cacher {
     }
 
     this.alreadyReturning = (async () => {
-      console.log('fetch weighted')
-      const response = await fetch(`${apiUrl}/api/votesInfo`).then(r => r.json())
-      if (!response || response.length < 1) {
-        throw new Error('response error')
+      const client = await this.getDbClient()
+      if (!client.isConnected()) await client.connect()
+      const db = client.db('test')
+
+      console.log('fetch weighted in cache')
+      const views = db.collection('views')
+      const votesTotal = db.collection('votes_total')
+
+      const viewsDocs = await views.find().toArray()
+      const votesDocs = await votesTotal.find().toArray()
+
+      const combined = {}
+      const result = []
+
+      for (const view of viewsDocs) {
+        combined[view.url] = {
+          views: view.views
+        }
       }
 
-      let items = { items: response }
+      for (const votes of votesDocs) {
+        if (!combined[votes.url]) {
+          console.log('no vote in combined')
+        }
+        combined[votes.url].votes = votes.votes
+      }
+
+      let max = 0
+      for (const key of Object.keys(combined)) {
+        const item = combined[key]
+        if (item.votes && item.votes > max) {
+          max = item.votes
+        }
+      }
+
+      for (const key of Object.keys(combined)) {
+        const item = combined[key]
+
+        if (!item.votes || !item.views) {
+          continue
+        }
+
+        const bgInfo = bgs.find(bg => bg.url === key)
+        if (!bgInfo) {
+          continue
+        }
+
+        result.push({
+          ...item,
+          ...bgInfo,
+          popularity: item.votes / max,
+          goodness: item.votes / item.views
+        })
+      }
+
+      let items = { items: result }
       for (const func of this.parseFunctions) {
         items = await func(items)
       }
@@ -51,7 +104,7 @@ export default class Cacher {
       this.lastUpdate = Date.now()
 
       this.alreadyReturning = null
-      return items
+      return this.cached
     })()
 
     return this.alreadyReturning

@@ -2,7 +2,7 @@ import withCors from '@/lib/withCors'
 import withCacher from '@/lib/withCacher'
 
 export default withCacher(withCors(async (req, res) => {
-  const itemsCache = await req.cacher.getItems()
+  const itemsCache = await req.Cacher.getItems()
   const [left, ...rest] = req.query.url.split('-')
 
   const toEncode = rest.join('-')

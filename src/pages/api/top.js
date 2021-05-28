@@ -4,7 +4,7 @@ import withCacher from '@/lib/withCacher'
 const allowedTypes = [0, 1, 2]
 
 export default withCacher(withCors(async (req, res) => {
-  const itemsCache = await req.cacher.getItems()
+  const itemsCache = await req.Cacher.getItems()
   let { limit, offset, sort } = req.query
   limit = parseInt(limit)
   offset = parseInt(offset)
