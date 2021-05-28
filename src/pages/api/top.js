@@ -1,17 +1,10 @@
 import withCors from '@/lib/withCors'
-import Cacher, { parseWithSorts } from '@/lib/votesCacher'
-
-const cacher = new Cacher({
-  cacheTime: 60 * 60 * 1000,// 1 hour
-  refreshTime: 30 * 60 * 1000,// 30 mins
-  parseFunction: parseWithSorts,
-})
-
+import withCacher from '@/lib/withCacher'
 
 const allowedTypes = [0, 1, 2]
 
-export default withCors(async (req, res) => {
-  const itemsCache = await cacher.getItems()
+export default withCacher(withCors(async (req, res) => {
+  const itemsCache = await req.cacher.getItems()
   let { limit, offset, sort } = req.query
   limit = parseInt(limit)
   offset = parseInt(offset)
@@ -63,4 +56,4 @@ export default withCors(async (req, res) => {
       count: itemsCache.items.length,
     }
   })
-})
+}))

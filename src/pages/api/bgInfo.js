@@ -1,16 +1,8 @@
 import withCors from '@/lib/withCors'
-import Cacher, { parseToObject } from '@/lib/votesCacher'
+import withCacher from '@/lib/withCacher'
 
-const bgs = require('@/assets/bgs_full.json')
-
-const cacher = new Cacher({
-  cacheTime: 60 * 60 * 1000,// 1 hour
-  refreshTime: 30 * 60 * 1000,// 30 mins
-  parseFunction: parseToObject,
-})
-
-export default withCors(async (req, res) => {
-  const itemsCache = await cacher.getItems()
+export default withCacher(withCors(async (req, res) => {
+  const itemsCache = await req.cacher.getItems()
   const [left, ...rest] = req.query.url.split('-')
 
   const toEncode = rest.join('-')
@@ -22,12 +14,11 @@ export default withCors(async (req, res) => {
 
   const combined = `${left}-${encoded}`
 
-  if (itemsCache.items[combined]) {
-    return res.send(itemsCache.items[combined])
+  if (itemsCache.urls[combined]) {
+    return res.send(itemsCache.urls[combined])
   }
 
   console.log('not found', combined, req.query.url)
 
-  const found = bgs.find(bg => bg.url === combined)
-  return res.send(found || {})
-})
+  return res.send({})
+}))
