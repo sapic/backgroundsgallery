@@ -147,7 +147,7 @@ function parseToObject(itemsCache) {
 
   const newItems = {}
   for (const item of response) {
-    newItems[item.url] = item
+    newItems[item.url.toLowerCase()] = item
   }
 
   itemsCache.urls = newItems

@@ -12,7 +12,7 @@ export default withCacher(withCors(async (req, res) => {
     .replace(/'/g, '%27')
     .replace(/!/g, '%21')
 
-  const combined = `${left}-${encoded}`
+  const combined = `${left}-${encoded}`.toLowerCase()
 
   if (itemsCache.urls[combined]) {
     return res.send(itemsCache.urls[combined])
