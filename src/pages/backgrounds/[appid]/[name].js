@@ -113,6 +113,7 @@ function Background({ bgInfo }) {
   const shareUrl = `https://bgs.steam.design/backgrounds/${bgInfo.url}`
   const shareName = `Backgrounds.Steam.Design | ${bgInfo.game} - ${bgInfo.name}`
   const description = `Best steam backgrounds collection! | Steam Background - ${bgInfo.name} | ${bgInfo.game}`
+  const previewUrl = 'https://community.cloudflare.steamstatic.com/economy/image/' + bgInfo.iconUrl
 
   // 753/1110690-...
   const gameId = bgInfo.url.split('-')[0].split('/')[1]
@@ -124,9 +125,15 @@ function Background({ bgInfo }) {
 
       <meta name="twitter:url" key="twitterurl" content={shareUrl} />
       <meta name="twitter:title" key="twittertitle" content={shareName} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={previewUrl} />
+      <meta name="twitter:card" content="summary_large_image" />
 
       <meta property="og:url" key="ogurl" content={shareUrl} />
       <meta property="og:title" key="ogtitle" content={shareName} />
+      <meta property="og:description" key="ogdescription" content={description} />
+      <meta property="og:type" key="ogtype" content="website" />
+      <meta property="og:image" key="ogimage" content={previewUrl} />
 
       <link rel="alternate" hrefLang="en" href={`https://bgs.steam.design/en/backgrounds/${bgInfo.url}`} />
       <link rel="alternate" hrefLang="ru" href={`https://bgs.steam.design/ru/backgrounds/${bgInfo.url}`} />

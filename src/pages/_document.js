@@ -1,5 +1,4 @@
 import Document, { Html, Main, Head as DocumentHead, NextScript } from "next/document";
-import Head from 'next/head'
 
 import { ServerStyleSheet } from 'styled-components'
 
@@ -72,21 +71,6 @@ export default class MyDocument extends Document {
           />
 
         </DocumentHead>
-        <Head>
-          <meta name="description" key="description" content="Best steam backgrounds collection! Find your favorite!" />
-
-          <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design" />
-          <meta property="og:type" key="ogtype" content="website" />
-          <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
-          <meta property="og:url" key="ogurl" content="https://bgs.steam.design/" />
-          <meta property="og:description" key="ogdescription" content="Best steam backgrounds collection! Find your favorite!" />
-
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" key="twittertitle" content="Backgrounds.Steam.Design" />
-          <meta name="twitter:description" content="Best steam backgrounds collection! Find your favorite!" />
-          <meta name="twitter:image" content="/SocialBanner.png" />
-          <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/" />
-        </Head>
         <body>
           <Main />
           <NextScript />

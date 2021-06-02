@@ -46,13 +46,19 @@ function Game({ gameBgs, gameId }) {
 
         <meta name="twitter:url" key="twitterurl" content={shareUrl} />
         <meta name="twitter:title" key="twittertitle" content={shareName} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="/SocialBanner.png" />
+        <meta name="twitter:card" content="summary_large_image" />
 
         <meta property="og:url" key="ogurl" content={shareUrl} />
         <meta property="og:title" key="ogtitle" content={shareName} />
+        <meta property="og:description" key="ogdescription" content={description} />
+        <meta property="og:type" key="ogtype" content="website" />
+        <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
 
         <link rel="alternate" hrefLang="en" href={`https://bgs.steam.design/en/games/${gameId}`} />
         <link rel="alternate" hrefLang="ru" href={`https://bgs.steam.design/ru/games/${gameId}`} />
-        <link rel="canonical" href={shareUrl}></link>
+        <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
       </Head>
 
       <Header />

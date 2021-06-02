@@ -13,19 +13,29 @@ function History() {
   const [cookies] = useCookies(['bgsspid']);
   const deviceId = cookies.bgsspid
 
+  const description = 'Best steam backgrounds collection! Find your favorite! Your votes history.'
+
   return (
     <div className="bg-black">
       <Head>
         <title>Backgrounds.Steam.Design | Best Steam Backgrounds | History</title>
+        <meta name="description" key="description" content={description} />
 
-        <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/" />
+        <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/history" />
         <meta name="twitter:title" key="twittertitle" content="Backgrounds.Steam.Design | History" />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="/SocialBanner.png" />
+        <meta name="twitter:card" content="summary_large_image" />
 
         <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design | History" />
-        <meta property="og:url" key="ogurl" content="https://bgs.steam.design/" />
+        <meta property="og:url" key="ogurl" content="https://bgs.steam.design/history" />
+        <meta property="og:description" key="ogdescription" content={description} />
+        <meta property="og:type" key="ogtype" content="website" />
+        <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
 
-        <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/" />
-        <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/" />
+        <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/history" />
+        <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/history" />
+        <link rel="alternate" hrefLang="x-default" href="https://bgs.steam.design/history"></link>
       </Head>
 
       <Header />
