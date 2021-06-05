@@ -179,24 +179,24 @@ function Home({ origin, startBgs }) {
   return (
     <div className="bg-black">
       <Head>
-        <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Battle</title>
+        <title>Backgrounds.Gallery | Best Steam Backgrounds | Battle</title>
         <meta name="description" key="description" content={description} />
 
-        <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/battle" />
-        <meta name="twitter:title" key="twittertitle" content="Backgrounds.Steam.Design | Battle" />
+        <meta name="twitter:url" key="twitterurl" content="https://backgrounds.gallery/battle" />
+        <meta name="twitter:title" key="twittertitle" content="Backgrounds.Gallery | Battle" />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content="/SocialBanner.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
-        <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design | Battle" />
-        <meta property="og:url" key="ogurl" content="https://bgs.steam.design/battle" />
+        <meta property="og:title" key="ogtitle" content="Backgrounds.Gallery | Battle" />
+        <meta property="og:url" key="ogurl" content="https://backgrounds.gallery/battle" />
         <meta property="og:description" key="ogdescription" content={description} />
         <meta property="og:type" key="ogtype" content="website" />
         <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
 
-        <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/battle" />
-        <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/battle" />
-        <link rel="alternate" hrefLang="x-default" href="https://bgs.steam.design/battle"></link>
+        <link rel="alternate" hrefLang="en" href="https://backgrounds.gallery/en/battle" />
+        <link rel="alternate" hrefLang="ru" href="https://backgrounds.gallery/ru/battle" />
+        <link rel="alternate" hrefLang="x-default" href="https://backgrounds.gallery/battle"></link>
       </Head>
 
       <Header />

@@ -238,24 +238,24 @@ function Top({ startTop }) {
   return (
     <div className="bg-black">
       <Head>
-        <title>Backgrounds.Steam.Design | Best Steam Backgrounds | Top</title>
+        <title>Backgrounds.Gallery | Best Steam Backgrounds | Top</title>
         <meta name="description" key="description" content={description} />
 
-        <meta name="twitter:url" key="twitterurl" content="https://bgs.steam.design/" />
-        <meta name="twitter:title" key="twittertitle" content="Backgrounds.Steam.Design | Top" />
+        <meta name="twitter:url" key="twitterurl" content="https://backgrounds.gallery/" />
+        <meta name="twitter:title" key="twittertitle" content="Backgrounds.Gallery | Top" />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content="/SocialBanner.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
-        <meta property="og:title" key="ogtitle" content="Backgrounds.Steam.Design | Top" />
-        <meta property="og:url" key="ogurl" content="https://bgs.steam.design/" />
+        <meta property="og:title" key="ogtitle" content="Backgrounds.Gallery | Top" />
+        <meta property="og:url" key="ogurl" content="https://backgrounds.gallery/" />
         <meta property="og:description" key="ogdescription" content={description} />
         <meta property="og:type" key="ogtype" content="website" />
         <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
 
-        <link rel="alternate" hrefLang="en" href="https://bgs.steam.design/en/" />
-        <link rel="alternate" hrefLang="ru" href="https://bgs.steam.design/ru/" />
-        <link rel="alternate" hrefLang="x-default" href="https://bgs.steam.design/"></link>
+        <link rel="alternate" hrefLang="en" href="https://backgrounds.gallery/en/" />
+        <link rel="alternate" hrefLang="ru" href="https://backgrounds.gallery/ru/" />
+        <link rel="alternate" hrefLang="x-default" href="https://backgrounds.gallery/"></link>
       </Head>
 
       <Header />

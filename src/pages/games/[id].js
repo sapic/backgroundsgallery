@@ -35,8 +35,8 @@ function Game({ gameBgs, gameId }) {
     return r
   }, [gameBgs, itemsPerRow])
 
-  const shareUrl = `https://bgs.steam.design/games/${gameId}`
-  const shareName = `Backgrounds.Steam.Design | ${gameBgs.name}`
+  const shareUrl = `https://backgrounds.gallery/games/${gameId}`
+  const shareName = `Backgrounds.Gallery | ${gameBgs.name}`
   const description = `Best steam backgrounds collection! | Steam Game Backgrounds - ${gameBgs.name}`
 
   return (
@@ -56,8 +56,8 @@ function Game({ gameBgs, gameId }) {
         <meta property="og:type" key="ogtype" content="website" />
         <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
 
-        <link rel="alternate" hrefLang="en" href={`https://bgs.steam.design/en/games/${gameId}`} />
-        <link rel="alternate" hrefLang="ru" href={`https://bgs.steam.design/ru/games/${gameId}`} />
+        <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/games/${gameId}`} />
+        <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/games/${gameId}`} />
         <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
       </Head>
 

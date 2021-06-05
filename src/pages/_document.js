@@ -37,9 +37,9 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
           <link rel="manifest" href="/manifest.webmanifest" />
           <link rel="shortcut icon" href="/favicon.ico" />
-          <meta name="apple-mobile-web-app-title" content="Backgrounds.Steam.Design" />
-          <meta name="keywords" content="steam, profile, crop, steam profile, background crop, background crop tool, background, backgrounds, steamdesign, design, best backgrounds, top, backgrounds top, background top, vote, background battle"></meta>
-          <meta name="application-name" content="Backgrounds.Steam.Design" />
+          <meta name="apple-mobile-web-app-title" content="Backgrounds.Gallery" />
+          <meta name="keywords" content="steam, profile, steam profile, gallery, backgrounds gallery, steam gallery, background, backgrounds, steamdesign, design, best backgrounds, top, backgrounds top, background top, vote, background battle"></meta>
+          <meta name="application-name" content="Backgrounds.Gallery" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="msapplication-TileColor" content="#12151a" />
           <meta name="theme-color" content="#12151a" />
@@ -66,7 +66,7 @@ export default class MyDocument extends Document {
           <script
             async
             defer
-            data-domain="bgs.steam.design"
+            data-domain="backgrounds.gallery"
             src="https://plausible.steam.design/js/plausible.js"
           />
 

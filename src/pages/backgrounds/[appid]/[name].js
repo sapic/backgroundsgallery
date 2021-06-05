@@ -110,8 +110,8 @@ const BgLink = styled.a`
 function Background({ bgInfo }) {
   const { t } = useTranslation()
 
-  const shareUrl = `https://bgs.steam.design/backgrounds/${bgInfo.url}`
-  const shareName = `Backgrounds.Steam.Design | ${bgInfo.game} - ${bgInfo.name}`
+  const shareUrl = `https://backgrounds.gallery/backgrounds/${bgInfo.url}`
+  const shareName = `Backgrounds.Gallery | ${bgInfo.game} - ${bgInfo.name}`
   const description = `Best steam backgrounds collection! | Steam Background - ${bgInfo.name} | ${bgInfo.game}`
   const previewUrl = 'https://community.cloudflare.steamstatic.com/economy/image/' + bgInfo.iconUrl
 
@@ -135,8 +135,8 @@ function Background({ bgInfo }) {
       <meta property="og:type" key="ogtype" content="website" />
       <meta property="og:image" key="ogimage" content={previewUrl} />
 
-      <link rel="alternate" hrefLang="en" href={`https://bgs.steam.design/en/backgrounds/${bgInfo.url}`} />
-      <link rel="alternate" hrefLang="ru" href={`https://bgs.steam.design/ru/backgrounds/${bgInfo.url}`} />
+      <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/backgrounds/${bgInfo.url}`} />
+      <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/backgrounds/${bgInfo.url}`} />
       <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
     </Head>
 
