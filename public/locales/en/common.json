@@ -21,5 +21,21 @@
   "bg": {
     "cropBg": "Crop this background",
     "buyBg": "Buy on Steam"
+  },
+  "seo": {
+    "title": {
+      "index": "Backgrounds.Gallery | Best Steam Backgrounds | Top",
+      "history": "Backgrounds.Gallery | Best Steam Backgrounds | History",
+      "battle": "Backgrounds.Gallery | Best Steam Backgrounds | Battle",
+      "gameId": "Backgrounds.Gallery | Game - ",
+      "bgId": "Backgrounds.Gallery | Background - "
+    },
+    "description": {
+      "index": "Best steam backgrounds collection! Find your favorite! User voted top list.",
+      "history": "Best steam backgrounds collection! Find your favorite! Your votes history.",
+      "battle": "Best steam backgrounds collection! Find your favorite! Vote for random backgrounds!",
+      "gameId": "Best steam backgrounds collection! | Steam Game Backgrounds - ",
+      "bgId": "Best steam backgrounds collection! | Steam Background - "
+    }
   }
 }

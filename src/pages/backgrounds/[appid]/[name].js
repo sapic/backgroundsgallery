@@ -111,8 +111,8 @@ function Background({ bgInfo }) {
   const { t } = useTranslation()
 
   const shareUrl = `https://backgrounds.gallery/backgrounds/${bgInfo.url}`
-  const shareName = `Backgrounds.Gallery | ${bgInfo.game} - ${bgInfo.name}`
-  const description = `Best steam backgrounds collection! | Steam Background - ${bgInfo.name} | ${bgInfo.game}`
+  const shareName = `${t('seo.title.bgId')}${bgInfo.game} - ${bgInfo.name}`
+  const description = `${t('seo.description.bgId')}${bgInfo.name} | ${bgInfo.game}`
   const previewUrl = 'https://community.cloudflare.steamstatic.com/economy/image/' + bgInfo.iconUrl
 
   // 753/1110690-...

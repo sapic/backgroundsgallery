@@ -233,12 +233,12 @@ function Top({ startTop }) {
     return newPages
   }, [currentPage, pagesCount])
 
-  const description = "Best steam backgrounds collection! Find your favorite! User voted top list."
+  const description = t('seo.description.index')
 
   return (
     <div className="bg-black">
       <Head>
-        <title>Backgrounds.Gallery | Best Steam Backgrounds | Top</title>
+        <title>{t('seo.title.index')}</title>
         <meta name="description" key="description" content={description} />
 
         <meta name="twitter:url" key="twitterurl" content="https://backgrounds.gallery/" />

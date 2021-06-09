@@ -21,5 +21,21 @@
   "bg": {
     "cropBg": "Вырезать фон",
     "buyBg": "Купить в Steam"
+  },
+  "seo": {
+    "title": {
+      "index": "Backgrounds.Gallery | Лучше фоны Steam | Топ",
+      "history": "Backgrounds.Gallery | Лучше фоны Steam | История",
+      "battle": "Backgrounds.Gallery | Лучше фоны Steam | Голосование",
+      "gameId": "Backgrounds.Gallery | Игра - ",
+      "bgId": "Backgrounds.Gallery | Фон - "
+    },
+    "description": {
+      "index": "Коллекция лучших фонов Steam! Найди свой! Лучшие фоны по результатам голосования.",
+      "history": "Коллекция лучших фонов Steam! Найди свой! Твоя история голосов.",
+      "battle": "Коллекция лучших фонов Steam! Найди свой! Голосуй за случайные фоны!",
+      "gameId": "Коллекция лучших фонов Steam! | Фоны игры - ",
+      "bgId": "Коллекция лучших фонов Steam! | Фон - "
+    }
   }
 }

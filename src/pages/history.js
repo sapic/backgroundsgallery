@@ -6,9 +6,11 @@ import { useIdentity } from '@/lib/withIdentity'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useCookies } from 'react-cookie'
+import { useTranslation } from 'next-i18next'
 
 function History() {
   const identity = useIdentity()
+  const { t } = useTranslation()
 
   const [cookies] = useCookies(['bgsspid']);
   const deviceId = cookies.bgsspid
@@ -18,7 +20,7 @@ function History() {
   return (
     <div className="bg-black">
       <Head>
-        <title>Backgrounds.Gallery | Best Steam Backgrounds | History</title>
+        <title>{t('seo.title.history')}</title>
         <meta name="description" key="description" content={description} />
 
         <meta name="twitter:url" key="twitterurl" content="https://backgrounds.gallery/history" />

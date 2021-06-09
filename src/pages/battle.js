@@ -174,12 +174,12 @@ function Home({ origin, startBgs }) {
     clickOnSkip()
   })
 
-  const description = 'Best steam backgrounds collection! Find your favorite! Vote for random backgrounds!'
+  const description = t('seo.description.battle')
 
   return (
     <div className="bg-black">
       <Head>
-        <title>Backgrounds.Gallery | Best Steam Backgrounds | Battle</title>
+        <title>{t('seo.title.battle')}</title>
         <meta name="description" key="description" content={description} />
 
         <meta name="twitter:url" key="twitterurl" content="https://backgrounds.gallery/battle" />

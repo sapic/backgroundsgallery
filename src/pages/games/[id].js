@@ -7,8 +7,11 @@ import { useMemo } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { Row } from '@/components/History/Row'
+import { useTranslation } from 'next-i18next'
 
 function Game({ gameBgs, gameId }) {
+  const { t } = useTranslation()
+
   const itemsPerRow = typeof window !== 'undefined'
     ? window.innerWidth < 560
       ? 2
@@ -36,12 +39,13 @@ function Game({ gameBgs, gameId }) {
   }, [gameBgs, itemsPerRow])
 
   const shareUrl = `https://backgrounds.gallery/games/${gameId}`
-  const shareName = `Backgrounds.Gallery | ${gameBgs.name}`
-  const description = `Best steam backgrounds collection! | Steam Game Backgrounds - ${gameBgs.name}`
+  const shareName = `${t('seo.title.gameId')} ${gameBgs.name}`
+  const description = `${t('seo.description.gameId')}${gameBgs.name}`
 
   return (
     <div className="bg-black">
       <Head>
+        <title>{shareName}</title>
         <meta name="description" key="description" content={description} />
 
         <meta name="twitter:url" key="twitterurl" content={shareUrl} />
