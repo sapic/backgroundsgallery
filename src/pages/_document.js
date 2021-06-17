@@ -70,6 +70,9 @@ export default class MyDocument extends Document {
             src="https://plausible.steam.design/js/plausible.js"
           />
 
+          {/* google ads */}
+          <script data-ad-client="ca-pub-1034829471687394" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
         </DocumentHead>
         <body>
           <Main />
