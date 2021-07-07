@@ -9,6 +9,8 @@ import tw from "twin.macro"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
+import AnimatedBackgroundsPreview from '@/components/AnimatedBackgroundsPreview'
+
 import useFetch from 'use-http'
 // import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
@@ -265,6 +267,8 @@ function Top({ startTop }) {
         <div className="bg-gray-900 py-2 px-4 rounded mt-2">
           <h1 className="text-white">{t('top.headerText')}</h1>
         </div>
+
+        <AnimatedBackgroundsPreview />
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
           <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>{t('top.sortRating')}</SortButton>
