@@ -6,17 +6,17 @@
 //   res.json({ name: 'John Doe' })
 // }
 
-import { NextApiResponse, NextApiRequest } from 'next'
+// import { NextApiResponse, NextApiRequest } from 'next'
 import withPassport, { passport } from '../../../../lib/withPassport'
 
 const handler = async (req, res) => {
-  console.log('steam api callback')
+  // console.log('steam api callback')
 
   passport.authenticate('steam', {
     failureRedirect: '/auth',
     successRedirect: '/',
   })(req, res, (...args) => {
-    console.log('auth callback', args)
+    // console.log('auth callback', args)
     return true
   })
 }
