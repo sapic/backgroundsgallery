@@ -62,7 +62,7 @@ const MiniVideo = styled.video``
 
 export default function ImagePreview({ item }) {
   // const { t } = useTranslation()
-  return <Link href={`/backgrounds/${item.url}`} passHref>
+  return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`} passHref>
     <ImageContainer className="group">
       <MiniVideo
         src={`https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`}

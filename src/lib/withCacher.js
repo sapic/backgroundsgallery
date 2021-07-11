@@ -1,4 +1,6 @@
 import Cacher, {
+  getBackgroundsData,
+
   parseWithSorts,
   parseWithGameId,
   parseToObject
@@ -10,6 +12,10 @@ const cacher = new Cacher({
   cacheTime: 60 * 60 * 1000,// 1 hour
   refreshTime: 30 * 60 * 1000,// 30 mins
   parseFunctions: [
+    // get data
+    getBackgroundsData,
+
+    // add custom sorts
     parseWithSorts,
     parseWithGameId,
     parseToObject
