@@ -3,22 +3,17 @@ import withCacher from '@/lib/withCacher'
 
 export default withCacher(withCors(async (req, res) => {
   const itemsCache = await req.Cacher.getItems()
-  const [left, ...rest] = req.query.url.split('-')
 
-  const toEncode = rest.join('-')
-  const encoded = encodeURIComponent(toEncode)
-    .replace(/\(/g, '%28')
-    .replace(/\)/g, '%29')
-    .replace(/'/g, '%27')
-    .replace(/!/g, '%21')
+  const appid = parseInt(req.query.appid)
+  const defid = parseInt(req.query.defid)
 
-  const combined = `${left}-${encoded}`.toLowerCase()
+  const item = itemsCache.animated.find(x => x.appid === appid && x.defid === defid)
 
-  if (itemsCache.urls[combined]) {
-    return res.send(itemsCache.urls[combined])
+  if (item) {
+    return res.send(item)
   }
 
-  console.log('not found', combined, req.query.url)
+  console.log('not found', req.query)
 
   return res.send({})
 }))

@@ -1,11 +1,7 @@
-import withDatabase from '../../lib/database'
+import withCors from '@/lib/withCors'
+import withCacher from '@/lib/withCacher'
 
-export default withDatabase(async (req, res) => {
-  console.log('animated.js')
-  const animatedBgs = req.db.collection('animated_bgs')
-
-  const bgs = await animatedBgs.find({}).toArray()
-  console.log('bgs')
-
-  res.send(bgs)
-})
+export default withCacher(withCors(async (req, res) => {
+  const itemsCache = await req.Cacher.getItems()
+  res.send(itemsCache.animated)
+}))

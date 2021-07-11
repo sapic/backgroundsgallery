@@ -26,14 +26,16 @@ const PageContainer = styled.div`
 
 const BackgroundContainer = styled.div`
   width: 100%;
-  height: 0;
+  /* height: 0; */
   overflow: hidden;
-  padding-top: 65%;
-  background-size: contain;
-  background-repeat: no-repeat;
+  /* padding-top: 65%; */
+  /* background-size: contain;
+  background-repeat: no-repeat; */
 
-  ${tw`bg-center md:bg-top`}
+  /* ${tw`bg-center md:bg-top`} */
 `
+
+const BackgroundVideo = styled.video``
 
 const InfoContainer = styled.div`
   height: max-content;
@@ -108,7 +110,6 @@ const BgLink = styled.a`
 `
 
 function Background({ bgInfo }) {
-  return <div className="text-white">123 {JSON.stringify(bgInfo)}</div>
   const { t } = useTranslation()
 
   const shareUrl = `https://backgrounds.gallery/backgrounds/${bgInfo.url}`
@@ -117,7 +118,8 @@ function Background({ bgInfo }) {
   const previewUrl = 'https://community.cloudflare.steamstatic.com/economy/image/' + bgInfo.iconUrl
 
   // 753/1110690-...
-  const gameId = bgInfo.url.split('-')[0].split('/')[1]
+  const gameId = bgInfo.appid
+  const webmUrl = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${bgInfo.appid}/${bgInfo.communityItemData.itemMovieWebm}`
 
   return <div className="bg-black">
     <Head>
@@ -144,12 +146,17 @@ function Background({ bgInfo }) {
     <Header />
 
     <PageContainer className="">
-      <BackgroundContainer style={{
-        backgroundImage: `url(${bgInfo.steamUrl})`
-      }} />
+      <BackgroundContainer>
+        <BackgroundVideo
+          src={webmUrl}
+          muted
+          loop
+          playsInline
+          autoPlay />
+      </BackgroundContainer>
 
       <InfoContainer>
-        <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
+        <BackgroundTitle>{bgInfo.internalDescription}</BackgroundTitle>
 
         <BackgroundGame>
           <Link href={`/games/${gameId}`}>
@@ -160,8 +167,10 @@ function Background({ bgInfo }) {
         </BackgroundGame>
 
         <LinksContainer>
+          <div className="text-white">{JSON.stringify(bgInfo)}</div>
+
           <BgLink
-            href={`https://steam.design/#${bgInfo.steamUrl}`}
+            href={`https://steam.design/#${webmUrl}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -169,7 +178,7 @@ function Background({ bgInfo }) {
             <span>{t('bg.cropBg')}</span>
           </BgLink>
           <BgLink
-            href={`https://steamcommunity.com/market/listings/${bgInfo.url}`}
+            href={`https://store.steampowered.com/points/shop/c/backgrounds/reward/${bgInfo.defid}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -194,15 +203,15 @@ function Background({ bgInfo }) {
         </StatsContainer>
       </InfoContainer>
     </PageContainer >
-  </div >
+  </div>
 }
 
 export async function getServerSideProps({ locale, params }) {
   let bgInfo = {}
   const defId = params.name.split('-')[0]
-  const url = encodeURIComponent(`${params.appid}/${defId}`)
+
   try {
-    bgInfo = await fetch(`${apiUrl}/api/animatedInfo?url=${url}`).then(r => r.json())
+    bgInfo = await fetch(`${apiUrl}/api/animatedInfo?appid=${params.appid}&defid=${defId}`).then(r => r.json())
   } catch (e) {
     console.log('get bgs server side error', e)
   }

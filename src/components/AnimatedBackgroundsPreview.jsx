@@ -12,8 +12,8 @@ function Preview() {
     <div className="bg-gray-900 py-2 px-4 rounded mt-2">
       <h1 className="text-white">Animated bacgkrounds</h1>
     </div>
-    <div className="flex">
-      {data.slice(0, 4).map((item, i) => <AnimatedPreview item={item} key={item.i} />)}
+    <div className="flex flex-wrap">
+      {data.slice(0, 999).map((item, i) => <AnimatedPreview item={item} key={item.i} />)}
     </div>
   </>
 }

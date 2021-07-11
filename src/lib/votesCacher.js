@@ -116,6 +116,16 @@ async function getBackgroundsData(_, db) {
   return items
 }
 
+async function getAnimatedData(itemsCache, db) {
+  const animatedBgs = db.collection('animated_bgs')
+
+  const bgs = await animatedBgs.find({}).toArray()
+
+  itemsCache.animated = bgs
+
+  return itemsCache
+}
+
 function parseWithSorts(itemsCache) {
   let response = itemsCache.items
 
@@ -163,6 +173,7 @@ function parseToObject(itemsCache) {
 export {
   // defaultParseFunction,
   getBackgroundsData,
+  getAnimatedData,
 
   parseWithSorts,
   parseToObject,
