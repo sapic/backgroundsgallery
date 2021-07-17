@@ -12,7 +12,8 @@ const SortButtonViolet = styled.div`
 `
 
 const VideoRow = styled.div`
-  height: 169px;
+  height: 180px;
+  box-sizing: border-box;
 `
 
 function Preview({ animatedBgs }) {
