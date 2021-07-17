@@ -128,7 +128,7 @@ function Row({ item, ...props }) {
     </ImagePlaceholder>
 }
 
-function Top({ startTop }) {
+function Top({ startTop, animatedBgs }) {
   const router = useRouter()
   const { page: spageFromQuery } = router.query
   const virtuosoRef = useRef(null)
@@ -268,7 +268,7 @@ function Top({ startTop }) {
           <h1 className="text-white">{t('top.headerText')}</h1>
         </div>
 
-        <AnimatedBackgroundsPreview />
+        <AnimatedBackgroundsPreview animatedBgs={animatedBgs} />
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
           <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>{t('top.sortRating')}</SortButton>
@@ -340,6 +340,7 @@ function Top({ startTop }) {
 
 export async function getServerSideProps({ locale, query }) {
   let top = {}
+  let animated = {}
   let offset = 0
 
   if (query.page) {
@@ -347,7 +348,10 @@ export async function getServerSideProps({ locale, query }) {
   }
 
   try {
-    top = await fetch(`${apiUrl}/api/top?limit=32&offset=${offset}`).then(r => r.json())
+    [top, animated] = await Promise.all([
+      fetch(`${apiUrl}/api/top?limit=32&offset=${offset}`).then(r => r.json()),
+      fetch(`${apiUrl}/api/animated`).then(r => r.json())
+    ])
   } catch (e) {
     console.log('get bgs server side error', e)
   }
@@ -355,6 +359,7 @@ export async function getServerSideProps({ locale, query }) {
   return {
     props: {
       startTop: top,
+      animatedBgs: animated,
 
       ...await serverSideTranslations(locale, ['common']),
     }, // will be passed to the page component as props

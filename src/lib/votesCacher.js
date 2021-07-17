@@ -120,7 +120,7 @@ async function getAnimatedData(itemsCache, db) {
   const animatedBgs = db.collection('animated_bgs')
 
   let bgs = await animatedBgs.find({}).toArray()
-  bgs = bgs.map(bg => { // add game
+  bgs = bgs.sort((a, b) => b.timestampCreated - a.timestampCreated).map(bg => { // add game
     if (itemsCache.apps && itemsCache.apps[bg.appid]) {
       bg.game = itemsCache.apps[bg.appid]
     }

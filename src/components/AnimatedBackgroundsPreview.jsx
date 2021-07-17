@@ -1,4 +1,4 @@
-import useFetch from 'use-http'
+// import useFetch from 'use-http'
 import AnimatedPreview from './AnimatedPreview'
 import Link from 'next/link'
 
@@ -11,10 +11,10 @@ const SortButtonViolet = styled.div`
   background: linear-gradient(45deg,#61045f,#aa076b);
 `
 
-function Preview() {
-  let { data = [] } = useFetch(`/api/animated`, {}, [])
+function Preview({ animatedBgs }) {
+  // let { data = [] } = useFetch(`/api/animated`, {}, [])
 
-  if (data.length < 4) {
+  if (animatedBgs.length < 4) {
     return <></>
   }
 
@@ -23,9 +23,10 @@ function Preview() {
       <h1 className="text-white">Animated bacgkrounds</h1>
     </div>
     <div className="py-2 px-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-      {data.slice(0, 4).map((item, i) => <div className="flex w-full overflow-hidden" key={item.i}>
-        <AnimatedPreview item={item} />
-      </div>
+      {animatedBgs.slice(0, 4).map((item, i) =>
+        <div className="flex w-full overflow-hidden" key={i}>
+          <AnimatedPreview item={item} />
+        </div>
       )}
     </div>
 
