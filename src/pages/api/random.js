@@ -4,13 +4,25 @@ import withCacher from '@/lib/withCacher'
 export default withCacher(withCors(async (req, res) => {
   const items = await req.Cacher.getItems()
 
+  const animatedTypeRandom = Math.floor(Math.random() * 10) // 10% to get animated
+  const returnType = animatedTypeRandom === 0 // 0 - animated, 1-9 - static
+
+  const resbgs = getStaticBackgrounds(items)
+
+  res.setHeader('Random-Type', returnType)
+  res.setHeader('Random-Cache-Updated', req.Cacher.lastUpdate)
+
+  res.send(resbgs)
+}))
+
+function getStaticBackgrounds(itemsCache) {
   const returnRatingType = Math.floor(Math.random() * 2)
   let sortArray
 
   switch (returnRatingType) {
     case 0:
       // 1000 most popular after first 1000(votes/views)
-      sortArray = items.ratingAscSort.slice(items.ratingAscSort.length - 2000, items.ratingAscSort.length - 1000)
+      sortArray = itemsCache.ratingAscSort.slice(itemsCache.ratingAscSort.length - 2000, itemsCache.ratingAscSort.length - 1000)
       // sortArray = items.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
       break
     case 1:
@@ -20,7 +32,7 @@ export default withCacher(withCors(async (req, res) => {
       // sortArray = itemsCache.votesAscSort.slice(itemsCache.votesAscSort.length - 1000)
 
       // 1000 most popular(votes/views)
-      sortArray = items.ratingAscSort.slice(items.ratingAscSort.length - 1000)
+      sortArray = itemsCache.ratingAscSort.slice(itemsCache.ratingAscSort.length - 1000)
       break
     // case 2:
     //   // 1000 most popular(votes/views)
@@ -41,10 +53,8 @@ export default withCacher(withCors(async (req, res) => {
 
   const randomBg1 = sortArray[index1]
   const randomBg2 = sortArray[index2]
-  const resbgs = [randomBg1, randomBg2]
 
-  res.setHeader('Random-Type', returnRatingType);
-  res.setHeader('Random-Cache-Updated', req.Cacher.lastUpdate)
-
-  res.send(resbgs)
-}))
+  return [randomBg1, randomBg2, {
+    type: 'static'
+  }]
+}
