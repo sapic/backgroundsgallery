@@ -68,19 +68,25 @@ const MiniVideo = styled.video`
 
 export default function ImagePreview({ item, big }) {
   // const { t } = useTranslation()
-  const videoSrc = big
+  const wembmSrc = big
+    ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`
+    : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebmSmall}`
+
+  const mp4Src = big
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4}`
     : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4Small}`
 
   return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`} passHref>
     <ImageContainer className="group">
       <MiniVideo
-        src={videoSrc}
         muted
         loop
         playsInline
         autoPlay
-      />
+      >
+        <source src={mp4Src} type="video/mp4" />
+        <source src={wembmSrc} type="video/webm" />
+      </MiniVideo>
       {/* <MiniImage
         style={{
           backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`
