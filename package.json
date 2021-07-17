@@ -16,6 +16,7 @@
     "clsx": "^1.1.1",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "file-loader": "^6.1.1",
     "micro-redirect": "^1.0.2",
     "mongodb": "^3.6.2",
