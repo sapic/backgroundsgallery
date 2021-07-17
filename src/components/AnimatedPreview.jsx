@@ -7,26 +7,29 @@ import EyeSvg from '@/assets/images/eye.svg'
 import StarSvg from '@/assets/images/star.svg'
 
 const ImageContainer = styled.a`
-  width: 25%;
-  height: 192px;
+  /* width: 25%; */
+  /* height: 192px; */
+  width: 100%;
+  height: 100%;
 
   ${tw`
     relative flex cursor-pointer
-    transform scale-100 hover:scale-110 transition-all duration-150
-    hover:z-10
+    transform scale-100 
+    // hover:scale-110 transition-all duration-150
+    // hover:z-10
   `}
 
-  @media (max-width: 560px) {
+  /* @media (max-width: 560px) {
     width: 50%;
-  }
+  } */
 `
 
-const MiniImage = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-`
+// const MiniImage = styled.div`
+//   width: 100%;
+//   background-size: cover;
+//   background-position: 50% 50%;
+//   background-repeat: no-repeat;
+// `
 
 const StatsOverlay = styled.div`
   ${tw`
@@ -57,7 +60,10 @@ const StarIcon = styled(StarSvg)`
   height: 16px;
 `
 
-const MiniVideo = styled.video``
+const MiniVideo = styled.video`
+  object-fit: cover;
+  width: 100%;
+`
 
 
 export default function ImagePreview({ item }) {
@@ -65,7 +71,7 @@ export default function ImagePreview({ item }) {
   return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`} passHref>
     <ImageContainer className="group">
       <MiniVideo
-        src={`https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`}
+        src={`https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebmSmall}`}
         muted
         loop
         playsInline
