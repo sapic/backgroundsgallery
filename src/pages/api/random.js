@@ -5,15 +5,28 @@ export default withCacher(withCors(async (req, res) => {
   const items = await req.Cacher.getItems()
 
   const animatedTypeRandom = Math.floor(Math.random() * 10) // 10% to get animated
-  const returnType = animatedTypeRandom === 0 // 0 - animated, 1-9 - static
+  const returnType = animatedTypeRandom < 5 // 0 - animated, 1-9 - static
 
-  const resbgs = getStaticBackgrounds(items)
+  const resbgs = returnType
+    ? getAnimatedBackgrounds(items)
+    : getStaticBackgrounds(items)
 
   res.setHeader('Random-Type', returnType)
   res.setHeader('Random-Cache-Updated', req.Cacher.lastUpdate)
 
   res.send(resbgs)
 }))
+
+function getAnimatedBackgrounds(itemsCache) {
+  const [index1, index2] = getRandomIndeces(itemsCache.animated.length)
+
+  const randomBg1 = itemsCache.animated[index1]
+  const randomBg2 = itemsCache.animated[index2]
+
+  return [randomBg1, randomBg2, {
+    type: 'animated'
+  }]
+}
 
 function getStaticBackgrounds(itemsCache) {
   const returnRatingType = Math.floor(Math.random() * 2)
@@ -41,8 +54,19 @@ function getStaticBackgrounds(itemsCache) {
     default: break
   }
 
-  const index1 = Math.floor(Math.random() * sortArray.length)
-  const random2 = Math.floor(Math.random() * sortArray.length)
+  const [index1, index2] = getRandomIndeces(sortArray.length)
+
+  const randomBg1 = sortArray[index1]
+  const randomBg2 = sortArray[index2]
+
+  return [randomBg1, randomBg2, {
+    type: 'static'
+  }]
+}
+
+function getRandomIndeces(dataLength) {
+  const index1 = Math.floor(Math.random() * dataLength)
+  const random2 = Math.floor(Math.random() * dataLength)
 
   // Check if it's same so we don't send 2 same pictures
   const index2 = random2 !== index1
@@ -51,10 +75,5 @@ function getStaticBackgrounds(itemsCache) {
       ? random2 - 1
       : random2 + 1
 
-  const randomBg1 = sortArray[index1]
-  const randomBg2 = sortArray[index2]
-
-  return [randomBg1, randomBg2, {
-    type: 'static'
-  }]
+  return [index1, index2]
 }

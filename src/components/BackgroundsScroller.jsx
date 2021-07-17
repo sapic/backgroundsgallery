@@ -10,8 +10,29 @@ const VerticalCenterDiv = styled.div`
   transform: translateY(-50%);
 `
 
+function VideoForBg({ item, big }) {
+  const wembmSrc = big
+    ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`
+    : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebmSmall}`
+
+  const mp4Src = big
+    ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4}`
+    : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4Small}`
+
+  return <video
+    muted
+    loop
+    playsInline
+    autoPlay
+    className="w-full user-drag-none vote-container__image"
+  >
+    <source src={mp4Src} type="video/mp4" />
+    <source src={wembmSrc} type="video/webm" />
+  </video>
+}
+
 function ImageContainer(props) {
-  const { item, clickOnImage, ...restProps } = props
+  const { item, clickOnImage, isAnimated, ...restProps } = props
 
   return (
     <CSSTransition
@@ -26,7 +47,10 @@ function ImageContainer(props) {
         // "transform scale-105 hover:scale-110 transition-all duration-500"
       )} onClick={() => { clickOnImage(item) }}>
         <VerticalCenterDiv className="absolute w-full">
-          <img alt="" className="w-full user-drag-none vote-container__image" src={props.item.steamUrl}></img>
+          {isAnimated
+            ? <VideoForBg item={item} big={true} />
+            : <img alt="" className="w-full user-drag-none vote-container__image" src={props.item.steamUrl}></img>
+          }
         </VerticalCenterDiv>
         <a
           className={clsx(
@@ -41,13 +65,19 @@ function ImageContainer(props) {
             e.stopPropagation()
             // console.log('click info')
           }}
-          href={`https://steamcommunity.com/market/listings/${item.url}`}
+          href={isAnimated
+            ? `https://store.steampowered.com/points/shop/c/backgrounds/reward/${item.defid}`
+            : `https://steamcommunity.com/market/listings/${item.url}`}
           target="_blank"
           rel="noopener noreferrer"
         >
           <div className="flex">
-            <div className="leading-6 align-middle">{item.name} </div>
-            <div className="ml-2 text-gray-500 text-sm leading-6 align-middle">${item.price}</div>
+            <div className="leading-6 align-middle">
+              {isAnimated ? item.internalDescription : item.name}
+            </div>
+            <div className="ml-2 text-gray-500 text-sm leading-6 align-middle">
+              {isAnimated ? item.pointCost + ' SP' : '$' + item.price}
+            </div>
           </div>
           <div className="text-gray-500 text-sm">
             {item.game}
@@ -60,22 +90,30 @@ function ImageContainer(props) {
 
 function BackgroundsScroller(props) {
   const { bgs, clickOnImage } = props
-  const leftBgs = bgs.filter((_, i) => i % 2 === 0)
-  const rightBgs = bgs.filter((_, i) => i % 2 === 1)
+
+  const [leftBg, rightBg, info] = bgs
+
+  const isAnimated = info && info.type && info.type === 'animated'
 
   return (
     <>
       <TransitionGroup
         className="w-full h-full overflow-hidden relative vote-container"
       >
-        {leftBgs.map((item) => (
-          <ImageContainer clickOnImage={clickOnImage} item={item} key={item.steamUrl}></ImageContainer>
-        ))}
+        <ImageContainer
+          isAnimated={isAnimated}
+          clickOnImage={clickOnImage}
+          item={leftBg}
+          key={leftBg.steamUrl || leftBg.defid}
+        />
       </TransitionGroup>
       <TransitionGroup className="w-full h-full overflow-hidden relative vote-container">
-        {rightBgs.map((item) => (
-          <ImageContainer clickOnImage={clickOnImage} item={item} key={item.steamUrl}></ImageContainer>
-        ))}
+        <ImageContainer
+          isAnimated={isAnimated}
+          clickOnImage={clickOnImage}
+          item={rightBg}
+          key={rightBg.steamUrl || rightBg.defid}
+        />
       </TransitionGroup>
     </>
   )
