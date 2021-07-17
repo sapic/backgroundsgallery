@@ -5,7 +5,8 @@
     "battle": "Vote",
     "login": "Login through Steam",
     "logout": "Logout",
-    "history": "History"
+    "history": "History",
+    "animated": "Animated"
   },
   "top": {
     "imageViews": "Views",
@@ -28,14 +29,16 @@
       "history": "Backgrounds.Gallery | Best Steam Backgrounds | History",
       "battle": "Backgrounds.Gallery | Best Steam Backgrounds | Battle",
       "gameId": "Backgrounds.Gallery | Game - ",
-      "bgId": "Backgrounds.Gallery | Background - "
+      "bgId": "Backgrounds.Gallery | Background - ",
+      "animated": "Backgrounds.Gallery | Best Steam Backgrounds | Animated"
     },
     "description": {
       "index": "Best steam backgrounds collection! Find your favorite! User voted top list.",
       "history": "Best steam backgrounds collection! Find your favorite! Your votes history.",
       "battle": "Best steam backgrounds collection! Find your favorite! Vote for random backgrounds!",
       "gameId": "Best steam backgrounds collection! | Steam Game Backgrounds - ",
-      "bgId": "Best steam backgrounds collection! | Steam Background - "
+      "bgId": "Best steam backgrounds collection! | Steam Background - ",
+      "animated": "Best steam backgrounds collection! Find your favorite! Animated backgrounds."
     }
   }
 }

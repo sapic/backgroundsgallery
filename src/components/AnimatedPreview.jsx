@@ -66,12 +66,16 @@ const MiniVideo = styled.video`
 `
 
 
-export default function ImagePreview({ item }) {
+export default function ImagePreview({ item, big }) {
   // const { t } = useTranslation()
+  const videoSrc = big
+    ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4}`
+    : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4Small}`
+
   return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`} passHref>
     <ImageContainer className="group">
       <MiniVideo
-        src={`https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebmSmall}`}
+        src={videoSrc}
         muted
         loop
         playsInline

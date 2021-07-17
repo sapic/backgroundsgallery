@@ -42,6 +42,15 @@ export default function Header() {
               {t('header.top')}
             </a>
           </Link>
+          <Link href="/animated">
+            <a className={clsx([
+              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
+              (pathname === '/animated') && 'text-blue-300'
+            ])}>
+              {t('header.animated')}
+            </a>
+          </Link>
+
           <Link href="/battle">
             <a className={clsx([
               "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",

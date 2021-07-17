@@ -60,7 +60,7 @@ export default class Cacher {
   }
 }
 
-async function getBackgroundsData(_, db) {
+async function getBackgroundsData(itemsCache, db) {
   console.log('fetch weighted in cache')
   const views = db.collection('views')
   const votesTotal = db.collection('votes_total')
@@ -112,14 +112,21 @@ async function getBackgroundsData(_, db) {
     })
   }
 
-  let items = { items: result }
-  return items
+  itemsCache.items = result
+  return itemsCache
 }
 
 async function getAnimatedData(itemsCache, db) {
   const animatedBgs = db.collection('animated_bgs')
 
-  const bgs = await animatedBgs.find({}).toArray()
+  let bgs = await animatedBgs.find({}).toArray()
+  bgs = bgs.map(bg => { // add game
+    if (itemsCache.apps && itemsCache.apps[bg.appid]) {
+      bg.game = itemsCache.apps[bg.appid]
+    }
+
+    return bg
+  })
 
   itemsCache.animated = bgs
 

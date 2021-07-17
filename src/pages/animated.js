@@ -1,0 +1,164 @@
+import Head from 'next/head'
+import styled from 'styled-components'
+import { useMemo, useRef } from 'react'
+import tw from "twin.macro"
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
+import { Virtuoso } from 'react-virtuoso'
+
+import AnimatedPreview from '@/components/AnimatedPreview'
+import { apiUrl } from '@/lib/getApiUrl'
+import Header from '@/components/Header'
+
+const ImagePlaceholder = styled.div`
+  width: 25%;
+  height: 384px;
+  ${tw`p-1`}
+
+  @media (max-width: 560px) {
+    width: 50%;
+  }
+`
+
+const ImagePlaceholderInside = styled.div`
+  width: 100%;
+  height: 100%;
+  ${tw`bg-gray-500`}
+`
+
+const ItemContainer = styled.div`
+    /* padding: 0.5rem; */
+    width: 100%;
+    display: flex;
+    flex: none;
+    align-content: stretch;
+
+    @media (max-width: 1024px) {
+      width: 50%;
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  `
+
+const RowContainer = styled.div`
+  height: 384px;
+`
+
+const ListContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+  `
+
+function Row({ item, ...props }) {
+  return item
+    ? <AnimatedPreview
+      key={item.defid}
+      item={item}
+      big={true}
+    />
+    : <ImagePlaceholder>
+      <ImagePlaceholderInside></ImagePlaceholderInside>
+    </ImagePlaceholder>
+}
+
+function Animated({ animatedBgs }) {
+  const virtuosoRef = useRef(null)
+  const { t } = useTranslation()
+
+  const itemsPerRow = 2
+
+  const rows = useMemo(() => {
+    const r = []
+    let j = 0;
+
+    for (let i = 0; i < animatedBgs.length; i++) {
+      if (i % itemsPerRow === 0) {
+        r[j] = []
+        j++
+      }
+
+      r[j - 1].push(animatedBgs[i])
+    }
+    return r
+  }, [animatedBgs, itemsPerRow])
+
+  const description = t('seo.description.animated')
+  const title = t('seo.title.animated')
+
+  return (
+    <div className="bg-black">
+      <Head>
+        <title>{title}</title>
+        <meta name="description" key="description" content={description} />
+
+        <meta name="twitter:url" key="twitterurl" content="https://backgrounds.gallery/animated" />
+        <meta name="twitter:title" key="twittertitle" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="/SocialBanner.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <meta property="og:title" key="ogtitle" content={title} />
+        <meta property="og:url" key="ogurl" content="https://backgrounds.gallery/animated" />
+        <meta property="og:description" key="ogdescription" content={description} />
+        <meta property="og:type" key="ogtype" content="website" />
+        <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
+
+        <link rel="alternate" hrefLang="en" href="https://backgrounds.gallery/en/animated" />
+        <link rel="alternate" hrefLang="ru" href="https://backgrounds.gallery/ru/animated" />
+        <link rel="alternate" hrefLang="x-default" href="https://backgrounds.gallery/animated"></link>
+      </Head>
+
+      <Header />
+
+      <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
+        <div className="bg-gray-900 py-2 px-4 rounded mt-2 mb-2">
+          <h1 className="text-white">{t('top.headerText')}</h1>
+        </div>
+
+        <Virtuoso
+          ref={virtuosoRef}
+          useWindowScroll
+          totalCount={rows.length}
+          overscan={0}
+          fixedItemHeight={384}
+          initialItemCount={16}
+          components={{
+            Item: ItemContainer,
+            List: ListContainer,
+            ScrollSeekPlaceholder: ({ height, index }) => (
+              <ItemContainer className="flex">
+                <ImagePlaceholder />
+              </ItemContainer>
+            ),
+          }}
+
+          itemContent={index => <RowContainer className="flex w-full">
+            {rows[index].map((item, i) => <Row item={item} key={i} />)}
+          </RowContainer>}
+        />
+      </div>
+    </div >
+  )
+}
+
+export async function getServerSideProps({ locale, query }) {
+  let animated = {}
+
+  try {
+    animated = await fetch(`${apiUrl}/api/animated`).then(r => r.json())
+  } catch (e) {
+    console.log('get bgs server side error', e)
+  }
+
+  return {
+    props: {
+      animatedBgs: animated,
+
+      ...await serverSideTranslations(locale, ['common']),
+    },
+  }
+}
+
+export default Animated

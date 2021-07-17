@@ -110,10 +110,10 @@ const BgLink = styled.a`
 function Background({ bgInfo }) {
   const { t } = useTranslation()
 
-  const shareUrl = `https://backgrounds.gallery/backgrounds/${bgInfo.url}`
-  const shareName = `${t('seo.title.bgId')}${bgInfo.game} - ${bgInfo.name}`
-  const description = `${t('seo.description.bgId')}${bgInfo.name} | ${bgInfo.game}`
-  const previewUrl = 'https://community.cloudflare.steamstatic.com/economy/image/' + bgInfo.iconUrl
+  const shareUrl = `https://backgrounds.gallery/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`
+  const shareName = `${t('seo.title.bgId')}${bgInfo.game} - ${bgInfo.internalDescription}`
+  const description = `${t('seo.description.bgId')}${bgInfo.internalDescription} | ${bgInfo.game}`
+  const previewUrl = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${bgInfo.appid}/${bgInfo.communityItemData.itemImageLarge}`
 
   // 753/1110690-...
   const gameId = bgInfo.appid
@@ -136,8 +136,8 @@ function Background({ bgInfo }) {
       <meta property="og:type" key="ogtype" content="website" />
       <meta property="og:image" key="ogimage" content={previewUrl} />
 
-      <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/backgrounds/${bgInfo.url}`} />
-      <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/backgrounds/${bgInfo.url}`} />
+      <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`} />
+      <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`} />
       <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
     </Head>
 
@@ -159,7 +159,7 @@ function Background({ bgInfo }) {
         <BackgroundGame>
           <Link href={`/games/${gameId}`}>
             <a>
-              {bgInfo.gameName}
+              {bgInfo.game}
             </a>
           </Link>
         </BackgroundGame>

@@ -15,9 +15,9 @@ const cacher = new Cacher({
   refreshTime: 30 * 60 * 1000,// 30 mins
   parseFunctions: [
     // get data
+    getAppsData,
     getBackgroundsData,
     getAnimatedData,
-    getAppsData,
 
     // add custom sorts
     parseWithSorts,

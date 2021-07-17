@@ -5,7 +5,8 @@
     "battle": "Голосование",
     "login": "Войти через Steam",
     "logout": "Выйти",
-    "history": "История"
+    "history": "История",
+    "animated": "ГИФ Фоны"
   },
   "top": {
     "imageViews": "Просмотры",
@@ -28,14 +29,16 @@
       "history": "Backgrounds.Gallery | Лучше фоны Steam | История",
       "battle": "Backgrounds.Gallery | Лучше фоны Steam | Голосование",
       "gameId": "Backgrounds.Gallery | Игра - ",
-      "bgId": "Backgrounds.Gallery | Фон - "
+      "bgId": "Backgrounds.Gallery | Фон - ",
+      "animated": "Backgrounds.Gallery | Лучше фоны Steam | Анимированные фоны"
     },
     "description": {
       "index": "Коллекция лучших фонов Steam! Найди свой! Лучшие фоны по результатам голосования.",
       "history": "Коллекция лучших фонов Steam! Найди свой! Твоя история голосов.",
       "battle": "Коллекция лучших фонов Steam! Найди свой! Голосуй за случайные фоны!",
       "gameId": "Коллекция лучших фонов Steam! | Фоны игры - ",
-      "bgId": "Коллекция лучших фонов Steam! | Фон - "
+      "bgId": "Коллекция лучших фонов Steam! | Фон - ",
+      "animated": "Коллекция лучших фонов Steam! Найди свой! Все анимированные фоны стим."
     }
   }
 }
