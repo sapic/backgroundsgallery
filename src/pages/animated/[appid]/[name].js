@@ -42,11 +42,9 @@ const InfoContainer = styled.div`
 
   ${tw`
     rounded bg-gray-900 text-gray-100
-    pt-2 pb-4 px-4 m-2
+    pt-2 pb-4 px-4 my-2 ml-2
     md:w-80
     flex flex-col
-
-    md:mx-0
   `}
 `
 
@@ -59,7 +57,7 @@ const BackgroundGame = styled.h3`
 `
 
 const StatsContainer = styled.div`
-  ${tw`flex -mx-2 mt-2`}
+  ${tw`flex mx-2 mt-2`}
 `
 
 const LinksContainer = styled.div`
@@ -161,13 +159,13 @@ function Background({ bgInfo }) {
         <BackgroundGame>
           <Link href={`/games/${gameId}`}>
             <a>
-              {bgInfo.game}
+              {bgInfo.gameName}
             </a>
           </Link>
         </BackgroundGame>
 
         <LinksContainer>
-          <div className="text-white">{JSON.stringify(bgInfo)}</div>
+          {/* <div className="text-white">{JSON.stringify(bgInfo)}</div> */}
 
           <BgLink
             href={`https://steam.design/#${webmUrl}`}

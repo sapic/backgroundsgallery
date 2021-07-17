@@ -1,6 +1,7 @@
 import Cacher, {
   getBackgroundsData,
   getAnimatedData,
+  getAppsData,
 
   parseWithSorts,
   parseWithGameId,
@@ -16,6 +17,7 @@ const cacher = new Cacher({
     // get data
     getBackgroundsData,
     getAnimatedData,
+    getAppsData,
 
     // add custom sorts
     parseWithSorts,

@@ -126,6 +126,22 @@ async function getAnimatedData(itemsCache, db) {
   return itemsCache
 }
 
+async function getAppsData(itemsCache, db) {
+  const appsJson = require('@/assets/apps.json')
+
+  let result = {}
+  const { applist } = appsJson
+  const { apps } = applist
+
+  for (const app of apps) {
+    result[app.appid] = app.name
+  }
+
+  itemsCache.apps = result
+
+  return itemsCache
+}
+
 function parseWithSorts(itemsCache) {
   let response = itemsCache.items
 
@@ -174,6 +190,7 @@ export {
   // defaultParseFunction,
   getBackgroundsData,
   getAnimatedData,
+  getAppsData,
 
   parseWithSorts,
   parseToObject,

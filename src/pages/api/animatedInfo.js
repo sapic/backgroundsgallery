@@ -10,6 +10,11 @@ export default withCacher(withCors(async (req, res) => {
   const item = itemsCache.animated.find(x => x.appid === appid && x.defid === defid)
 
   if (item) {
+    const game = itemsCache.apps[appid]
+    if (game) {
+      item.gameName = game
+    }
+    console.log('id', item.appid)
     return res.send(item)
   }
 

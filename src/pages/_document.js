@@ -71,7 +71,7 @@ export default class MyDocument extends Document {
           />
 
           {/* google ads */}
-          <script data-ad-client="ca-pub-1034829471687394" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          {/* <script data-ad-client="ca-pub-1034829471687394" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> */}
 
         </DocumentHead>
         <body>
