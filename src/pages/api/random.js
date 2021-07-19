@@ -4,8 +4,8 @@ import withCacher from '@/lib/withCacher'
 export default withCacher(withCors(async (req, res) => {
   const items = await req.Cacher.getItems()
 
-  const animatedTypeRandom = Math.floor(Math.random() * 10) // 10% to get animated
-  const returnType = animatedTypeRandom < 5 // 0 - animated, 1-9 - static
+  const animatedTypeRandom = Math.floor(Math.random() * 10)
+  const returnType = animatedTypeRandom < 3 // 0 - animated, 1-9 - static 30% for now
 
   const resbgs = returnType
     ? getAnimatedBackgrounds(items)

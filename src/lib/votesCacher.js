@@ -120,12 +120,60 @@ async function getAnimatedData(itemsCache, db) {
   const animatedBgs = db.collection('animated_bgs')
 
   let bgs = await animatedBgs.find({}).toArray()
-  bgs = bgs.sort((a, b) => b.timestampCreated - a.timestampCreated).map(bg => { // add game
+  const views = db.collection('views_animated')
+  const votesTotal = db.collection('votes_total_animated')
+
+  const viewsDocs = await views.find().toArray()
+  const votesDocs = await votesTotal.find().toArray()
+
+  const combined = {}
+
+  for (const view of viewsDocs) {
+    const key = `${view.appid}:${view.defid}`
+    combined[key] = {
+      views: view.views
+    }
+  }
+
+  for (const votes of votesDocs) {
+    const key = `${votes.appid}:${votes.defid}`
+
+    if (!combined[key]) {
+      console.log('no vote in combined')
+    }
+    combined[key].votes = votes.votes
+  }
+
+  let max = 0
+  for (const key of Object.keys(combined)) {
+    const item = combined[key]
+    if (item.votes && item.votes > max) {
+      max = item.votes
+    }
+  }
+
+  bgs = bgs.map(bg => {
+    const key = `${bg.appid}:${bg.defid}`
+    if (combined[key]) {
+      const item = combined[key]
+      bg.views = item.views
+      bg.votes = item.votes
+      bg.popularity = item.votes / max
+      bg.goodness = item.votes / item.views
+    } else {
+      bg.views = 0
+      bg.votes = 0
+      bg.popularity = 0
+      bg.goodness = 0
+    }
+
     if (itemsCache.apps && itemsCache.apps[bg.appid]) {
       bg.game = itemsCache.apps[bg.appid]
     }
 
     return bg
+  }).sort((a, b) => {
+    return b.goodness - a.goodness
   })
 
   itemsCache.animated = bgs

@@ -57,7 +57,7 @@ const BackgroundGame = styled.h3`
 `
 
 const StatsContainer = styled.div`
-  ${tw`flex mx-2 mt-2`}
+  ${tw`flex -mx-2 mt-2`}
 `
 
 const LinksContainer = styled.div`
@@ -194,9 +194,9 @@ function Background({ bgInfo }) {
             <StarIcon className="mr-1" />
             <span className="">{bgInfo.votes}</span>
           </StatsItem>}
-          {bgInfo.price && <StatsItem className="mx-2">
-            <span className="font-bold mr-1">$</span>
-            <span className="">{bgInfo.price}</span>
+          {bgInfo.pointCost && <StatsItem className="mx-2">
+            <span className="">{bgInfo.pointCost}</span>
+            <span className="font-bold ml-1">SP</span>
           </StatsItem>}
         </StatsContainer>
       </InfoContainer>
