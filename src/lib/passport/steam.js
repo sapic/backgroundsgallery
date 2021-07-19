@@ -25,7 +25,7 @@ const strategy = (req, res) => {
       apiKey: process.env.STEAM_API_KEY || ''
     },
     function (identifier, profile, done) {
-      console.log('steam auth', identifier, profile, done)
+      // console.log('steam auth', identifier, profile, done)
       return done(null, {
         id: profile.id,
         displayName: profile.displayName,
