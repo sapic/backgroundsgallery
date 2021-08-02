@@ -21,7 +21,8 @@
   },
   "bg": {
     "cropBg": "Crop this background",
-    "buyBg": "Buy on Steam"
+    "buyBg": "Buy on Steam",
+    "buyPoins": "Buy for poins"
   },
   "seo": {
     "title": {

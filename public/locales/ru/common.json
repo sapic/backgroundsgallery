@@ -21,7 +21,8 @@
   },
   "bg": {
     "cropBg": "Вырезать фон",
-    "buyBg": "Купить в Steam"
+    "buyBg": "Купить в Steam",
+    "buyPoins": "Купить за очки"
   },
   "seo": {
     "title": {

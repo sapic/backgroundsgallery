@@ -175,6 +175,17 @@ function Background({ bgInfo }) {
             <SteamIcon />
             <span>{t('bg.buyBg')}</span>
           </BgLink>
+
+          {bgInfo.defid && <BgLink
+            href={`https://store.steampowered.com/points/shop/reward/${bgInfo.defid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <SteamIcon />
+            <span>{t('bg.buyPoins')}
+              <span className="text-sm text-gray-400"> ({bgInfo.pointCost})</span>
+            </span>
+          </BgLink>}
         </LinksContainer>
 
         <StatsContainer>
