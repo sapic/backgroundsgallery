@@ -12,6 +12,7 @@ import EyeSvg from '@/assets/images/eye.svg'
 import StarSvg from '@/assets/images/star.svg'
 import LogoSvg from '@/assets/images/logo.svg'
 import SteamSvg from '@/assets/images/steam.svg'
+import SteamPointsSvg from '@/assets/images/steam_points.svg'
 
 const PageContainer = styled.div`
   ${tw`
@@ -100,8 +101,15 @@ const SteamIcon = styled(SteamSvg)`
   ${tw`mr-2`}
 `
 
+const PointsIcon = styled(SteamPointsSvg)`
+  width: 20px;
+  height: 20px;
+
+  ${tw`mr-2`}
+`
+
 const BgLink = styled.a`
-  ${tw`
+${tw`
     flex items-center cursor-pointer
     hover:text-blue-300
   `}
@@ -181,7 +189,7 @@ function Background({ bgInfo }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <SteamIcon />
+            <PointsIcon />
             <span>{t('bg.buyPoins')}
               <span className="text-sm text-gray-400"> ({bgInfo.pointCost})</span>
             </span>
