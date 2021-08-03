@@ -118,6 +118,7 @@ function Background({ bgInfo }) {
   // 753/1110690-...
   const gameId = bgInfo.appid
   const webmUrl = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${bgInfo.appid}/${bgInfo.communityItemData.itemMovieWebm}`
+  const mp4Url = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${bgInfo.appid}/${bgInfo.communityItemData.itemMovieMp4}`
 
   return <div className="bg-black">
     <Head>
@@ -146,11 +147,13 @@ function Background({ bgInfo }) {
     <PageContainer className="">
       <BackgroundContainer>
         <BackgroundVideo
-          src={webmUrl}
           muted
           loop
           playsInline
-          autoPlay />
+          autoPlay >
+          <source src={mp4Url} type="video/mp4" />
+          <source src={webmUrl} type="video/webm" />
+        </BackgroundVideo>
       </BackgroundContainer>
 
       <InfoContainer>
