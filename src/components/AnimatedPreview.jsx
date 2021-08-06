@@ -24,12 +24,12 @@ const ImageContainer = styled.a`
   } */
 `
 
-// const MiniImage = styled.div`
-//   width: 100%;
-//   background-size: cover;
-//   background-position: 50% 50%;
-//   background-repeat: no-repeat;
-// `
+const MiniImage = styled.div`
+  width: 100%;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+`
 
 const StatsOverlay = styled.div`
   ${tw`
@@ -66,7 +66,7 @@ const MiniVideo = styled.video`
 `
 
 
-export default function ImagePreview({ item, big }) {
+export default function ImagePreview({ item, big, still }) {
   // const { t } = useTranslation()
   const wembmSrc = big
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`
@@ -76,23 +76,29 @@ export default function ImagePreview({ item, big }) {
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4}`
     : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4Small}`
 
+  const imgSrc = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemImageLarge}`
+
+
   return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`} passHref>
     <ImageContainer className="group">
-      <MiniVideo
-        muted
-        loop
-        playsInline
-        autoPlay
-      >
-        <source src={mp4Src} type="video/mp4" />
-        <source src={wembmSrc} type="video/webm" />
-      </MiniVideo>
-      {/* <MiniImage
-        style={{
-          backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`
-        }}
-        alt='background' */}
-      {/* /> */}
+      {!still
+        ? <MiniVideo
+          muted
+          loop
+          playsInline
+          autoPlay
+        >
+          <source src={mp4Src} type="video/mp4" />
+          <source src={wembmSrc} type="video/webm" />
+        </MiniVideo>
+        : <MiniImage
+          style={{
+            backgroundImage: `url(${imgSrc})`
+          }}
+          alt='background'
+        />
+      }
+
       <StatsOverlay className="">
         {item.views && <StatsItem className="mx-2">
           <EyeIcon className="mr-1" />

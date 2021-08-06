@@ -265,7 +265,9 @@ function Top({ startTop, animatedBgs }) {
       <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         {/* {JSON.stringify(data)} */}
         <div className="bg-gray-900 py-2 px-4 rounded mt-2">
-          <h1 className="text-white">{t('top.headerText')}</h1>
+          <h1 className="text-white font-bold">{t('top.headerText')}</h1>
+
+          <div className="text-white">{t('top.guideText')}</div>
         </div>
 
         <AnimatedBackgroundsPreview animatedBgs={animatedBgs} />

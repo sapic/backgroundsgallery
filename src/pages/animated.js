@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styled from 'styled-components'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import tw from "twin.macro"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
@@ -51,12 +51,17 @@ const ListContainer = styled.div`
     flex-wrap: wrap;
   `
 
-function Row({ item, ...props }) {
+const SortButton = styled.div`
+  ${tw`p-2 rounded mx-2 cursor-pointer`}
+`
+
+function Row({ item, still, ...props }) {
   return item
     ? <AnimatedPreview
       key={item.defid}
       item={item}
       big={true}
+      still={still}
     />
     : <ImagePlaceholder>
       <ImagePlaceholderInside></ImagePlaceholderInside>
@@ -66,6 +71,7 @@ function Row({ item, ...props }) {
 function Animated({ animatedBgs }) {
   const virtuosoRef = useRef(null)
   const { t } = useTranslation()
+  const [still, setStill] = useState(false)
 
   const itemsPerRow = 2
 
@@ -114,8 +120,16 @@ function Animated({ animatedBgs }) {
 
       <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         <div className="bg-gray-900 py-2 px-4 rounded mt-2 mb-2">
-          <h1 className="text-white">{t('top.headerText')}</h1>
+          <h1 className="text-white font-bold">{t('top.headerText')}</h1>
+
+          <div className="text-white">{t('animated.animationHelpText')}</div>
         </div>
+
+        <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
+          <SortButton onClick={() => setStill(false)} className={!still && 'bg-gray-500'}>{t('animated.enableAnimation')}</SortButton>
+          <SortButton onClick={() => setStill(true)} className={still && 'bg-gray-500'}>{t('animated.disableAnimation')}</SortButton>
+        </div>
+
 
         <Virtuoso
           ref={virtuosoRef}
@@ -135,7 +149,7 @@ function Animated({ animatedBgs }) {
           }}
 
           itemContent={index => <RowContainer className="flex w-full">
-            {rows[index].map((item, i) => <Row item={item} key={i} />)}
+            {rows[index].map((item, i) => <Row item={item} key={i} still={still} />)}
           </RowContainer>}
         />
       </div>

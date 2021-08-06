@@ -17,7 +17,8 @@
     "sortRating": "Rating",
     "sortVotes": "Votes",
     "sortViews": "Views",
-    "sortVote": "Vote"
+    "sortVote": "Vote",
+    "guideText": "If you write guides for steam and find this site useful, please consider adding it to your guides. It will be very helpful."
   },
   "bg": {
     "cropBg": "Crop this background",
@@ -41,5 +42,10 @@
       "bgId": "Best steam backgrounds collection! | Steam Background - ",
       "animated": "Best steam backgrounds collection! Find your favorite! Animated backgrounds."
     }
+  },
+  "animated": {
+    "enableAnimation": "Video preview",
+    "disableAnimation": "Static preview",
+    "animationHelpText": "If you experience lags with videos you can preview them as static images"
   }
 }
