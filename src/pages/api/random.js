@@ -29,7 +29,7 @@ function getAnimatedBackgrounds(itemsCache) {
 }
 
 function getStaticBackgrounds(itemsCache) {
-  const returnRatingType = Math.floor(Math.random() * 2)
+  const returnRatingType = Math.floor(Math.random() * 3)
   let sortArray
 
   switch (returnRatingType) {
@@ -39,15 +39,17 @@ function getStaticBackgrounds(itemsCache) {
       // sortArray = items.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
       break
     case 1:
-      // sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
+      sortArray = itemsCache.viewsAscSort.slice(0, 1000) // 1000 least viewed bgs
 
       // 1000 most voted
       // sortArray = itemsCache.votesAscSort.slice(itemsCache.votesAscSort.length - 1000)
 
       // 1000 most popular(votes/views)
+      // sortArray = itemsCache.ratingAscSort.slice(itemsCache.ratingAscSort.length - 1000)
+      break
+    case 2:
       sortArray = itemsCache.ratingAscSort.slice(itemsCache.ratingAscSort.length - 1000)
       break
-    // case 2:
     //   // 1000 most popular(votes/views)
     //   sortArray = itemsCache.ratingAscSort.slice(itemsCache.ratingAscSort.length - 1000)
     //   break
