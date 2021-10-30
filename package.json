@@ -10,6 +10,9 @@
   "dependencies": {
     "@n8tb1t/use-scroll-position": "^2.0.3",
     "@next/bundle-analyzer": "^9.5.5",
+    "babel-plugin-macros": "^3.0.1",
+    "babel-plugin-preval": "^5.0.0",
+    "babel-plugin-styled-components": "^1.11.1",
     "clsx": "^1.1.1",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
@@ -31,6 +34,7 @@
     "react-virtuoso": "^1.8.6",
     "styled-components": "^5.2.1",
     "tailwind-styled-components": "^2.0.3",
+    "twin.macro": "^2.3.1",
     "use-http": "^1.0.18",
     "windicss-webpack-plugin": "^1.5.3"
   },
