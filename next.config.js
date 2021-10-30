@@ -1,3 +1,5 @@
+const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
+
 const { i18n } = require('./next-i18next.config')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -16,7 +18,7 @@ module.exports =
 
     i18n,
 
-    webpack(config, options) {
+    webpack(config, { isServer }) {
       config.module.rules.push({
         test: /-asset\.svg$/i,
         use: [
@@ -36,6 +38,12 @@ module.exports =
         exclude: /(node_modules)|(asset\.svg)/,
         use: ['@svgr/webpack'],
       })
+
+      if (!isServer) {
+        config.resolve.fallback.fs = false;
+      }
+
+      config.plugins.push(new WindiCSSWebpackPlugin())
 
       return config
     },

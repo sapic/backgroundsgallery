@@ -6,6 +6,8 @@ import { apiUrl } from '@/lib/getApiUrl'
 import '../styles/globals.css'
 import withIdentity from '@/lib/withIdentity'
 
+import 'windi.css'
+
 function MyApp({ Component, pageProps }) {
   return (<>
     <Head>

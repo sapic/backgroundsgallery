@@ -4,7 +4,7 @@ import Head from 'next/head'
 // import Image from 'next/image'
 import Header from '@/components/Header'
 import styled from 'styled-components'
-import tw from "twin.macro"
+import tw from "tailwind-styled-components"
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link';
 
@@ -14,61 +14,47 @@ import LogoSvg from '@/assets/images/logo.svg'
 import SteamSvg from '@/assets/images/steam.svg'
 import SteamPointsSvg from '@/assets/images/steam_points.svg'
 
-const PageContainer = styled.div`
-  ${tw`
-    w-full max-w-md
-    flex flex-col
-    pt-16 mx-auto relative
+const PageContainer = tw.div`
+  w-full max-w-md
+  flex flex-col
+  pt-16 mx-auto relative
 
-    md:max-w-screen-md md:flex-row
-    xl:max-w-screen-lg 2xl:max-w-screen-xl
-  `}
+  md:max-w-screen-md md:flex-row
+  xl:max-w-screen-lg 2xl:max-w-screen-xl
 `
 
-const BackgroundContainer = styled.div`
-  width: 100%;
-  height: 0;
-  overflow: hidden;
-  padding-top: 65%;
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  ${tw`bg-center md:bg-top`}
+const BackgroundContainer = tw.div`
+  bg-center md:bg-top pt-[65%] w-full h-0 overflow-hidden
+  bg-no-repeat bg-contain
 `
 
-const InfoContainer = styled.div`
-  height: max-content;
-
-  ${tw`
-    rounded bg-gray-900 text-gray-100
-    pt-2 pb-4 px-4 m-2
-    md:w-80
-    flex flex-col
-
-    md:mx-0
-  `}
+const InfoContainer = tw.div`
+  rounded bg-gray-900 text-gray-100
+  pt-2 pb-4 px-4 m-2
+  md:w-80
+  flex flex-col
+  h-max
+  md:mx-0
 `
 
-const BackgroundTitle = styled.h1`
-  ${tw`text-lg font-bold`}
+const BackgroundTitle = tw.h1`
+  text-lg font-bold
 `
 
-const BackgroundGame = styled.h3`
-  ${tw`cursor-pointer font-semibold hover:text-blue-300`}
+const BackgroundGame = tw.h3`
+  cursor-pointer font-semibold hover:text-blue-300 m-0 text-base
 `
 
-const StatsContainer = styled.div`
-  ${tw`flex -mx-2 mt-2`}
+const StatsContainer = tw.div`
+  flex -mx-2 mt-2
 `
 
-const LinksContainer = styled.div`
-  ${tw`flex flex-col mt-2 space-y-2`}
+const LinksContainer = tw.div`
+  flex flex-col mt-2 space-y-2
 `
 
-const StatsItem = styled.div`
-  ${tw`
-    flex-row flex items-center text-sm
-  `}
+const StatsItem = tw.div`
+  flex-row flex items-center text-sm
 `
 
 const EyeIcon = styled(EyeSvg)`
@@ -85,34 +71,22 @@ const StarIcon = styled(StarSvg)`
   height: 13px;
 `
 
-const LogoIcon = styled(LogoSvg)`
-  width: 20px;
-  height: 20px;
-
-  ${tw`mr-2`}
+const LogoIcon = tw(LogoSvg)`
+  mr-2 h-5 w-5
 `
 
-const SteamIcon = styled(SteamSvg)`
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-  color: white;
-
-  ${tw`mr-2`}
+const SteamIcon = tw(SteamSvg)`
+  mr-2 h-5 w-5 text-white fill-current
 `
 
-const PointsIcon = styled(SteamPointsSvg)`
-  width: 20px;
-  height: 20px;
-
-  ${tw`mr-2`}
+const BgLink = tw.a`
+  flex items-center cursor-pointer
+  hover:text-blue-300
 `
 
-const BgLink = styled.a`
-${tw`
-    flex items-center cursor-pointer
-    hover:text-blue-300
-  `}
+
+const PointsIcon = tw(SteamPointsSvg)`
+  mr-2 w-5 h-5
 `
 
 function Background({ bgInfo }) {

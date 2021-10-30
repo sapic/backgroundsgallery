@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 // import { parseCookies } from 'nookies'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import tw from "twin.macro"
+import tw from "tailwind-styled-components"
 import { useCookies } from 'react-cookie'
 
 import Header from '../components/Header'
@@ -24,13 +24,8 @@ const CenterDiv = styled.div`
   transform: translateX(-50%) translateY(-50%);
 `
 
-const BackgroundsContainer = styled.div`
-  ${tw`w-full flex pt-16 flex-col md:flex-row`}
-  height: 100vh;
-
-  @media (max-width: 964px) {
-    max-height: -webkit-fill-available;
-  }
+const BackgroundsContainer = tw.div`
+  w-full flex pt-16 flex-col md:flex-row h-screen lg:max-h-max
 `
 
 function preloadImage(url) {
@@ -209,7 +204,7 @@ function Home({ origin, startBgs }) {
 
         <CenterDiv className="absolute">
           <div className={clsx([
-            'w-16 h-16 rounded-full bg-white leading-16 text-center bg-gray-900 text-white shadow-xl',
+            'w-16 h-16 rounded-full leading-16 text-center bg-gray-900 text-white shadow-xl',
             'mr-28 md:mr-0 mt-0 md:mt-0'
           ])}>
             VS
@@ -218,7 +213,7 @@ function Home({ origin, startBgs }) {
         <CenterDiv className="absolute">
           <div className={clsx(
             "ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full",
-            "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
+            "leading-24 text-center bg-gray-900 text-white shadow-xl",
             "transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer",
             'select-none'
           )}

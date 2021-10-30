@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import ImagePreview from '@/components/ImagePreviewVirtuoso'
 import styled from 'styled-components'
 import { useState, useEffect, useMemo, useRef } from 'react'
-import tw from "twin.macro"
+import tw from "tailwind-styled-components"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
@@ -28,25 +28,21 @@ import { Virtuoso } from 'react-virtuoso'
 //   height: 192px;
 // `
 
-const SortButton = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer`}
+const SortButton = tw.div`
+  p-2 rounded mx-2 cursor-pointer
 `
 
-const SortButtonViolet = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer`}
-  background: #aa076b;
-  background: linear-gradient(45deg,#61045f,#aa076b);
+const SortButtonViolet = tw.div`
+  p-2 rounded mx-2 cursor-pointer
+  bg-[#aa076b] bg-gradient-to-tr from-[#61045f] to-[#aa076b]
 `
 
-const PaginationContainer = styled.div`
+const PaginationContainerStyled = styled.div`
   position: fixed;
   top: 72px;
   left: 50%;
   margin-left: 400px;
   display: none;
-  ${tw`
-    bg-gray-900 rounded text-white overflow-hidden w-16
-  `}
 
   @media (min-width: 964px) {
     display: block;
@@ -61,26 +57,20 @@ const PaginationContainer = styled.div`
   }
 `
 
-const PageNumberContainer = styled.a`
-  ${tw`
-    flex px-4 py-2 cursor-pointer select-none text-center items-center justify-center
-  `}
+const PaginationContainer = tw(PaginationContainerStyled)`
+  bg-gray-900 rounded text-white overflow-hidden w-16
 `
 
-const ImagePlaceholder = styled.div`
-  width: 25%;
-  height: 192px;
-  ${tw`p-1`}
-
-  @media (max-width: 560px) {
-    width: 50%;
-  }
+const PageNumberContainer = tw.a`
+  flex px-4 py-2 cursor-pointer select-none text-center items-center justify-center
 `
 
-const ImagePlaceholderInside = styled.div`
-  width: 100%;
-  height: 100%;
-  ${tw`bg-gray-500`}
+const ImagePlaceholder = tw.div`
+  width-1/2 sm:width-1/4 height-192px p-1
+`
+
+const ImagePlaceholderInside = tw.div`
+  bg-gray-500 w-full h-full
 `
 
 const ItemContainer = styled.div`

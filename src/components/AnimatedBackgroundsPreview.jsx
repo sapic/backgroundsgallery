@@ -3,12 +3,11 @@ import AnimatedPreview from './AnimatedPreview'
 import Link from 'next/link'
 
 import styled from 'styled-components'
-import tw from "twin.macro"
+import tw from "tailwind-styled-components"
 
-const SortButtonViolet = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer w-64 mx-auto mt-2 mb-4 text-white text-center`}
-  background: #aa076b;
-  background: linear-gradient(45deg,#61045f,#aa076b);
+const SortButtonViolet = tw.div`
+  p-2 rounded mx-2 cursor-pointer w-64 mx-auto mt-2 mb-4 text-white text-center
+  bg-[#aa076b] bg-gradient-to-tr from-[#61045f] to-[#aa076b]
 `
 
 const VideoRow = styled.div`
