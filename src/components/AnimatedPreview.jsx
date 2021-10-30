@@ -1,15 +1,27 @@
 import styled from 'styled-components'
-import tw from "tailwind-styled-components"
+import tw from "twin.macro"
 // import { useTranslation } from 'next-i18next'
 import Link from 'next/link';
 
 import EyeSvg from '@/assets/images/eye.svg'
 import StarSvg from '@/assets/images/star.svg'
 
-const ImageContainer = tw.a`
-  relative flex cursor-pointer
-  transform scale-100
-  w-full h-full
+const ImageContainer = styled.a`
+  /* width: 25%; */
+  /* height: 192px; */
+  width: 100%;
+  height: 100%;
+
+  ${tw`
+    relative flex cursor-pointer
+    transform scale-100 
+    // hover:scale-110 transition-all duration-150
+    // hover:z-10
+  `}
+
+  /* @media (max-width: 560px) {
+    width: 50%;
+  } */
 `
 
 const MiniImage = styled.div`
@@ -19,14 +31,19 @@ const MiniImage = styled.div`
   background-repeat: no-repeat;
 `
 
-const StatsOverlay = tw.div`
-  text-white absolute bottom-0 left-2 p-2
-  transform rounded
-  flex-row flex items-center truncate
+const StatsOverlay = styled.div`
+  ${tw`
+    text-white absolute bottom-0 left-2 p-2
+    transform rounded
+    flex-row flex items-center
+  `}
+  white-space: nowrap;
 `
 
-const StatsItem = tw.div`
-  flex-row flex items-center
+const StatsItem = styled.div`
+  ${tw`
+    flex-row flex items-center
+  `}
 `
 
 const EyeIcon = styled(EyeSvg)`

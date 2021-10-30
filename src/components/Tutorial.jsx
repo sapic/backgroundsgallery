@@ -20,7 +20,7 @@ export default function Tutorial() {
     showTutorial && <CenterDiv className="absolute">
       <div className={clsx(
         "w-80 h-80 p-4 shadow-md rounded flex justify-between flex-col",
-        "text-center bg-gray-900 text-white shadow-xl",
+        "bg-white text-center bg-gray-900 text-white shadow-xl",
         "transition-all duration-300 1hover:bg-green-500",
         'select-none'
       )}

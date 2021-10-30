@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styled from 'styled-components'
 import { useMemo, useRef, useState } from 'react'
-import tw from "tailwind-styled-components"
+import tw from "twin.macro"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { Virtuoso } from 'react-virtuoso'
@@ -10,41 +10,49 @@ import AnimatedPreview from '@/components/AnimatedPreview'
 import { apiUrl } from '@/lib/getApiUrl'
 import Header from '@/components/Header'
 
-const ImagePlaceholder = tw.div`
-  width-1/2 sm:width-1/4 height-192px p-1
+const ImagePlaceholder = styled.div`
+  width: 25%;
+  height: 384px;
+  ${tw`p-1`}
+
+  @media (max-width: 560px) {
+    width: 50%;
+  }
 `
 
-const ImagePlaceholderInside = tw.div`
-  bg-gray-500 w-full h-full
+const ImagePlaceholderInside = styled.div`
+  width: 100%;
+  height: 100%;
+  ${tw`bg-gray-500`}
 `
 
 const ItemContainer = styled.div`
-  /* padding: 0.5rem; */
-  width: 100%;
-  display: flex;
-  flex: none;
-  align-content: stretch;
-
-  @media(max-width: 1024px) {
-    width: 50%;
-  }
-
-  @media(max-width: 480px) {
+    /* padding: 0.5rem; */
     width: 100%;
-  }
-`
+    display: flex;
+    flex: none;
+    align-content: stretch;
+
+    @media (max-width: 1024px) {
+      width: 50%;
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  `
 
 const RowContainer = styled.div`
-height: 384px;
+  height: 384px;
 `
 
 const ListContainer = styled.div`
-display: flex;
-flex-wrap: wrap;
-`
+    display: flex;
+    flex-wrap: wrap;
+  `
 
-const SortButton = tw.div`
-  p-2 rounded mx-2 cursor-pointer
+const SortButton = styled.div`
+  ${tw`p-2 rounded mx-2 cursor-pointer`}
 `
 
 function Row({ item, still, ...props }) {

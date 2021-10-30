@@ -1,0 +1,15 @@
+{
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    "preval",
+    [
+      "styled-components",
+      {
+        "ssr": true
+      }
+    ],
+    "macros"
+  ]
+}
