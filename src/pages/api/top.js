@@ -30,7 +30,7 @@ export default withCacher(withCors(async (req, res) => {
         limit,
         offset,
         sort,
-        count: itemsCache.items.length,
+        count: itemsCache.items.length
       }
     })
   }
@@ -45,7 +45,7 @@ export default withCacher(withCors(async (req, res) => {
   if (start < 0) {
     start = 0
   }
-  let end = count - offset
+  const end = count - offset
 
   res.send({
     items: sortToReturn.slice(start, end).reverse(),
@@ -53,7 +53,7 @@ export default withCacher(withCors(async (req, res) => {
       limit,
       offset,
       sort,
-      count: itemsCache.items.length,
+      count: itemsCache.items.length
     }
   })
 }))

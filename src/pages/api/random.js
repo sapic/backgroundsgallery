@@ -17,7 +17,7 @@ export default withCacher(withCors(async (req, res) => {
   res.send(resbgs)
 }))
 
-function getAnimatedBackgrounds(itemsCache) {
+function getAnimatedBackgrounds (itemsCache) {
   const [index1, index2] = getRandomIndeces(itemsCache.animated.length)
 
   const randomBg1 = itemsCache.animated[index1]
@@ -28,7 +28,7 @@ function getAnimatedBackgrounds(itemsCache) {
   }]
 }
 
-function getStaticBackgrounds(itemsCache) {
+function getStaticBackgrounds (itemsCache) {
   const returnRatingType = Math.floor(Math.random() * 3)
   let sortArray
 
@@ -66,7 +66,7 @@ function getStaticBackgrounds(itemsCache) {
   }]
 }
 
-function getRandomIndeces(dataLength) {
+function getRandomIndeces (dataLength) {
   const index1 = Math.floor(Math.random() * dataLength)
   const random2 = Math.floor(Math.random() * dataLength)
 

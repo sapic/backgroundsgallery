@@ -1,7 +1,7 @@
 import withPassport from '../../lib/withPassport'
 import withDatabase from '../../lib/database'
 
-const disableVoting = process.env.DISABLE_VOTING ? true : false
+const disableVoting = !!process.env.DISABLE_VOTING
 
 export default withDatabase(withPassport(async (req, res) => {
   res.statusCode = 200
@@ -37,7 +37,7 @@ export default withDatabase(withPassport(async (req, res) => {
       const toInsert = {
         url: item.url,
         user_id: userId,
-        deviceId,
+        deviceId
       }
 
       if (deviceId) {
@@ -46,16 +46,16 @@ export default withDatabase(withPassport(async (req, res) => {
 
       votes.insertOne(toInsert)
 
-      const query = { url: item.url };
+      const query = { url: item.url }
       const update = {
         $set: {
-          url: item.url,
+          url: item.url
         },
         $inc: {
           votes: 1
         }
-      };
-      const options = { upsert: true };
+      }
+      const options = { upsert: true }
 
       votesTotal.updateOne(query, update, options)
     } else {
@@ -64,7 +64,7 @@ export default withDatabase(withPassport(async (req, res) => {
         appid: item.appid,
         defid: item.defid,
         user_id: userId,
-        deviceId,
+        deviceId
       }
 
       if (deviceId) {
@@ -75,18 +75,18 @@ export default withDatabase(withPassport(async (req, res) => {
 
       const query = {
         appid: item.appid,
-        defid: item.defid,
-      };
+        defid: item.defid
+      }
       const update = {
         $set: {
           appid: item.appid,
-          defid: item.defid,
+          defid: item.defid
         },
         $inc: {
           votes: 1
         }
-      };
-      const options = { upsert: true };
+      }
+      const options = { upsert: true }
 
       votesTotal.updateOne(query, update, options)
     }
@@ -95,38 +95,38 @@ export default withDatabase(withPassport(async (req, res) => {
   if (!isAnimated) {
     // static
     for (const bg of bgs) {
-      const query = { url: bg.url };
+      const query = { url: bg.url }
       const update = {
         $set: {
-          url: bg.url,
+          url: bg.url
         },
         $inc: {
           views: 1
         }
-      };
-      const options = { upsert: true };
+      }
+      const options = { upsert: true }
 
-      views.updateOne(query, update, options);
+      views.updateOne(query, update, options)
     }
   } else {
     // animated
     for (const bg of bgs) {
       const query = {
         appid: bg.appid,
-        defid: bg.defid,
-      };
+        defid: bg.defid
+      }
       const update = {
         $set: {
           appid: bg.appid,
-          defid: bg.defid,
+          defid: bg.defid
         },
         $inc: {
           views: 1
         }
-      };
-      const options = { upsert: true };
+      }
+      const options = { upsert: true }
 
-      views.updateOne(query, update, options);
+      views.updateOne(query, update, options)
     }
   }
 }))

@@ -29,11 +29,11 @@ passport.deserializeUser(async (serializedUser, done) => {
     return done(new Error(`User not found: ${serializedUser}`))
   }
 
-  done(null, serializedUser)
+  done(null, serializedUser as any)
 })
 
 // export middleware to wrap api/auth handlers
-export default fn => (req, res) => {
+const withPassport = fn => (req, res) => {
   passport.use(steam(req, res))
   // console.log('passport handler')
   // console.log('with passport fn', res.redirect.toString())
@@ -54,8 +54,8 @@ export default fn => (req, res) => {
     cookieSession({
       name: 'passportSession',
       signed: false,
-      domain: url.parse(req.url).host,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      domain: new url.URL(req.url).host,
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
     })(req, res, () =>
       passport.initialize()(req, res, () =>
         passport.session()(req, res, () => {
@@ -65,3 +65,5 @@ export default fn => (req, res) => {
     )
   })
 }
+
+export default withPassport

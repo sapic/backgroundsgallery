@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import styled from 'styled-components'
 import { useMemo, useRef, useState } from 'react'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { Virtuoso } from 'react-virtuoso'
 
 import AnimatedPreview from '@/components/AnimatedPreview'
-import { apiUrl } from '@/lib/getApiUrl'
+import { apiUrl } from '@/lib/getApiUrl.ts'
 import Header from '@/components/Header'
 
 const ImagePlaceholder = styled.div`
@@ -55,7 +55,7 @@ const SortButton = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer`}
 `
 
-function Row({ item, still, ...props }) {
+function Row ({ item, still }) {
   return item
     ? <AnimatedPreview
       key={item.defid}
@@ -68,7 +68,7 @@ function Row({ item, still, ...props }) {
     </ImagePlaceholder>
 }
 
-function Animated({ animatedBgs }) {
+function Animated ({ animatedBgs }) {
   const virtuosoRef = useRef(null)
   const { t } = useTranslation()
   const [still, setStill] = useState(false)
@@ -77,7 +77,7 @@ function Animated({ animatedBgs }) {
 
   const rows = useMemo(() => {
     const r = []
-    let j = 0;
+    let j = 0
 
     for (let i = 0; i < animatedBgs.length; i++) {
       if (i % itemsPerRow === 0) {
@@ -130,7 +130,6 @@ function Animated({ animatedBgs }) {
           <SortButton onClick={() => setStill(true)} className={still && 'bg-gray-500'}>{t('animated.disableAnimation')}</SortButton>
         </div>
 
-
         <Virtuoso
           ref={virtuosoRef}
           useWindowScroll
@@ -141,11 +140,11 @@ function Animated({ animatedBgs }) {
           components={{
             Item: ItemContainer,
             List: ListContainer,
-            ScrollSeekPlaceholder: ({ height, index }) => (
+            ScrollSeekPlaceholder: () => (
               <ItemContainer className="flex">
                 <ImagePlaceholder />
               </ItemContainer>
-            ),
+            )
           }}
 
           itemContent={index => <RowContainer className="flex w-full">
@@ -157,7 +156,7 @@ function Animated({ animatedBgs }) {
   )
 }
 
-export async function getServerSideProps({ locale, query }) {
+export async function getServerSideProps ({ locale }) {
   let animated = {}
 
   try {
@@ -170,8 +169,8 @@ export async function getServerSideProps({ locale, query }) {
     props: {
       animatedBgs: animated,
 
-      ...await serverSideTranslations(locale, ['common']),
-    },
+      ...await serverSideTranslations(locale, ['common'])
+    }
   }
 }
 

@@ -1,11 +1,11 @@
 import Head from 'next/head'
-import Link from 'next/link';
+import Link from 'next/link'
 
 import Header from '@/components/Header'
 import ImagePreview from '@/components/ImagePreviewVirtuoso'
 import styled from 'styled-components'
 import { useState, useEffect, useMemo, useRef } from 'react'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
@@ -14,7 +14,7 @@ import AnimatedBackgroundsPreview from '@/components/AnimatedBackgroundsPreview'
 import useFetch from 'use-http'
 // import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
-import { apiUrl } from '@/lib/getApiUrl'
+import { apiUrl } from '@/lib/getApiUrl.ts'
 
 // import TopList from '@/components/TopList'
 import { useRouter } from 'next/router'
@@ -117,7 +117,7 @@ const InvisibleListContainer = styled.div`
   display: none;
 `
 
-function Row({ item, ...props }) {
+function Row ({ item }) {
   return item
     ? <ImagePreview
       key={item.url}
@@ -128,14 +128,14 @@ function Row({ item, ...props }) {
     </ImagePlaceholder>
 }
 
-function Top({ startTop, animatedBgs }) {
+function Top ({ startTop, animatedBgs }) {
   const router = useRouter()
   const { page: spageFromQuery } = router.query
   const virtuosoRef = useRef(null)
   const { t } = useTranslation()
   const [visibleRange, setVisibleRange] = useState({
     startIndex: 0,
-    endIndex: 0,
+    endIndex: 0
   })
 
   const pageFromQuery = parseInt(spageFromQuery)
@@ -195,7 +195,7 @@ function Top({ startTop, animatedBgs }) {
 
   const rows = useMemo(() => {
     const r = []
-    let j = 0;
+    let j = 0
 
     for (let i = 0; i < filledArray.length; i++) {
       if (i % itemsPerRow === 0) {
@@ -218,7 +218,7 @@ function Top({ startTop, animatedBgs }) {
       setCurrentPage(avg)
       router.push(`/?page=${avg}`, `/?page=${avg}`, {
         scroll: false,
-        shallow: true,
+        shallow: true
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -226,7 +226,7 @@ function Top({ startTop, animatedBgs }) {
 
   const pages = useMemo(() => {
     const cr = currentPage
-    let newPages = cr < 5
+    const newPages = cr < 5
       ? [1, 2, 3, 4, 5, 6, pagesCount]
       : cr > pagesCount - 5
         ? [1, pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
@@ -294,11 +294,11 @@ function Top({ startTop, animatedBgs }) {
           components={{
             Item: ItemContainer,
             List: ListContainer,
-            ScrollSeekPlaceholder: ({ height, index }) => (
+            ScrollSeekPlaceholder: () => (
               <ItemContainer className="flex">
                 <ImagePlaceholder />
               </ItemContainer>
-            ),
+            )
           }}
 
           itemContent={index => <div className="flex w-full">
@@ -322,7 +322,7 @@ function Top({ startTop, animatedBgs }) {
 
                   router.push(`/?page=${i}`, `/?page=${i}`, {
                     scroll: false,
-                    shallow: true,
+                    shallow: true
                   })
                 }}
                 key={i + '' + index}
@@ -340,7 +340,7 @@ function Top({ startTop, animatedBgs }) {
   )
 }
 
-export async function getServerSideProps({ locale, query }) {
+export async function getServerSideProps ({ locale, query }) {
   let top = {}
   let animated = {}
   let offset = 0
@@ -363,8 +363,8 @@ export async function getServerSideProps({ locale, query }) {
       startTop: top,
       animatedBgs: animated,
 
-      ...await serverSideTranslations(locale, ['common']),
-    }, // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common'])
+    } // will be passed to the page component as props
   }
 }
 

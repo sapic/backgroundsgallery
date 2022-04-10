@@ -1,9 +1,9 @@
-import Document, { Html, Main, Head as DocumentHead, NextScript } from "next/document";
+import Document, { Html, Main, Head as DocumentHead, NextScript } from 'next/document'
 
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+  static async getInitialProps (ctx) {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
 
@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+            sheet.collectStyles(<App {...props} />)
         })
 
       const initialProps = await Document.getInitialProps(ctx)
@@ -22,14 +22,14 @@ export default class MyDocument extends Document {
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>
-        ),
+        )
       }
     } finally {
       sheet.seal()
     }
   }
 
-  render() {
+  render () {
     return (
       <Html>
         <DocumentHead>
@@ -47,7 +47,7 @@ export default class MyDocument extends Document {
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=G-J8E51S5C1T`}
+            src={'https://www.googletagmanager.com/gtag/js?id=G-J8E51S5C1T'}
           />
           <script
             dangerouslySetInnerHTML={{
@@ -82,6 +82,6 @@ export default class MyDocument extends Document {
           </div>
         </body>
       </Html>
-    );
+    )
   }
 }

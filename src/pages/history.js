@@ -8,11 +8,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useCookies } from 'react-cookie'
 import { useTranslation } from 'next-i18next'
 
-function History() {
+function History () {
   const identity = useIdentity()
   const { t } = useTranslation()
 
-  const [cookies] = useCookies(['bgsspid']);
+  const [cookies] = useCookies(['bgsspid'])
   const deviceId = cookies.bgsspid
 
   const description = 'Best steam backgrounds collection! Find your favorite! Your votes history.'
@@ -50,11 +50,11 @@ function History() {
   )
 }
 
-export async function getServerSideProps({ locale }) {
+export async function getServerSideProps ({ locale }) {
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common']),
-    }, // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common'])
+    } // will be passed to the page component as props
   }
 }
 

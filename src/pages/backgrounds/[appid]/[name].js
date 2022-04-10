@@ -1,12 +1,12 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { apiUrl } from '@/lib/getApiUrl'
+import { apiUrl } from '@/lib/getApiUrl.ts'
 import Head from 'next/head'
 // import Image from 'next/image'
 import Header from '@/components/Header'
 import styled from 'styled-components'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 import { useTranslation } from 'next-i18next'
-import Link from 'next/link';
+import Link from 'next/link'
 
 import EyeSvg from '@/assets/images/eye.svg'
 import StarSvg from '@/assets/images/star.svg'
@@ -115,7 +115,7 @@ ${tw`
   `}
 `
 
-function Background({ bgInfo }) {
+function Background ({ bgInfo }) {
   const { t } = useTranslation()
 
   const shareUrl = `https://backgrounds.gallery/backgrounds/${bgInfo.url}`
@@ -215,7 +215,7 @@ function Background({ bgInfo }) {
   </div >
 }
 
-export async function getServerSideProps({ locale, params }) {
+export async function getServerSideProps ({ locale, params }) {
   let bgInfo = {}
   const url = encodeURIComponent(`${params.appid}/${params.name}`)
   try {
@@ -229,10 +229,9 @@ export async function getServerSideProps({ locale, params }) {
       // startTop: top,
       bgInfo,
 
-      ...await serverSideTranslations(locale, ['common']),
-    }, // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common'])
+    } // will be passed to the page component as props
   }
 }
-
 
 export default Background

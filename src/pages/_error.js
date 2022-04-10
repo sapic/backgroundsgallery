@@ -1,4 +1,4 @@
-function Error({ statusCode }) {
+function Error ({ statusCode }) {
   return (
     <p>
       {statusCode

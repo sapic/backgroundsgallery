@@ -9,7 +9,6 @@ import { Strategy as SteamStrategy } from 'passport-steam'
 // with a user object, which will be exposed in the request as `req.user`
 // in api handlers after authentication.
 
-
 const strategy = (req, res) => {
   // console.log('steam strategy', req.headers.host, req.hostname)
 
@@ -30,7 +29,7 @@ const strategy = (req, res) => {
         id: profile.id,
         displayName: profile.displayName,
         profileUrl: identifier,
-        photos: profile.photos,
+        photos: profile.photos
       })
       // User.findByOpenID({ openId: identifier }, function (err, user) {
       //   return done(err, user);

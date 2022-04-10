@@ -1,7 +1,7 @@
 import withCors from '@/lib/withCors'
 import withCacher from '@/lib/withCacher'
 
-export default withCacher(withCors(async function handler(req, res) {
+export default withCacher(withCors(async function handler (req, res) {
   const { gameId } = req.query
 
   if (!gameId || gameId === '') {

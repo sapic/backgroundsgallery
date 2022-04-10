@@ -1,5 +1,7 @@
 // import { apiUrl } from '@/lib/getApiUrl'
+// import Knex from 'knex'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const bgs = require('@/assets/bgs_full.json')
 
 export default class Cacher {
@@ -7,11 +9,21 @@ export default class Cacher {
   lastUpdate = 0
   alreadyReturning = null
 
-  constructor({
+  cacheTime = 0
+  refreshTime = 0
+  parseFunctions: Array<(itemsCache: any, db?: KnexType) => any> = []
+  getDbClient: () => Promise<KnexType>
+
+  constructor ({
     getDbClient,
     cacheTime,
     refreshTime,
     parseFunctions = []
+  }: {
+    getDbClient: () => Promise<KnexType>,
+    cacheTime: number
+    refreshTime: number
+    parseFunctions: Array<(itemsCache: any, db?: KnexType) => any>
   }) {
     this.cacheTime = cacheTime
     this.refreshTime = refreshTime
@@ -21,7 +33,7 @@ export default class Cacher {
     this.updateCache()
   }
 
-  async getItems() {
+  async getItems () {
     if (Date.now() - this.lastUpdate < this.cacheTime) {
       if (Date.now() - this.lastUpdate > this.refreshTime) {
         this.updateCache()
@@ -33,19 +45,21 @@ export default class Cacher {
     return this.updateCache()
   }
 
-  async updateCache() {
+  async updateCache () {
     if (this.alreadyReturning) {
       return this.alreadyReturning
     }
 
     this.alreadyReturning = (async () => {
       const client = await this.getDbClient()
-      if (!client.isConnected()) await client.connect()
-      const db = client.db('test')
+
+      // if (!client.isConnected()) await client.connect()
+
+      // const db = client.db('test')
       let items = {}
 
       for (const func of this.parseFunctions) {
-        items = await func(items, db)
+        items = await func(items, client)
       }
 
       this.cached = items
@@ -60,7 +74,7 @@ export default class Cacher {
   }
 }
 
-async function getBackgroundsData(itemsCache, db) {
+async function getBackgroundsData (itemsCache, db) {
   console.log('fetch weighted in cache')
   const views = db.collection('views')
   const votesTotal = db.collection('votes_total')
@@ -116,7 +130,7 @@ async function getBackgroundsData(itemsCache, db) {
   return itemsCache
 }
 
-async function getAnimatedData(itemsCache, db) {
+async function getAnimatedData (itemsCache, db) {
   const animatedBgs = db.collection('animated_bgs')
 
   let bgs = await animatedBgs.find({}).toArray()
@@ -181,10 +195,11 @@ async function getAnimatedData(itemsCache, db) {
   return itemsCache
 }
 
-async function getAppsData(itemsCache, db) {
+async function getAppsData (itemsCache, db) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const appsJson = require('@/assets/apps.json')
 
-  let result = {}
+  const result = {}
   const { applist } = appsJson
   const { apps } = applist
 
@@ -197,8 +212,8 @@ async function getAppsData(itemsCache, db) {
   return itemsCache
 }
 
-function parseWithSorts(itemsCache) {
-  let response = itemsCache.items
+function parseWithSorts (itemsCache) {
+  const response = itemsCache.items
 
   // Generate sort arrays
   itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
@@ -208,8 +223,8 @@ function parseWithSorts(itemsCache) {
   return itemsCache
 }
 
-function parseWithGameId(itemsCache) {
-  let response = itemsCache.items
+function parseWithGameId (itemsCache) {
+  const response = itemsCache.items
 
   const withGameId = {}
 
@@ -228,8 +243,8 @@ function parseWithGameId(itemsCache) {
   return itemsCache
 }
 
-function parseToObject(itemsCache) {
-  let response = itemsCache.items
+function parseToObject (itemsCache) {
+  const response = itemsCache.items
 
   const newItems = {}
   for (const item of response) {
@@ -249,5 +264,5 @@ export {
 
   parseWithSorts,
   parseToObject,
-  parseWithGameId,
+  parseWithGameId
 }

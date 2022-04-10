@@ -1,9 +1,10 @@
 import withDatabase from '@/lib/database'
 import withPassport from '@/lib/withPassport'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const bgs = require('@/assets/bgs_full.json')
 
-export default withDatabase(withPassport(async function handler(req, res) {
+export default withDatabase(withPassport(async function handler (req, res) {
   if (!req.user || !req.user.id) {
     return res.send([])
   }

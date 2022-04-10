@@ -1,20 +1,20 @@
 import Head from 'next/head'
 // import styles from '../styles/Home.module.css'
-import clsx from 'clsx';
+import clsx from 'clsx'
 import styled from 'styled-components'
 // import useFetch from 'use-http'
 import { useState, useEffect } from 'react'
 // import { parseCookies } from 'nookies'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 import { useCookies } from 'react-cookie'
 
 import Header from '../components/Header'
 import Tutorial from '../components/Tutorial'
 import { BackgroundsScroller } from '../components/BackgroundsScroller'
 
-import { apiUrl } from '@/lib/getApiUrl'
+import { apiUrl } from '@/lib/getApiUrl.ts'
 
 // const bgs = require('../assets/bgs.json')
 
@@ -33,10 +33,10 @@ const BackgroundsContainer = styled.div`
   }
 `
 
-function preloadImage(url) {
-  return new Promise((resolve, reject) => {
+function preloadImage (url) {
+  return new Promise((resolve) => {
     // console.log('preload', url)
-    let img = new Image()
+    const img = new Image()
     img.onload = () => {
       // console.log('loaded')
       resolve()
@@ -45,20 +45,20 @@ function preloadImage(url) {
   })
 }
 
-function Home({ origin, startBgs }) {
+function Home ({ startBgs }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const { t } = useTranslation('common')
   const [bgs, setBgs] = useState(startBgs)
   const [bgsQueue, setBgsQueue] = useState([])
   const [isChanging, setIsChanging] = useState(false)
-  const [cookies, setCookie] = useCookies(['bgsspid', 'disable_hello']);
+  const [cookies, setCookie] = useCookies(['bgsspid', 'disable_hello'])
 
-  async function loadBgs() {
+  async function loadBgs () {
     if (window && window.gtag) {
       window.gtag('event', 'loadbg', {
-        'image': 'true'
-      });
+        image: 'true'
+      })
     }
 
     const bgs = await getNextBgs()
@@ -72,8 +72,7 @@ function Home({ origin, startBgs }) {
     }
   })
 
-
-  async function getNextBgs() {
+  async function getNextBgs () {
     if (bgsQueue.length > 0) {
       const bgs = bgsQueue.shift()
       setBgsQueue([...bgsQueue])
@@ -94,9 +93,9 @@ function Home({ origin, startBgs }) {
     return bgs
   }
 
-  async function populateQueue() {
+  async function populateQueue () {
     if (bgsQueue.length < 3) {
-      let queue = []
+      const queue = []
       for (let i = 0; i < 3; i++) {
         const bgs = await fetch(`${apiUrl}/api/random`).then(r => r.json())
         queue.push(bgs)
@@ -111,15 +110,15 @@ function Home({ origin, startBgs }) {
     }
   }
 
-  async function trackVote(item) {
+  async function trackVote (item) {
     if (window && window.gtag) {
       window.gtag('event', 'vote', {
-        'image': item ? 'true' : 'false'
-      });
+        image: item ? 'true' : 'false'
+      })
     }
 
     let deviceId
-    let val = cookies.bgsspid
+    const val = cookies.bgsspid
 
     if (val) {
       deviceId = val
@@ -128,7 +127,7 @@ function Home({ origin, startBgs }) {
     }
 
     setCookie('bgsspid', deviceId, {
-      maxAge: 30 * 24 * 60 * 60,
+      maxAge: 30 * 24 * 60 * 60
     })
 
     await fetch('/api/vote', {
@@ -138,12 +137,12 @@ function Home({ origin, startBgs }) {
         views: bgs
       }),
       headers: {
-        'Device-Id': deviceId,
+        'Device-Id': deviceId
       }
     })
   }
 
-  async function clickOnImage(item) {
+  async function clickOnImage (item) {
     if (isChanging) {
       return
     }
@@ -155,7 +154,7 @@ function Home({ origin, startBgs }) {
     setIsChanging(false)
   }
 
-  async function clickOnSkip() {
+  async function clickOnSkip () {
     trackVote()
     loadBgs()
   }
@@ -217,9 +216,9 @@ function Home({ origin, startBgs }) {
         </CenterDiv>
         <CenterDiv className="absolute">
           <div className={clsx(
-            "ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full",
-            "bg-white leading-24 text-center bg-gray-900 text-white shadow-xl",
-            "transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer",
+            'ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full',
+            'bg-white leading-24 text-center bg-gray-900 text-white shadow-xl',
+            'transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer',
             'select-none'
           )}
             onClick={() => { clickOnSkip() }}
@@ -245,13 +244,13 @@ const delay = (ms) => new Promise((resolve) => {
 //   if (parts.length === 2) return parts.pop().split(';').shift();
 // }
 
-function randomId() {
+function randomId () {
   const array = window.crypto.getRandomValues(new Uint8Array(16))
-  const hash = Array.prototype.map.call(new Uint8Array(array.buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+  const hash = Array.prototype.map.call(new Uint8Array(array.buffer), x => ('00' + x.toString(16)).slice(-2)).join('')
   return hash
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps (ctx) {
   // const cookies = parseCookies(ctx)
 
   let bgs = []
@@ -265,18 +264,18 @@ export async function getServerSideProps(ctx) {
     props: {
       // cookies,
       startBgs: bgs,
-      ...await serverSideTranslations(ctx.locale, ['common']),
+      ...await serverSideTranslations(ctx.locale, ['common'])
     }
   }
 }
 
-function useKeypress(key, action) {
+function useKeypress (key, action) {
   useEffect(() => {
-    function onKeyup(e) {
+    function onKeyup (e) {
       if (e.key === key) action()
     }
-    window.addEventListener('keyup', onKeyup);
-    return () => window.removeEventListener('keyup', onKeyup);
+    window.addEventListener('keyup', onKeyup)
+    return () => window.removeEventListener('keyup', onKeyup)
   })
 }
 

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import Header from '@/components/Header'
-import { apiUrl } from '@/lib/getApiUrl'
+import { apiUrl } from '@/lib/getApiUrl.ts'
 import { useMemo } from 'react'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Row } from '@/components/History/Row'
 import { useTranslation } from 'next-i18next'
 
-function Game({ gameBgs, gameId }) {
+function Game ({ gameBgs, gameId }) {
   const { t } = useTranslation()
 
   const itemsPerRow = typeof window !== 'undefined'
@@ -18,14 +18,13 @@ function Game({ gameBgs, gameId }) {
       : 4 // default 4
     : 4
 
-
   const rows = useMemo(() => {
     if (!gameBgs || !gameBgs.items) {
       return []
     }
 
     const r = []
-    let j = 0;
+    let j = 0
 
     for (let i = 0; i < gameBgs.items.length; i++) {
       if (i % itemsPerRow === 0) {
@@ -77,7 +76,7 @@ function Game({ gameBgs, gameId }) {
   )
 }
 
-export async function getServerSideProps({ locale, params }) {
+export async function getServerSideProps ({ locale, params }) {
   let gameBgs = {}
   try {
     gameBgs = await fetch(`${apiUrl}/api/games/${params.id}`).then(r => r.json())
@@ -90,8 +89,8 @@ export async function getServerSideProps({ locale, params }) {
       gameBgs,
       gameId: params.id,
 
-      ...await serverSideTranslations(locale, ['common']),
-    }, // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common'])
+    } // will be passed to the page component as props
   }
 }
 

@@ -1,8 +1,9 @@
 import withDatabase from '../../../lib/database'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const bgs = require('../../../assets/bgs_full.json')
 
-export default withDatabase(async function handler(req, res) {
+export default withDatabase(async function handler (req, res) {
   const { did } = req.query
 
   if (!did || did === '') {

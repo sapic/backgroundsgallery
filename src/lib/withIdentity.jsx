@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 // import nextCookie from 'next-cookies'
-import redirect from './redirect'
+import redirect from './redirect.ts'
 import NextApp from 'next/app'
-import { CookiesProvider, Cookies } from "react-cookie";
+import { CookiesProvider, Cookies } from 'react-cookie'
 
-const isBrowser = () => typeof window !== "undefined";
+const isBrowser = () => typeof window !== 'undefined'
 
 // export interface UserIdentity {
 //   id: number
@@ -34,16 +34,16 @@ export const redirectToLogin = (ctx) => {
 // any is needed to use as JSX element
 const withIdentity = (App) => {
   return class IdentityProvider extends React.Component {
-    static getCookies(ctx) {
+    static getCookies (ctx) {
       if (ctx && ctx.req && ctx.req.headers.cookie) {
-        return new Cookies(ctx.req.headers.cookie);
+        return new Cookies(ctx.req.headers.cookie)
       }
 
-      return new Cookies();
+      return new Cookies()
     }
 
-    static displayName = `IdentityProvider(MyApp)`
-    static async getInitialProps(
+    static displayName = 'IdentityProvider(MyApp)'
+    static async getInitialProps (
       ctx
     ) {
       // Get inner app's props
@@ -54,7 +54,7 @@ const withIdentity = (App) => {
         appProps = { pageProps: {} }
       }
 
-      const cookies = this.getCookies(ctx.ctx);
+      const cookies = this.getCookies(ctx.ctx)
       const { passportSession } = cookies.cookies
 
       // Redirect to login if page is protected but no session exists
@@ -71,7 +71,7 @@ const withIdentity = (App) => {
         const serializedCookie = Buffer.from(passportSession, 'base64').toString()
 
         const {
-          passport: { user },
+          passport: { user }
         } = JSON.parse(serializedCookie)
         session = user
       }
@@ -86,11 +86,11 @@ const withIdentity = (App) => {
       return {
         ...appProps,
         session,
-        cookies,
+        cookies
       }
     }
 
-    render() {
+    render () {
       const { session, cookies, ...appProps } = this.props
 
       return (
