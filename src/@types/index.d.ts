@@ -14,6 +14,12 @@ declare global {
   }
 }
 
+declare module 'next' {
+  interface NextApiRequest {
+    db: KnexType
+  }
+}
+
 // declare module '@types/express' {
 //   export interface User {
 //     id: string

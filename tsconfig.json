@@ -20,6 +20,11 @@
     "incremental": true,
     "isolatedModules": true,
     "noImplicitAny": false,
+
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": [
     "next-env.d.ts",

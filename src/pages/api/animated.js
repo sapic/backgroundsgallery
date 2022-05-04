@@ -1,5 +1,5 @@
-import withCors from '../../lib/withCors.ts'
-import withCacher from '../../lib/withCacher.ts'
+import withCors from '../../lib/withCors'
+import withCacher from '../../lib/withCacher'
 
 export default withCacher(withCors(async (req, res) => {
   const itemsCache = await req.Cacher.getItems()

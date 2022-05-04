@@ -1,5 +1,5 @@
 import withPassport from '../../lib/withPassport'
-import withDatabase from '../../lib/database'
+import withDatabase from '@/lib/database'
 
 const disableVoting = !!process.env.DISABLE_VOTING
 
@@ -33,7 +33,7 @@ export default withDatabase(withPassport(async (req, res) => {
   if (item) {
     if (!isAnimated) {
       // static
-      const toInsert: any = {
+      const toInsert = {
         url: item.url,
         user_id: userId,
       }
@@ -52,7 +52,7 @@ export default withDatabase(withPassport(async (req, res) => {
       })
     } else {
       // animated
-      const toInsert: any = {
+      const toInsert = {
         appid: item.appid,
         defid: item.defid,
         user_id: userId,

@@ -6,6 +6,8 @@ import { apiUrl } from '../lib/getApiUrl'
 import '../styles/globals.css'
 import withIdentity from '../lib/withIdentity'
 
+const identity = withIdentity
+
 function MyApp ({ Component, pageProps }) {
   return (<>
     <Head>
@@ -18,7 +20,7 @@ function MyApp ({ Component, pageProps }) {
 }
 
 export default appWithTranslation(
-  withIdentity(
+  identity(
     MyApp,
   ),
 )
