@@ -9,14 +9,14 @@ module.exports =
   withBundleAnalyzer({
     inlineImageLimit: 1024,
 
-    pageExtensions: ['js', 'jsx', 'mdx'],
+    pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
     experimental: {
       modern: true,
     },
 
     i18n,
 
-    webpack (config, options) {
+    webpack (config) {
       config.module.rules.push({
         test: /-asset\.svg$/i,
         use: [

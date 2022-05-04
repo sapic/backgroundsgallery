@@ -6,7 +6,7 @@ import { apiUrl } from '../lib/getApiUrl'
 import '../styles/globals.css'
 import withIdentity from '../lib/withIdentity'
 
-const identity = withIdentity
+const identity = withIdentity as any
 
 function MyApp ({ Component, pageProps }) {
   return (<>

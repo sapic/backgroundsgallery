@@ -131,14 +131,14 @@ function Row ({ item }) {
 function Top ({ startTop, animatedBgs }) {
   const router = useRouter()
   const { page: spageFromQuery } = router.query
-  const virtuosoRef = useRef(null)
+  const virtuosoRef = useRef<HTMLElement>(null)
   const { t } = useTranslation()
   const [visibleRange, setVisibleRange] = useState({
     startIndex: 0,
     endIndex: 0,
   })
 
-  const pageFromQuery = parseInt(spageFromQuery)
+  const pageFromQuery = typeof spageFromQuery === 'string' ? parseInt(spageFromQuery) : 0
 
   const [currentPage, setCurrentPage] = useState(pageFromQuery || 1)
   const [sort, setSort] = useState(0)
@@ -163,7 +163,9 @@ function Top ({ startTop, animatedBgs }) {
         const indexToSroll = pageFromQuery === 1 ? 0 : ((pageFromQuery - 1) * rowsPerPage)
         const scrollOfset = (192 * indexToSroll) - 65
 
-        virtuosoRef.current.scrollTo({ top: scrollOfset })
+        if (virtuosoRef.current) {
+          virtuosoRef.current.scrollTo({ top: scrollOfset })
+        }
       }, 64)
     }
   }, [initialScrollHappened, pageFromQuery, rowsPerPage])
@@ -194,7 +196,7 @@ function Top ({ startTop, animatedBgs }) {
   }, [allData, startTop.meta.count])
 
   const rows = useMemo(() => {
-    const r = []
+    const r: any[] = []
     let j = 0
 
     for (let i = 0; i < filledArray.length; i++) {
@@ -283,7 +285,7 @@ function Top ({ startTop, animatedBgs }) {
         </div>
 
         <Virtuoso
-          ref={virtuosoRef}
+          ref={virtuosoRef as any}
           useWindowScroll
           rangeChanged={setVisibleRange}
           totalCount={rows.length}
@@ -308,27 +310,28 @@ function Top ({ startTop, animatedBgs }) {
 
         <PaginationContainer>
           {pages.map((i, index) => (
-            i === '...'
-              ? <div className="flex px-4 py-2 select-none text-center items-center justify-center">...</div>
-              : <PageNumberContainer
-                href={`/?page=${i}`}
-                className={i === currentPage && 'bg-gray-500'}
-                onClick={(e) => {
-                  e.preventDefault()
+            <PageNumberContainer
+              href={`/?page=${i}`}
+              className={i === currentPage && 'bg-gray-500'}
+              onClick={(e) => {
+                e.preventDefault()
 
-                  const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
-                  const scrollOfset = (192 * indexToSroll) - 65
+                const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
+                const scrollOfset = (192 * indexToSroll) - 65
+
+                if (virtuosoRef.current) {
                   virtuosoRef.current.scrollTo({ top: scrollOfset })
+                }
 
-                  router.push(`/?page=${i}`, `/?page=${i}`, {
-                    scroll: false,
-                    shallow: true,
-                  })
-                }}
-                key={i + '' + index}
-              >
-                {i}
-              </PageNumberContainer>
+                router.push(`/?page=${i}`, `/?page=${i}`, {
+                  scroll: false,
+                  shallow: true,
+                })
+              }}
+              key={i + '' + index}
+            >
+              {i}
+            </PageNumberContainer>
           ))}
         </PaginationContainer>
       </div>
