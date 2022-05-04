@@ -3,8 +3,8 @@ import tw from "twin.macro"
 // import { useTranslation } from 'next-i18next'
 import Link from 'next/link';
 
-import EyeSvg from '@/assets/images/eye.svg'
-import StarSvg from '@/assets/images/star.svg'
+import EyeSvg from '../assets/images/eye.svg'
+import StarSvg from '../assets/images/star.svg'
 
 const ImageContainer = styled.a`
   width: 100%;

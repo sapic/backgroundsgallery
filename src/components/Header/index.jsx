@@ -1,13 +1,13 @@
-import Link from 'next/link';
-import { useIdentity } from '@/lib/withIdentity'
+import Link from 'next/link'
+import { useIdentity } from '../../lib/withIdentity'
 import { useRouter } from 'next/router'
-import clsx from 'clsx';
+import clsx from 'clsx'
 import { useTranslation } from 'next-i18next'
-import { useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie'
 
-import LogoSvg from '@/assets/images/logo.svg'
+import LogoSvg from '../../assets/images/logo.svg'
 
-export default function Header() {
+export default function Header () {
   const identity = useIdentity()
   const { pathname } = useRouter()
   const { t } = useTranslation()
@@ -21,8 +21,8 @@ export default function Header() {
     ])
   }>
     <div className={clsx([
-      "w-full relative mx-auto flex justify-between",
-      "max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl"
+      'w-full relative mx-auto flex justify-between',
+      'max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl'
     ])}>
       <div className="flex">
         {/* <div> */}
@@ -36,7 +36,7 @@ export default function Header() {
         <div className="flex mx-4">
           <Link href="/">
             <a className={clsx([
-              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
+              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
               (pathname === '/') && 'text-blue-300'
             ])}>
               {t('header.top')}
@@ -44,7 +44,7 @@ export default function Header() {
           </Link>
           <Link href="/animated">
             <a className={clsx([
-              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
+              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
               (pathname === '/animated') && 'text-blue-300'
             ])}>
               {t('header.animated')}
@@ -53,7 +53,7 @@ export default function Header() {
 
           <Link href="/battle">
             <a className={clsx([
-              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
+              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
               pathname === '/battle' && 'text-blue-300'
             ])}>
               {t('header.battle')}
@@ -61,7 +61,7 @@ export default function Header() {
           </Link>
           {(identity || cookies.bgsspid) && <Link href="/history">
             <a className={clsx([
-              "flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4",
+              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
               pathname === '/history' && 'text-blue-300'
             ])}>
               {t('header.history')}
@@ -70,14 +70,13 @@ export default function Header() {
         </div>
       </div>
 
-
       {identity && identity.id
         ? (
           <div className="flex items-center">
             <img className="w-12 h-12 rounded-full" alt="" src={identity.photos[0].value} ></img>
             <a className="ml-4 align-middle text-sm md:text-lg" href="/api/logout">{t('header.logout')}</a>
           </div>
-        )
+          )
         : <div className="flex flex-col justify-center text-sm md:text-lg">
           <a href="/api/auth/steam">{t('header.login')}</a>
         </div>

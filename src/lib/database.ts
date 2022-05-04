@@ -29,8 +29,10 @@ async function getDatabaseClient () {
   return knex
 }
 
-export default fn => (req, res) =>
+const withDatabase = fn => (req, res) =>
   database(req, res, () => fn(req, res))
+
+export default withDatabase
 
 export {
   getDatabaseClient

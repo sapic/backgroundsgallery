@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 import Header from '../components/Header'
 import { DeviceHistory, UserHistory } from '../components/History'
-import { useIdentity } from '@/lib/withIdentity'
+import { useIdentity } from '../lib/withIdentity'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useCookies } from 'react-cookie'

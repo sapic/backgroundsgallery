@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
-import Header from '@/components/Header'
-import { apiUrl } from '@/lib/getApiUrl.ts'
+import Header from '../components/Header'
+import { apiUrl } from '../lib/getApiUrl'
 import { useMemo } from 'react'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'

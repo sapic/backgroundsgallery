@@ -3,7 +3,7 @@
 import withPassport, { passport } from '../../../lib/withPassport'
 
 const handler = (req, res) => {
-  passport.authenticate('steam')(req, res, (...args) => {
+  passport.authenticate('steam')(req, res, () => {
     // console.log('passport authenticated', args)
   })
 }

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 // import { useTranslation } from 'next-i18next'
-import Link from 'next/link';
+import Link from 'next/link'
 
-import EyeSvg from '@/assets/images/eye.svg'
-import StarSvg from '@/assets/images/star.svg'
+import EyeSvg from '../assets/images/eye.svg'
+import StarSvg from '../assets/images/star.svg'
 
 const ImageContainer = styled.a`
   /* width: 25%; */
@@ -65,8 +65,7 @@ const MiniVideo = styled.video`
   width: 100%;
 `
 
-
-export default function ImagePreview({ item, big, still }) {
+export default function ImagePreview ({ item, big, still }) {
   // const { t } = useTranslation()
   const wembmSrc = big
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`
@@ -77,7 +76,6 @@ export default function ImagePreview({ item, big, still }) {
     : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieMp4Small}`
 
   const imgSrc = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemImageLarge}`
-
 
   return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`} passHref>
     <ImageContainer className="group">

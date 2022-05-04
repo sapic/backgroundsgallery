@@ -1,13 +1,13 @@
-// import { apiUrl } from '@/lib/getApiUrl'
+// import { apiUrl } from '../lib/getApiUrl'
 // import Knex from 'knex'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const bgs = require('@/assets/bgs_full.json')
+const bgs = require('../assets/bgs_full.json')
 
 export default class Cacher {
   cached = {}
   lastUpdate = 0
-  alreadyReturning = null
+  alreadyReturning: any = null
 
   cacheTime = 0
   refreshTime = 0
@@ -76,22 +76,22 @@ export default class Cacher {
 
 async function getBackgroundsData (itemsCache, db) {
   console.log('fetch weighted in cache')
-  const views = db.collection('views')
-  const votesTotal = db.collection('votes_total')
+  const views = await db('views').select()
+  const votesTotal = await db('votes_total').select()
 
-  const viewsDocs = await views.find().toArray()
-  const votesDocs = await votesTotal.find().toArray()
+  // const viewsDocs = await views.find().toArray()
+  // const votesDocs = await votesTotal.find().toArray()
 
   const combined = {}
   const result = []
 
-  for (const view of viewsDocs) {
+  for (const view of views) {
     combined[view.url] = {
       views: view.views
     }
   }
 
-  for (const votes of votesDocs) {
+  for (const votes of votesTotal) {
     if (!combined[votes.url]) {
       console.log('no vote in combined')
     }
@@ -131,14 +131,11 @@ async function getBackgroundsData (itemsCache, db) {
 }
 
 async function getAnimatedData (itemsCache, db) {
-  const animatedBgs = db.collection('animated_bgs')
+  const animatedBgs = db('animated_bgs')
+  let bgs = await animatedBgs.select()
 
-  let bgs = await animatedBgs.find({}).toArray()
-  const views = db.collection('views_animated')
-  const votesTotal = db.collection('votes_total_animated')
-
-  const viewsDocs = await views.find().toArray()
-  const votesDocs = await votesTotal.find().toArray()
+  const viewsDocs = await db('views_animated').select()
+  const votesDocs = await db('votes_total_animated').select()
 
   const combined = {}
 
@@ -197,7 +194,7 @@ async function getAnimatedData (itemsCache, db) {
 
 async function getAppsData (itemsCache, db) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const appsJson = require('@/assets/apps.json')
+  const appsJson = require('../assets/apps.json')
 
   const result = {}
   const { applist } = appsJson

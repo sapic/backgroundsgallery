@@ -3,7 +3,7 @@ import AnimatedPreview from './AnimatedPreview'
 import Link from 'next/link'
 
 import styled from 'styled-components'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 
 const SortButtonViolet = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer w-64 mx-auto mt-2 mb-4 text-white text-center`}
@@ -16,7 +16,7 @@ const VideoRow = styled.div`
   box-sizing: border-box;
 `
 
-function Preview({ animatedBgs }) {
+function Preview ({ animatedBgs }) {
   // let { data = [] } = useFetch(`/api/animated`, {}, [])
 
   if (animatedBgs.length < 4) {

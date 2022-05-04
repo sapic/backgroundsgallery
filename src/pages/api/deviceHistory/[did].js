@@ -10,8 +10,8 @@ export default withDatabase(async function handler (req, res) {
     return res.send([])
   }
 
-  const votes = req.db.collection('votes')
-  const docs = await votes.find({ deviceId: did }).sort({ _id: -1 }).toArray()
+  const votes = req.db('votes')
+  const docs = await votes.where({ deviceId: did }).sort('created_at', 'DESC')
 
   const result = docs.map(d => bgs.find(bg => bg.url === d.url)).filter(d => d)
 

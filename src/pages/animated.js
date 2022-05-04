@@ -6,9 +6,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { Virtuoso } from 'react-virtuoso'
 
-import AnimatedPreview from '@/components/AnimatedPreview'
-import { apiUrl } from '@/lib/getApiUrl.ts'
-import Header from '@/components/Header'
+import AnimatedPreview from '../components/AnimatedPreview'
+import { apiUrl } from '../lib/getApiUrl'
+import Header from '../components/Header'
 
 const ImagePlaceholder = styled.div`
   width: 25%;

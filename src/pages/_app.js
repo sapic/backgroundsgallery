@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { appWithTranslation } from 'next-i18next'
 import { Provider } from 'use-http'
-import { apiUrl } from '@/lib/getApiUrl.ts'
+import { apiUrl } from '../lib/getApiUrl'
 
 import '../styles/globals.css'
-import withIdentity from '@/lib/withIdentity'
+import withIdentity from '../lib/withIdentity'
 
 function MyApp ({ Component, pageProps }) {
   return (<>

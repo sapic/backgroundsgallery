@@ -15,7 +15,7 @@ const handler = async (req, res) => {
   passport.authenticate('steam', {
     failureRedirect: '/auth',
     successRedirect: '/'
-  })(req, res, (...args) => {
+  })(req, res, () => {
     // console.log('auth callback', args)
     return true
   })

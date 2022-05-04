@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import tw from "twin.macro"
+import tw from 'twin.macro'
 // import { useTranslation } from 'next-i18next'
-import Link from 'next/link';
+import Link from 'next/link'
 
-import EyeSvg from '@/assets/images/eye.svg'
-import StarSvg from '@/assets/images/star.svg'
+import EyeSvg from '../assets/images/eye.svg'
+import StarSvg from '../assets/images/star.svg'
 
 const ImageContainer = styled.a`
   width: 25%;
@@ -57,8 +57,7 @@ const StarIcon = styled(StarSvg)`
   height: 16px;
 `
 
-
-export default function ImagePreview({ item }) {
+export default function ImagePreview ({ item }) {
   // const { t } = useTranslation()
   return <Link href={`/backgrounds/${item.url}`} passHref>
     <ImageContainer className="group">

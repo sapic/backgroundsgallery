@@ -14,7 +14,7 @@ import Header from '../components/Header'
 import Tutorial from '../components/Tutorial'
 import { BackgroundsScroller } from '../components/BackgroundsScroller'
 
-import { apiUrl } from '@/lib/getApiUrl.ts'
+import { apiUrl } from '../lib/getApiUrl'
 
 // const bgs = require('../assets/bgs.json')
 

@@ -1,18 +1,18 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { apiUrl } from '@/lib/getApiUrl.ts'
+import { apiUrl } from '../../../lib/getApiUrl'
 import Head from 'next/head'
 // import Image from 'next/image'
-import Header from '@/components/Header'
+import Header from '../../../components/Header'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 
-import EyeSvg from '@/assets/images/eye.svg'
-import StarSvg from '@/assets/images/star.svg'
-import LogoSvg from '@/assets/images/logo.svg'
-import SteamSvg from '@/assets/images/steam.svg'
-import SteamPointsSvg from '@/assets/images/steam_points.svg'
+import EyeSvg from '../../../assets/images/eye.svg'
+import StarSvg from '../../../assets/images/star.svg'
+import LogoSvg from '../../../assets/images/logo.svg'
+import SteamSvg from '../../../assets/images/steam.svg'
+import SteamPointsSvg from '../../../assets/images/steam_points.svg'
 
 const PageContainer = styled.div`
   ${tw`

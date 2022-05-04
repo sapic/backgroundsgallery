@@ -6,39 +6,36 @@ dotenv.config({
   path: '../.env.local'
 })
 
-
 const mongoUrl = process.env.MONGO_URL || ''
 
 const client = new MongoClient(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
+  useUnifiedTopology: true
+})
 
 console.log('l', bgs.length)
-async function main() {
-  if (!client.isConnected()) await client.connect();
+async function main () {
+  if (!client.isConnected()) await client.connect()
 
   const db = client.db('test')
-  const views = db.collection('views')
+  const views = db('views')
 
   let i = 0
   for (const bg of bgs) {
     i++
 
-    const query = { url: bg.url };
+    const query = { url: bg.url }
     const update = {
       $set: {
-        url: bg.url,
+        url: bg.url
       },
       $inc: {
         views: 0
       }
-    };
-    const options = { upsert: true };
+    }
+    const options = { upsert: true }
 
-
-    await views.updateOne(query, update, options);
+    await views.updateOne(query, update, options)
     console.log('bg', i)
   }
 

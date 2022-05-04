@@ -1,20 +1,20 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import Header from '@/components/Header'
-import ImagePreview from '@/components/ImagePreviewVirtuoso'
+import Header from '../components/Header'
+import ImagePreview from '../components/ImagePreviewVirtuoso'
 import styled from 'styled-components'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import tw from 'twin.macro'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
-import AnimatedBackgroundsPreview from '@/components/AnimatedBackgroundsPreview'
+import AnimatedBackgroundsPreview from '../components/AnimatedBackgroundsPreview'
 
 import useFetch from 'use-http'
 // import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
-import { apiUrl } from '@/lib/getApiUrl.ts'
+import { apiUrl } from '../lib/getApiUrl'
 
 // import TopList from '@/components/TopList'
 import { useRouter } from 'next/router'

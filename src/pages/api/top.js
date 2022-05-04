@@ -1,5 +1,5 @@
-import withCors from '@/lib/withCors'
-import withCacher from '@/lib/withCacher'
+import withCors from '../../lib/withCors.ts'
+import withCacher from '../../lib/withCacher.ts'
 
 const allowedTypes = [0, 1, 2]
 

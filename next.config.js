@@ -1,7 +1,7 @@
 const { i18n } = require('./next-i18next.config')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: process.env.ANALYZE === 'true'
 })
 
 module.exports =
@@ -11,12 +11,12 @@ module.exports =
 
     pageExtensions: ['js', 'jsx', 'mdx'],
     experimental: {
-      modern: true,
+      modern: true
     },
 
     i18n,
 
-    webpack(config, options) {
+    webpack (config, options) {
       config.module.rules.push({
         test: /-asset\.svg$/i,
         use: [
@@ -26,15 +26,15 @@ module.exports =
               publicPath: '/_next',
               name: 'static/media/[name].[hash].[ext]',
               esModule: false
-            },
-          },
-        ],
+            }
+          }
+        ]
       })
 
       config.module.rules.unshift({
         test: /\.svg$/,
         exclude: /(node_modules)|(asset\.svg)/,
-        use: ['@svgr/webpack'],
+        use: ['@svgr/webpack']
       })
 
       return config
