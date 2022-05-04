@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import clsx from 'clsx';
+import clsx from 'clsx'
 import { useState } from 'react'
 // import Cookies from 'universal-cookie';
 
@@ -9,20 +9,20 @@ const CenterDiv = styled.div`
   transform: translateX(-50%) translateY(-50%);
 `
 
-export default function Tutorial() {
+export default function Tutorial () {
   const [showTutorial, setShowTutorial] = useState(true)
-  function closeTutorial() {
+  function closeTutorial () {
     setShowTutorial(false)
-    document.cookie = `disable_hello=1;max-age=31557600`
+    document.cookie = 'disable_hello=1;max-age=31557600'
   }
 
   return (
     showTutorial && <CenterDiv className="absolute">
       <div className={clsx(
-        "w-80 h-80 p-4 shadow-md rounded flex justify-between flex-col",
-        "bg-white text-center bg-gray-900 text-white shadow-xl",
-        "transition-all duration-300 1hover:bg-green-500",
-        'select-none'
+        'w-80 h-80 p-4 shadow-md rounded flex justify-between flex-col',
+        'bg-white text-center bg-gray-900 text-white shadow-xl',
+        'transition-all duration-300 1hover:bg-green-500',
+        'select-none',
       )}
       >
         <div className="mt-2 text-lg font-bold">Steam BG Battle</div>

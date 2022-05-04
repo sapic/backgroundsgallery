@@ -63,7 +63,7 @@ export default function ImagePreview ({ item }) {
     <ImageContainer className="group">
       <MiniImage
         style={{
-          backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`
+          backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`,
         }}
         alt='background'
       />

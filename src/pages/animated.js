@@ -144,7 +144,7 @@ function Animated ({ animatedBgs }) {
               <ItemContainer className="flex">
                 <ImagePlaceholder />
               </ItemContainer>
-            )
+            ),
           }}
 
           itemContent={index => <RowContainer className="flex w-full">
@@ -169,8 +169,8 @@ export async function getServerSideProps ({ locale }) {
     props: {
       animatedBgs: animated,
 
-      ...await serverSideTranslations(locale, ['common'])
-    }
+      ...await serverSideTranslations(locale, ['common']),
+    },
   }
 }
 

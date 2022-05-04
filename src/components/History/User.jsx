@@ -1,18 +1,18 @@
 import { Row } from './Row'
 
-import clsx from 'clsx';
+import clsx from 'clsx'
 
 import useFetch from 'use-http'
 
-function User(props) {
+function User (props) {
   const { className } = props
   let rows = []
   const options = {} // these options accept all native `fetch` options\
 
-  let { data = [] } = useFetch(`/api/userHistory`, options, [])
+  const { data = [] } = useFetch('/api/userHistory', options, [])
 
   const r = []
-  let j = 0;
+  let j = 0
   const itemsPerRow = typeof window !== 'undefined'
     ? window.innerWidth < 560
       ? 2
@@ -33,7 +33,7 @@ function User(props) {
   return (<>
     <div className={clsx([
       className,
-      "bg-gray-900 py-2 px-4 rounded mt-2"
+      'bg-gray-900 py-2 px-4 rounded mt-2',
     ])}>
       <h1 className="text-white">View your Steam ID votes history</h1>
     </div>

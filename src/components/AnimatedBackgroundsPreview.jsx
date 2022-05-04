@@ -31,7 +31,7 @@ function Preview ({ animatedBgs }) {
       {animatedBgs.slice(0, 4).map((item, i) =>
         <div className="flex w-full overflow-hidden" key={i}>
           <AnimatedPreview item={item} />
-        </div>
+        </div>,
       )}
     </VideoRow>
 

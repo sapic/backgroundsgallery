@@ -5,7 +5,7 @@ import Cacher, {
 
   parseWithSorts,
   parseWithGameId,
-  parseToObject
+  parseToObject,
 } from './votesCacher'
 
 import { getDatabaseClient } from './database'
@@ -22,9 +22,9 @@ const cacher = new Cacher({
     // add custom sorts
     parseWithSorts,
     parseWithGameId,
-    parseToObject
+    parseToObject,
   ],
-  getDbClient: getDatabaseClient
+  getDbClient: getDatabaseClient,
 })
 
 // export middleware to wrap api/auth handlers

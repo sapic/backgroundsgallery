@@ -12,8 +12,8 @@ const knex = Knex({
     user: process.env.DB_USER || 'postgres',
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
     password: process.env.DB_PASS || 'test',
-    database: process.env.DB_NAME || 'bgbattle'
-  }
+    database: process.env.DB_NAME || 'bgbattle',
+  },
 })
 
 async function database (req, res, next) {
@@ -35,5 +35,5 @@ const withDatabase = fn => (req, res) =>
 export default withDatabase
 
 export {
-  getDatabaseClient
+  getDatabaseClient,
 }

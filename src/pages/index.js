@@ -135,7 +135,7 @@ function Top ({ startTop, animatedBgs }) {
   const { t } = useTranslation()
   const [visibleRange, setVisibleRange] = useState({
     startIndex: 0,
-    endIndex: 0
+    endIndex: 0,
   })
 
   const pageFromQuery = parseInt(spageFromQuery)
@@ -173,7 +173,7 @@ function Top ({ startTop, animatedBgs }) {
     onNewData: (_, newData) => {
       return [newData]
     },
-    data: [startTop]
+    data: [startTop],
   }, [startTop, sort])
 
   const filledArray = useMemo(() => {
@@ -218,7 +218,7 @@ function Top ({ startTop, animatedBgs }) {
       setCurrentPage(avg)
       router.push(`/?page=${avg}`, `/?page=${avg}`, {
         scroll: false,
-        shallow: true
+        shallow: true,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -298,7 +298,7 @@ function Top ({ startTop, animatedBgs }) {
               <ItemContainer className="flex">
                 <ImagePlaceholder />
               </ItemContainer>
-            )
+            ),
           }}
 
           itemContent={index => <div className="flex w-full">
@@ -322,7 +322,7 @@ function Top ({ startTop, animatedBgs }) {
 
                   router.push(`/?page=${i}`, `/?page=${i}`, {
                     scroll: false,
-                    shallow: true
+                    shallow: true,
                   })
                 }}
                 key={i + '' + index}
@@ -352,7 +352,7 @@ export async function getServerSideProps ({ locale, query }) {
   try {
     [top, animated] = await Promise.all([
       fetch(`${apiUrl}/api/top?limit=32&offset=${offset}`).then(r => r.json()),
-      fetch(`${apiUrl}/api/animated`).then(r => r.json())
+      fetch(`${apiUrl}/api/animated`).then(r => r.json()),
     ])
   } catch (e) {
     console.log('get bgs server side error', e)
@@ -363,8 +363,8 @@ export async function getServerSideProps ({ locale, query }) {
       startTop: top,
       animatedBgs: animated,
 
-      ...await serverSideTranslations(locale, ['common'])
-    } // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common']),
+    }, // will be passed to the page component as props
   }
 }
 

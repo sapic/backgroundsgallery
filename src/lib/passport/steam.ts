@@ -21,7 +21,7 @@ const strategy = (req, res) => {
     {
       returnURL: baseUrl + 'api/auth/callback/steam',
       realm: baseUrl,
-      apiKey: process.env.STEAM_API_KEY || ''
+      apiKey: process.env.STEAM_API_KEY || '',
     },
     function (identifier, profile, done) {
       // console.log('steam auth', identifier, profile, done)
@@ -29,12 +29,12 @@ const strategy = (req, res) => {
         id: profile.id,
         displayName: profile.displayName,
         profileUrl: identifier,
-        photos: profile.photos
+        photos: profile.photos,
       })
       // User.findByOpenID({ openId: identifier }, function (err, user) {
       //   return done(err, user);
       // });
-    }
+    },
     // (accessToken, refreshToken, githubProfile, cb) => {
     //   // Right now, the user's Github profile is supplied as the user
     //   // record. In a production-quality application, the Github profile should

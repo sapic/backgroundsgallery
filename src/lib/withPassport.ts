@@ -1,6 +1,6 @@
 import passport from 'passport'
 import cookieSession from 'cookie-session'
-import url from 'url'
+// import url from 'url'
 // import redirect from 'micro-redirect'
 import { steam } from './passport'
 // import { UserIdentity } from './withIdentity'
@@ -56,13 +56,13 @@ const withPassport = fn => (req, res) => {
       name: 'passportSession',
       signed: false,
       // domain: new url.URL(req.url).host,
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
     })(req, res, () =>
       passport.initialize()(req, res, () =>
         passport.session()(req, res, () => {
           resolve(fn(req, res))
-        })
-      )
+        }),
+      ),
     )
   })
 }

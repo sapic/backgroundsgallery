@@ -152,7 +152,7 @@ function Background ({ bgInfo }) {
 
     <PageContainer className="">
       <BackgroundContainer style={{
-        backgroundImage: `url(${bgInfo.steamUrl})`
+        backgroundImage: `url(${bgInfo.steamUrl})`,
       }} />
 
       <InfoContainer>
@@ -229,8 +229,8 @@ export async function getServerSideProps ({ locale, params }) {
       // startTop: top,
       bgInfo,
 
-      ...await serverSideTranslations(locale, ['common'])
-    } // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common']),
+    }, // will be passed to the page component as props
   }
 }
 

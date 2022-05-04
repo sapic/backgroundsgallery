@@ -18,7 +18,7 @@ export default class Cacher {
     getDbClient,
     cacheTime,
     refreshTime,
-    parseFunctions = []
+    parseFunctions = [],
   }: {
     getDbClient: () => Promise<KnexType>,
     cacheTime: number
@@ -83,11 +83,11 @@ async function getBackgroundsData (itemsCache, db) {
   // const votesDocs = await votesTotal.find().toArray()
 
   const combined = {}
-  const result = []
+  const result: any[] = []
 
   for (const view of views) {
     combined[view.url] = {
-      views: view.views
+      views: view.views,
     }
   }
 
@@ -118,11 +118,15 @@ async function getBackgroundsData (itemsCache, db) {
       continue
     }
 
+    const itemStats = {
+      popularity: item.votes / max,
+      goodness: item.votes / item.views,
+    }
+
     result.push({
       ...item,
       ...bgInfo,
-      popularity: item.votes / max,
-      goodness: item.votes / item.views
+      ...itemStats,
     })
   }
 
@@ -142,7 +146,7 @@ async function getAnimatedData (itemsCache, db) {
   for (const view of viewsDocs) {
     const key = `${view.appid}:${view.defid}`
     combined[key] = {
-      views: view.views
+      views: view.views,
     }
   }
 
@@ -261,5 +265,5 @@ export {
 
   parseWithSorts,
   parseToObject,
-  parseWithGameId
+  parseWithGameId,
 }

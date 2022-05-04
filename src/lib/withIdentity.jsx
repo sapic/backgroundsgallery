@@ -15,7 +15,7 @@ const isBrowser = () => typeof window !== 'undefined'
 //   session: UserIdentity
 // }
 const IdentityContext = React.createContext(
-  null
+  null,
 )
 
 const loginPage = '/auth/login'
@@ -44,7 +44,7 @@ const withIdentity = (App) => {
 
     static displayName = 'IdentityProvider(MyApp)'
     static async getInitialProps (
-      ctx
+      ctx,
     ) {
       // Get inner app's props
       let appProps
@@ -71,7 +71,7 @@ const withIdentity = (App) => {
         const serializedCookie = Buffer.from(passportSession, 'base64').toString()
 
         const {
-          passport: { user }
+          passport: { user },
         } = JSON.parse(serializedCookie)
         session = user
       }
@@ -86,7 +86,7 @@ const withIdentity = (App) => {
       return {
         ...appProps,
         session,
-        cookies
+        cookies,
       }
     }
 

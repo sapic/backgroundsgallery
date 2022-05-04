@@ -2,7 +2,7 @@ import Cors from 'cors'
 
 const cors = Cors({
   origin: '*',
-  methods: ['GET', 'HEAD', 'POST', 'PUT']
+  methods: ['GET', 'HEAD', 'POST', 'PUT'],
 })
 
 // export middleware to wrap api/auth handlers

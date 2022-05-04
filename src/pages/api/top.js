@@ -30,8 +30,8 @@ export default withCacher(withCors(async (req, res) => {
         limit,
         offset,
         sort,
-        count: itemsCache.items.length
-      }
+        count: itemsCache.items.length,
+      },
     })
   }
 
@@ -53,7 +53,7 @@ export default withCacher(withCors(async (req, res) => {
       limit,
       offset,
       sort,
-      count: itemsCache.items.length
-    }
+      count: itemsCache.items.length,
+    },
   })
 }))

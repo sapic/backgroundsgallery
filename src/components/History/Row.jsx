@@ -5,7 +5,7 @@ const RowContainer = styled.div`
   height: 192px;
 `
 
-export function Row(props) {
+export function Row (props) {
   const { row } = props
 
   return (

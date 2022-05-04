@@ -24,7 +24,7 @@ function getAnimatedBackgrounds (itemsCache) {
   const randomBg2 = itemsCache.animated[index2]
 
   return [randomBg1, randomBg2, {
-    type: 'animated'
+    type: 'animated',
   }]
 }
 
@@ -62,7 +62,7 @@ function getStaticBackgrounds (itemsCache) {
   const randomBg2 = sortArray[index2]
 
   return [randomBg1, randomBg2, {
-    type: 'static'
+    type: 'static',
   }]
 }
 

@@ -224,8 +224,8 @@ export async function getServerSideProps ({ locale, params }) {
       // startTop: top,
       bgInfo,
 
-      ...await serverSideTranslations(locale, ['common'])
-    } // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common']),
+    }, // will be passed to the page component as props
   }
 }
 

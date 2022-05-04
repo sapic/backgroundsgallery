@@ -91,7 +91,7 @@ export default function ImagePreview ({ item, big, still }) {
         </MiniVideo>
         : <MiniImage
           style={{
-            backgroundImage: `url(${imgSrc})`
+            backgroundImage: `url(${imgSrc})`,
           }}
           alt='background'
         />

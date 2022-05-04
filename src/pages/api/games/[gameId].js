@@ -18,6 +18,6 @@ export default withCacher(withCors(async function handler (req, res) {
 
   res.send({
     name,
-    items: bgs
+    items: bgs,
   })
 }))

@@ -17,12 +17,12 @@ export default function Header () {
     clsx([
       'flex fixed top-0 inset-x-0 z-100 h-16 items-center text-white',
       'bg-gray-900 border-b border-gray-800',
-      'px-4 md:px-0'
+      'px-4 md:px-0',
     ])
   }>
     <div className={clsx([
       'w-full relative mx-auto flex justify-between',
-      'max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl'
+      'max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl',
     ])}>
       <div className="flex">
         {/* <div> */}
@@ -37,7 +37,7 @@ export default function Header () {
           <Link href="/">
             <a className={clsx([
               'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              (pathname === '/') && 'text-blue-300'
+              (pathname === '/') && 'text-blue-300',
             ])}>
               {t('header.top')}
             </a>
@@ -45,7 +45,7 @@ export default function Header () {
           <Link href="/animated">
             <a className={clsx([
               'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              (pathname === '/animated') && 'text-blue-300'
+              (pathname === '/animated') && 'text-blue-300',
             ])}>
               {t('header.animated')}
             </a>
@@ -54,7 +54,7 @@ export default function Header () {
           <Link href="/battle">
             <a className={clsx([
               'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              pathname === '/battle' && 'text-blue-300'
+              pathname === '/battle' && 'text-blue-300',
             ])}>
               {t('header.battle')}
             </a>
@@ -62,7 +62,7 @@ export default function Header () {
           {(identity || cookies.bgsspid) && <Link href="/history">
             <a className={clsx([
               'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              pathname === '/history' && 'text-blue-300'
+              pathname === '/history' && 'text-blue-300',
             ])}>
               {t('header.history')}
             </a>

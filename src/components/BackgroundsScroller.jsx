@@ -1,8 +1,8 @@
 import {
   CSSTransition,
   TransitionGroup,
-} from 'react-transition-group';
-import clsx from 'clsx';
+} from 'react-transition-group'
+import clsx from 'clsx'
 import styled from 'styled-components'
 
 const VerticalCenterDiv = styled.div`
@@ -10,7 +10,7 @@ const VerticalCenterDiv = styled.div`
   transform: translateY(-50%);
 `
 
-function VideoForBg({ item, big }) {
+function VideoForBg ({ item, big }) {
   const wembmSrc = big
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`
     : `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebmSmall}`
@@ -31,7 +31,7 @@ function VideoForBg({ item, big }) {
   </video>
 }
 
-function ImageContainer(props) {
+function ImageContainer (props) {
   const { item, clickOnImage, isAnimated, ...restProps } = props
 
   return (
@@ -42,8 +42,8 @@ function ImageContainer(props) {
       {...restProps}
     >
       <div className={clsx(
-        "w-full flex flex-col justify-center",
-        "absolute h-full select-none cursor-pointer",
+        'w-full flex flex-col justify-center',
+        'absolute h-full select-none cursor-pointer',
         // "transform scale-105 hover:scale-110 transition-all duration-500"
       )} onClick={() => { clickOnImage(item) }}>
         <VerticalCenterDiv className="absolute w-full">
@@ -58,7 +58,7 @@ function ImageContainer(props) {
             'shadow-xl absolute bottom-12 md:bottom-48 left-1/2 w-64 md:w-128',
             'transform', '-translate-x-1/2',
             'transition-color duration-300 ease-out hover:bg-gray-800',
-            'hidden md:block'
+            'hidden md:block',
           )}
           onClick={(e) => {
             // e.preventDefault()
@@ -88,7 +88,7 @@ function ImageContainer(props) {
   )
 }
 
-function BackgroundsScroller(props) {
+function BackgroundsScroller (props) {
   const { bgs, clickOnImage } = props
 
   const [leftBg, rightBg, info] = bgs
@@ -120,5 +120,5 @@ function BackgroundsScroller(props) {
 }
 
 export {
-  BackgroundsScroller
+  BackgroundsScroller,
 }

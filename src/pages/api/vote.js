@@ -4,7 +4,6 @@ import withDatabase from '../../lib/database'
 const disableVoting = !!process.env.DISABLE_VOTING
 
 export default withDatabase(withPassport(async (req, res) => {
-  console.log('with db')
   res.statusCode = 200
   res.json({ status: 'ok' })
 
@@ -17,15 +16,12 @@ export default withDatabase(withPassport(async (req, res) => {
     bgs = [bgs[0], bgs[1]]
   }
 
-  console.log('x')
-
-  const votesCollectionName = isAnimated ? 'votes_animated' : 'votes'
-  const votesTotalCollectionName = isAnimated ? 'votes_total_animated' : 'votes_total'
-  const viewsCollectionName = isAnimated ? 'views_animated' : 'views'
-
-  const votes = req.db(votesCollectionName)
-  const votesTotal = req.db(votesTotalCollectionName)
-  const views = req.db(viewsCollectionName)
+  const votesStatic = req.db('votes')
+  const votesTotalStatic = req.db('votes_total')
+  const viewsStatic = req.db('views')
+  const votesAnimated = req.db('votes_animated')
+  const votesTotalAnimated = req.db('votes_total_animated')
+  const viewsAnimated = req.db('views_animated')
 
   const deviceId = req.headers['device-id']
 
@@ -39,110 +35,65 @@ export default withDatabase(withPassport(async (req, res) => {
       // static
       const toInsert = {
         url: item.url,
-        user_id: userId
+        user_id: userId,
       }
 
       if (deviceId) {
         toInsert.device_id = deviceId
       }
 
-      await votes.insert(toInsert)
+      await votesStatic.insert(toInsert)
 
-      await votesTotal.insert({
+      await votesTotalStatic.insert({
         url: item.url,
-        votes: 1
+        votes: 1,
       }).onConflict('url').merge({
-        votes: req.db.raw('EXCLUDED.votes + 1')
+        votes: req.db.raw('votes_total.votes + 1'),
       })
     } else {
       // animated
       const toInsert = {
         appid: item.appid,
         defid: item.defid,
-        user_id: userId
+        user_id: userId,
       }
 
       if (deviceId) {
         toInsert.device_id = deviceId
       }
 
-      await votes.insert(toInsert)
+      await votesAnimated.insert(toInsert)
 
-      await votesTotal.insert({
+      await votesTotalAnimated.insert({
         appid: item.appid,
         defid: item.defid,
-        votes: 1
+        votes: 1,
       }).onConflict(['appid', 'defid']).merge({
-        votes: req.db.raw('EXCLUDED.votes + 1')
+        votes: req.db.raw('votes_total_animated.votes + 1'),
       })
-
-      // const query = {
-      //   appid: item.appid,
-      //   defid: item.defid
-      // }
-      // const update = {
-      //   $set: {
-      //     appid: item.appid,
-      //     defid: item.defid
-      //   },
-      //   $inc: {
-      //     votes: 1
-      //   }
-      // }
-      // const options = { upsert: true }
-
-      // votesTotal.updateOne(query, update, options)
     }
   }
 
   if (!isAnimated) {
     // static
     for (const bg of bgs) {
-      await views.insert({
+      await viewsStatic.insert({
         url: bg.url,
-        views: 1
+        views: 1,
       }).onConflict('url').merge({
-        views: req.db.raw('EXCLUDED.views + 1')
+        views: req.db.raw('views.views + 1'),
       })
-      // const query = { url: bg.url }
-      // const update = {
-      //   $set: {
-      //     url: bg.url
-      //   },
-      //   $inc: {
-      //     views: 1
-      //   }
-      // }
-      // const options = { upsert: true }
-
-      // views.updateOne(query, update, options)
     }
   } else {
     // animated
     for (const bg of bgs) {
-      await views.insert({
+      await viewsAnimated.insert({
         appid: bg.appid,
         defid: bg.defid,
-        views: 1
+        views: 1,
       }).onConflict(['appid', 'defid']).merge({
-        views: req.db.raw('EXCLUDED.views + 1')
+        views: req.db.raw('views_animated.views + 1'),
       })
-      // const query = {
-      //   appid: bg.appid,
-      //   defid: bg.defid
-      // }
-      // const update = {
-      //   $set: {
-      //     appid: bg.appid,
-      //     defid: bg.defid
-      //   },
-      //   $inc: {
-      //     views: 1
-      //   }
-      // }
-      // const options = { upsert: true }
-
-      // views.updateOne(query, update, options)
     }
   }
 }))

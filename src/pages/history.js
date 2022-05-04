@@ -53,8 +53,8 @@ function History () {
 export async function getServerSideProps ({ locale }) {
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common'])
-    } // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common']),
+    }, // will be passed to the page component as props
   }
 }
 

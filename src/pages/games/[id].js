@@ -89,8 +89,8 @@ export async function getServerSideProps ({ locale, params }) {
       gameBgs,
       gameId: params.id,
 
-      ...await serverSideTranslations(locale, ['common'])
-    } // will be passed to the page component as props
+      ...await serverSideTranslations(locale, ['common']),
+    }, // will be passed to the page component as props
   }
 }
 

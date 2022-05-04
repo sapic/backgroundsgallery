@@ -1,5 +1,4 @@
 import Head from 'next/head'
-// import styles from '../styles/Home.module.css'
 import clsx from 'clsx'
 import styled from 'styled-components'
 // import useFetch from 'use-http'
@@ -57,7 +56,7 @@ function Home ({ startBgs }) {
   async function loadBgs () {
     if (window && window.gtag) {
       window.gtag('event', 'loadbg', {
-        image: 'true'
+        image: 'true',
       })
     }
 
@@ -113,7 +112,7 @@ function Home ({ startBgs }) {
   async function trackVote (item) {
     if (window && window.gtag) {
       window.gtag('event', 'vote', {
-        image: item ? 'true' : 'false'
+        image: item ? 'true' : 'false',
       })
     }
 
@@ -127,18 +126,18 @@ function Home ({ startBgs }) {
     }
 
     setCookie('bgsspid', deviceId, {
-      maxAge: 30 * 24 * 60 * 60
+      maxAge: 30 * 24 * 60 * 60,
     })
 
     await fetch('/api/vote', {
       method: 'POST',
       body: JSON.stringify({
         item,
-        views: bgs
+        views: bgs,
       }),
       headers: {
-        'Device-Id': deviceId
-      }
+        'Device-Id': deviceId,
+      },
     })
   }
 
@@ -208,8 +207,8 @@ function Home ({ startBgs }) {
 
         <CenterDiv className="absolute">
           <div className={clsx([
-            'w-16 h-16 rounded-full bg-white leading-16 text-center bg-gray-900 text-white shadow-xl',
-            'mr-28 md:mr-0 mt-0 md:mt-0'
+            'w-16 h-16 rounded-full leading-16 text-center bg-gray-900 text-white shadow-xl',
+            'mr-28 md:mr-0 mt-0 md:mt-0',
           ])}>
             VS
           </div>
@@ -217,9 +216,9 @@ function Home ({ startBgs }) {
         <CenterDiv className="absolute">
           <div className={clsx(
             'ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full',
-            'bg-white leading-24 text-center bg-gray-900 text-white shadow-xl',
+            'leading-24 text-center bg-gray-900 text-white shadow-xl',
             'transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer',
-            'select-none'
+            'select-none',
           )}
             onClick={() => { clickOnSkip() }}
           >
@@ -264,8 +263,8 @@ export async function getServerSideProps (ctx) {
     props: {
       // cookies,
       startBgs: bgs,
-      ...await serverSideTranslations(ctx.locale, ['common'])
-    }
+      ...await serverSideTranslations(ctx.locale, ['common']),
+    },
   }
 }
 

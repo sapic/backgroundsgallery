@@ -19,6 +19,6 @@ function MyApp ({ Component, pageProps }) {
 
 export default appWithTranslation(
   withIdentity(
-    MyApp
-  )
+    MyApp,
+  ),
 )

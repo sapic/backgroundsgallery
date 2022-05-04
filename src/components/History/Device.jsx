@@ -2,15 +2,15 @@ import { Row } from './Row'
 
 import useFetch from 'use-http'
 
-function Device(props) {
+function Device (props) {
   const { deviceId } = props
   let rows = []
   const options = {} // these options accept all native `fetch` options\
 
-  let { data = [] } = useFetch(`/api/deviceHistory/${deviceId}`, options, [])
+  const { data = [] } = useFetch(`/api/deviceHistory/${deviceId}`, options, [])
 
   const r = []
-  let j = 0;
+  let j = 0
   const itemsPerRow = typeof window !== 'undefined'
     ? window.innerWidth < 560
       ? 2
