@@ -3,14 +3,14 @@ const dotenv = require('dotenv')
 const bgs = require('./animated.json')
 
 dotenv.config({
-  path: '../.env.local'
+  path: '../.env.local',
 })
 
 const mongoUrl = process.env.MONGO_URL || ''
 
 const client = new MongoClient(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 
 console.log('l', bgs.length)

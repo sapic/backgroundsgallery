@@ -3,14 +3,14 @@ const dotenv = require('dotenv')
 const bgs = require('../src/assets/bgs_full.json')
 
 dotenv.config({
-  path: '../.env.local'
+  path: '../.env.local',
 })
 
 const mongoUrl = process.env.MONGO_URL || ''
 
 const client = new MongoClient(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 
 console.log('l', bgs.length)
@@ -27,11 +27,11 @@ async function main () {
     const query = { url: bg.url }
     const update = {
       $set: {
-        url: bg.url
+        url: bg.url,
       },
       $inc: {
-        views: 0
-      }
+        views: 0,
+      },
     }
     const options = { upsert: true }
 

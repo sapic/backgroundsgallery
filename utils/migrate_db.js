@@ -1,11 +1,11 @@
-const { MongoClient, ObjectId } = require('mongodb')
+const { MongoClient } = require('mongodb')
 const dotenv = require('dotenv')
 const Knex = require('knex')
 
 // const bgs = require('../src/assets/bgs_full.json')
 
 dotenv.config({
-  path: '.env.local'
+  path: '.env.local',
 })
 
 const mongoUrl = process.env.MONGO_URL || ''
@@ -14,7 +14,7 @@ const mongoUrl = process.env.MONGO_URL || ''
 
 const client = new MongoClient(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 
 const knex = Knex({
@@ -24,8 +24,8 @@ const knex = Knex({
     user: process.env.DB_USER || 'postgres',
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
     password: process.env.DB_PASS || 'test',
-    database: process.env.DB_NAME || 'bgbattle'
-  }
+    database: process.env.DB_NAME || 'bgbattle',
+  },
 })
 
 async function main () {
@@ -41,7 +41,7 @@ async function main () {
   // for (const view of viewsDocs) {
   await tx('views').insert(viewsDocs.map(view => ({
     url: view.url,
-    views: view.views
+    views: view.views,
   }))).onConflict().ignore()
   // }
 
@@ -50,7 +50,7 @@ async function main () {
   await tx('views_animated').insert(viewsAnimatedDocs.map(view => ({
     appid: view.appid,
     defid: view.defid,
-    views: view.views
+    views: view.views,
   }))).onConflict().ignore()
   // }
 
@@ -62,7 +62,7 @@ async function main () {
     url: vote.url,
     user_id: vote.user_id,
     device_id: vote.deviceId,
-    created_at: vote._id.getTimestamp()
+    created_at: vote._id.getTimestamp(),
   })), 1000)
   // }
 
@@ -75,7 +75,7 @@ async function main () {
     defid: vote.defid,
     user_id: vote.user_id,
     device_id: vote.deviceId,
-    created_at: vote._id.getTimestamp()
+    created_at: vote._id.getTimestamp(),
   })))
   // }
   // .onConflict().ignore()
@@ -86,7 +86,7 @@ async function main () {
   for (const vote of votesTotalDocs) {
     await tx('votes_total').insert({
       url: vote.url,
-      votes: vote.votes
+      votes: vote.votes,
     })
   }
 
@@ -95,7 +95,7 @@ async function main () {
     await tx('votes_total_animated').insert({
       appid: vote.appid,
       defid: vote.defid,
-      votes: vote.votes
+      votes: vote.votes,
     })
   }
 
@@ -119,7 +119,7 @@ async function main () {
 
       timestampAvailableEnd: bg.timestampAvailableEnd,
       usableDuration: bg.usableDuration,
-      bundleDiscount: bg.bundleDiscount
+      bundleDiscount: bg.bundleDiscount,
     })
   }
 
