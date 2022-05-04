@@ -33,7 +33,7 @@ export default withDatabase(withPassport(async (req, res) => {
   if (item) {
     if (!isAnimated) {
       // static
-      const toInsert = {
+      const toInsert: any = {
         url: item.url,
         user_id: userId,
       }
@@ -52,7 +52,7 @@ export default withDatabase(withPassport(async (req, res) => {
       })
     } else {
       // animated
-      const toInsert = {
+      const toInsert: any = {
         appid: item.appid,
         defid: item.defid,
         user_id: userId,

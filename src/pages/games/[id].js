@@ -1,12 +1,12 @@
 import Head from 'next/head'
 
-import Header from '../components/Header'
-import { apiUrl } from '../lib/getApiUrl'
+import Header from '../../components/Header'
+import { apiUrl } from '../../lib/getApiUrl'
 import { useMemo } from 'react'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import { Row } from '@/components/History/Row'
+import { Row } from '../../components/History/Row'
 import { useTranslation } from 'next-i18next'
 
 function Game ({ gameBgs, gameId }) {

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import ImagePreview from '@/components/ImagePreview'
+import ImagePreview from '../ImagePreview'
 
 const RowContainer = styled.div`
   height: 192px;

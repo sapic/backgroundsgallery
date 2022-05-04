@@ -1,5 +1,5 @@
-import withCors from '../../lib/withCors.ts'
-import withCacher from '../../lib/withCacher.ts'
+import withCors from '../../../lib/withCors.ts'
+import withCacher from '../../../lib/withCacher.ts'
 
 export default withCacher(withCors(async function handler (req, res) {
   const { gameId } = req.query
