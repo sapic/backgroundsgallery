@@ -12,8 +12,8 @@ export default withCacher(withCors(async (req: NextApiRequest, res: NextApiRespo
     return res.send({})
   }
 
-  const appid = parseInt(req.query.appid)
-  const defid = parseInt(req.query.defid)
+  const appid = req.query.appid
+  const defid = req.query.defid
 
   const item = itemsCache.animated.find(x => x.appid === appid && x.defid === defid)
 
