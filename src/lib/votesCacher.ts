@@ -233,9 +233,18 @@ function parseWithGameId (itemsCache) {
     const gameId = bg.url.split('-')[0].split('/')[1]
 
     if (withGameId[gameId]) {
-      withGameId[gameId].push(bg)
+      withGameId[gameId].static.push(bg)
     } else {
-      withGameId[gameId] = [bg]
+      withGameId[gameId] = { static: [bg], animated: [] }
+    }
+  }
+
+  const animated = itemsCache.animated
+  for (const bg of animated) {
+    if (withGameId[bg.appid]) {
+      withGameId[bg.appid].animated.push(bg)
+    } else {
+      withGameId[bg.appid] = { static: [], animated: [bg] }
     }
   }
 

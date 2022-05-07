@@ -13,12 +13,14 @@ export default withCacher(withCors(async function handler (req: NextApiRequest, 
 
   const bgs = items.games[gameId] || []
   let name = null
-  if (bgs.length > 0) {
-    name = bgs[0].game
+  if (bgs && bgs.static && bgs.static.length > 0) {
+    name = bgs.static[0].game
+  } else if (bgs && bgs.animated && bgs.animated.length > 0) {
+    name = bgs.animated[0].game
   }
 
   res.send({
     name,
-    items: bgs,
+    ...bgs,
   })
 }))

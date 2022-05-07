@@ -65,7 +65,7 @@ const MiniVideo = styled.video`
   width: 100%;
 `
 
-export default function ImagePreview ({ item, big, still }) {
+export default function AnimatedPreview ({ item, big, still }) {
   // const { t } = useTranslation()
   const wembmSrc = big
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`

@@ -1,6 +1,7 @@
-import { Background } from '.'
+import { AnimatedBg, StaticBg } from '.'
 
 export interface GameInfo {
   name: string;
-  items: Background[];
+  static: StaticBg[];
+  animated: AnimatedBg[];
 }

@@ -23,20 +23,39 @@ function Game ({ gameBgs, gameId }: {
     : 4
 
   const rows = useMemo(() => {
-    if (!gameBgs || !gameBgs.items) {
+    if (!gameBgs || !gameBgs.static) {
       return []
     }
 
     const r: Background[][] = []
     let j = 0
 
-    for (let i = 0; i < gameBgs.items.length; i++) {
+    for (let i = 0; i < gameBgs.static.length; i++) {
       if (i % itemsPerRow === 0) {
         r[j] = []
         j++
       }
 
-      r[j - 1].push(gameBgs.items[i])
+      r[j - 1].push(gameBgs.static[i])
+    }
+    return r
+  }, [gameBgs, itemsPerRow])
+
+  const animatedRows = useMemo(() => {
+    if (!gameBgs || !gameBgs.animated) {
+      return []
+    }
+
+    const r: Background[][] = []
+    let j = 0
+
+    for (let i = 0; i < gameBgs.animated.length; i++) {
+      if (i % itemsPerRow === 0) {
+        r[j] = []
+        j++
+      }
+
+      r[j - 1].push(gameBgs.animated[i])
     }
     return r
   }, [gameBgs, itemsPerRow])
@@ -72,11 +91,24 @@ function Game ({ gameBgs, gameId }: {
 
       <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         <div className="bg-gray-900 py-2 px-4 rounded mt-2">
-          <h1 className="text-white">{gameBgs.name}</h1>
+          <h1 className="text-white">Backgrounds from <strong>{gameBgs.name}</strong></h1>
         </div>
-        {rows.map((row, i) => <Row row={row} key={i} />)}
+
+        {rows.length > 0 && <>
+          <div className="bg-gray-900 py-2 px-4 rounded my-2">
+            <div className="text-white">Static backgrounds</div>
+          </div>
+          {rows.map((row, i) => <Row row={row} key={i} />)}
+        </>}
+
+        {animatedRows.length > 0 && <>
+          <div className="bg-gray-900 py-2 px-4 rounded my-2">
+            <div className="text-white">Animated backgrounds</div>
+          </div>
+          {animatedRows.map((row, i) => <Row row={row} key={i} animated={true} rowLen={itemsPerRow} />)}
+        </>}
       </div>
-    </div >
+    </div>
   )
 }
 
