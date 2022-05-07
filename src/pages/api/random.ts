@@ -1,7 +1,8 @@
-import withCors from '../../lib/withCors.ts'
-import withCacher from '../../lib/withCacher.ts'
+import withCors from '@/lib/withCors'
+import withCacher from '@/lib/withCacher'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-export default withCacher(withCors(async (req, res) => {
+export default withCacher(withCors(async (req: NextApiRequest, res:NextApiResponse) => {
   const items = await req.Cacher.getItems()
 
   const animatedTypeRandom = Math.floor(Math.random() * 10)
@@ -11,7 +12,7 @@ export default withCacher(withCors(async (req, res) => {
     ? getAnimatedBackgrounds(items)
     : getStaticBackgrounds(items)
 
-  res.setHeader('Random-Type', returnType)
+  res.setHeader('Random-Type', returnType.toString())
   res.setHeader('Random-Cache-Updated', req.Cacher.lastUpdate)
 
   res.send(resbgs)

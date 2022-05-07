@@ -8,8 +8,12 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { Row } from '../../components/History/Row'
 import { useTranslation } from 'next-i18next'
+import { Background, GameInfo } from '@/types'
 
-function Game ({ gameBgs, gameId }) {
+function Game ({ gameBgs, gameId }: {
+  gameBgs: GameInfo
+  gameId: string
+}) {
   const { t } = useTranslation()
 
   const itemsPerRow = typeof window !== 'undefined'
@@ -23,7 +27,7 @@ function Game ({ gameBgs, gameId }) {
       return []
     }
 
-    const r = []
+    const r: Background[][] = []
     let j = 0
 
     for (let i = 0; i < gameBgs.items.length; i++) {

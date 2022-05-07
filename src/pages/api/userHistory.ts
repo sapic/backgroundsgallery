@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import withDatabase from '../../lib/database'
 import withPassport from '../../lib/withPassport'
 
@@ -10,7 +11,7 @@ const bgs = require('../../assets/bgs_full.json')
  * @param {import('next').NextApiResponse} res
  * @returns
  */
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.user || !req.user.id) {
     return res.send([])
   }

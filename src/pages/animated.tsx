@@ -9,6 +9,7 @@ import { Virtuoso } from 'react-virtuoso'
 import AnimatedPreview from '../components/AnimatedPreview'
 import { apiUrl } from '../lib/getApiUrl'
 import Header from '../components/Header'
+import { AnimatedBg } from '@/types'
 
 const ImagePlaceholder = styled.div`
   width: 25%;
@@ -68,7 +69,9 @@ function Row ({ item, still }) {
     </ImagePlaceholder>
 }
 
-function Animated ({ animatedBgs }) {
+function Animated ({ animatedBgs }: {
+  animatedBgs: AnimatedBg[]
+}) {
   const virtuosoRef = useRef(null)
   const { t } = useTranslation()
   const [still, setStill] = useState(false)
@@ -76,7 +79,7 @@ function Animated ({ animatedBgs }) {
   const itemsPerRow = 2
 
   const rows = useMemo(() => {
-    const r = []
+    const r: AnimatedBg[][] = []
     let j = 0
 
     for (let i = 0; i < animatedBgs.length; i++) {

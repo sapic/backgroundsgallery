@@ -14,6 +14,7 @@ import Tutorial from '../components/Tutorial'
 import { BackgroundsScroller } from '../components/BackgroundsScroller'
 
 import { apiUrl } from '../lib/getApiUrl'
+import { AnimatedBg, StaticBg } from '@/types'
 
 // const bgs = require('../assets/bgs.json')
 
@@ -33,23 +34,23 @@ const BackgroundsContainer = styled.div`
 `
 
 function preloadImage (url) {
-  return new Promise((resolve) => {
-    // console.log('preload', url)
+  return new Promise<void>((resolve) => {
     const img = new Image()
     img.onload = () => {
-      // console.log('loaded')
       resolve()
     }
     img.src = url
   })
 }
 
+type BgsQueue = Array<Array<AnimatedBg | StaticBg>>
+
 function Home ({ startBgs }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const { t } = useTranslation('common')
   const [bgs, setBgs] = useState(startBgs)
-  const [bgsQueue, setBgsQueue] = useState([])
+  const [bgsQueue, setBgsQueue] = useState<BgsQueue>([])
   const [isChanging, setIsChanging] = useState(false)
   const [cookies, setCookie] = useCookies(['bgsspid', 'disable_hello'])
 
@@ -94,7 +95,7 @@ function Home ({ startBgs }) {
 
   async function populateQueue () {
     if (bgsQueue.length < 3) {
-      const queue = []
+      const queue: BgsQueue = []
       for (let i = 0; i < 3; i++) {
         const bgs = await fetch(`${apiUrl}/api/random`).then(r => r.json())
         queue.push(bgs)
@@ -109,7 +110,7 @@ function Home ({ startBgs }) {
     }
   }
 
-  async function trackVote (item) {
+  async function trackVote (item?: AnimatedBg|StaticBg) {
     if (window && window.gtag) {
       window.gtag('event', 'vote', {
         image: item ? 'true' : 'false',

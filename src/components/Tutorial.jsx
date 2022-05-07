@@ -16,11 +16,15 @@ export default function Tutorial () {
     document.cookie = 'disable_hello=1;max-age=31557600'
   }
 
+  if (!showTutorial) {
+    return <></>
+  }
+
   return (
-    showTutorial && <CenterDiv className="absolute">
+    <CenterDiv className="absolute">
       <div className={clsx(
         'w-80 h-80 p-4 shadow-md rounded flex justify-between flex-col',
-        'bg-white text-center bg-gray-900 text-white shadow-xl',
+        'text-center bg-gray-900 text-white shadow-xl',
         'transition-all duration-300 1hover:bg-green-500',
         'select-none',
       )}

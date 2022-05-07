@@ -1,8 +1,14 @@
-import withCors from '../../lib/withCors.ts'
-import withCacher from '../../lib/withCacher.ts'
+import withCors from '@/lib/withCors'
+import withCacher from '@/lib/withCacher'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-export default withCacher(withCors(async (req, res) => {
+export default withCacher(withCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const itemsCache = await req.Cacher.getItems()
+
+  if (!req.query.url || typeof req.query.url !== 'string') {
+    return res.send({})
+  }
+
   const [left, ...rest] = req.query.url.split('-')
 
   const toEncode = rest.join('-')

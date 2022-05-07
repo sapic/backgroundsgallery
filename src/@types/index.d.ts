@@ -1,22 +1,27 @@
 import { Knex } from 'knex'
+import Cacher from '@/lib/votesCacher'
+
+interface AppUser {
+  id: string
+  displayName: string
+  username: string
+  profileUrl: string
+  photos: string
+}
 
 declare global {
   type KnexType = Knex<any, unknown[]> // eslint-disable-line
 
-  namespace Express {
-    interface User {
-      id: string
-      displayName: string
-      username: string
-      profileUrl: string
-      photos: string
-    }
+  interface Window {
+    gtag?: any
   }
 }
 
 declare module 'next' {
   interface NextApiRequest {
     db: KnexType
+    Cacher: Cacher
+    user?: AppUser
   }
 }
 

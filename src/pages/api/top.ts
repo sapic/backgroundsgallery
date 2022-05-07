@@ -1,14 +1,15 @@
-import withCors from '../../lib/withCors.ts'
-import withCacher from '../../lib/withCacher.ts'
+import withCors from '@/lib/withCors'
+import withCacher from '@/lib/withCacher'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 const allowedTypes = [0, 1, 2]
 
-export default withCacher(withCors(async (req, res) => {
+export default withCacher(withCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const itemsCache = await req.Cacher.getItems()
-  let { limit, offset, sort } = req.query
-  limit = parseInt(limit)
-  offset = parseInt(offset)
-  sort = parseInt(sort)
+  const { limit: qLimit, offset: qOffset, sort: qSort } = req.query
+  let limit = parseInt(Array.isArray(qLimit) ? qLimit[0] : qLimit)
+  let offset = parseInt(Array.isArray(qOffset) ? qOffset[0] : qOffset)
+  let sort = parseInt(Array.isArray(qSort) ? qSort[0] : qSort)
 
   if (typeof limit !== 'number' || limit < 0 || limit > 100000 || isNaN(limit)) {
     limit = 100

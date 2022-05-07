@@ -1,16 +1,10 @@
 import withDatabase from '../../../lib/database'
-// import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bgs = require('../../../assets/bgs_full.json')
 
-/**
- *
- * @param {import('next').NextApiRequest} req
- * @param {import('next').NextApiResponse} res
- * @returns
- */
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { did } = req.query
 
   if (!did || did === '') {
