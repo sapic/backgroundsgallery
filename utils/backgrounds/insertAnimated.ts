@@ -1,3 +1,4 @@
+// const { MongoClient } = require('mongodb')
 import dotenv from 'dotenv'
 import camelcaseKeys from 'camelcase-keys'
 const bgs = require('../data/animated.json')

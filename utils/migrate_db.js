@@ -2,6 +2,8 @@ const { MongoClient } = require('mongodb')
 const dotenv = require('dotenv')
 const Knex = require('knex')
 
+// const bgs = require('../src/assets/bgs_full.json')
+
 dotenv.config({
   path: '.env.local',
 })
