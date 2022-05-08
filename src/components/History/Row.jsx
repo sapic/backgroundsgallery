@@ -13,7 +13,7 @@ export function Row (props) {
     <RowContainer className="flex">
       {row.map((item, i) => animated
         ? <AnimatedPreview
-          key={i + item.url}
+          key={i + item.defid}
           item={item}
         />
         : <ImagePreview
@@ -21,7 +21,7 @@ export function Row (props) {
           item={item}
         />)}
 
-      {rowLen && new Array(rowLen - row.length).fill(0).map(() => <div className="w-full"></div>)}
+      {rowLen && new Array(rowLen - row.length).fill(0).map((_, i) => <div className="w-full" key={i}></div>)}
     </RowContainer>
   )
 }

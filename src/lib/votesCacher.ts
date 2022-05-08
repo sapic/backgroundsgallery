@@ -87,7 +87,7 @@ async function getBackgroundsData (itemsCache, db) {
 
   for (const view of views) {
     combined[view.url] = {
-      views: view.views,
+      views: parseInt(view.views),
     }
   }
 
@@ -95,7 +95,7 @@ async function getBackgroundsData (itemsCache, db) {
     if (!combined[votes.url]) {
       console.log('no vote in combined')
     }
-    combined[votes.url].votes = votes.votes
+    combined[votes.url].votes = parseInt(votes.votes)
   }
 
   let max = 0
@@ -146,7 +146,7 @@ async function getAnimatedData (itemsCache, db) {
   for (const view of viewsDocs) {
     const key = `${view.appid}:${view.defid}`
     combined[key] = {
-      views: view.views,
+      views: parseInt(view.views),
     }
   }
 
@@ -156,7 +156,7 @@ async function getAnimatedData (itemsCache, db) {
     if (!combined[key]) {
       console.log('no vote in combined')
     }
-    combined[key].votes = votes.votes
+    combined[key].votes = parseInt(votes.votes)
   }
 
   let max = 0
@@ -198,7 +198,7 @@ async function getAnimatedData (itemsCache, db) {
 
 async function getAppsData (itemsCache, db) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const appsJson = require('../assets/apps.json')
+  const appsJson = require('../../utils/data/apps.json')
 
   const result = {}
   const { applist } = appsJson

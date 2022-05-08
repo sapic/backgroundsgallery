@@ -98,11 +98,11 @@ export default function AnimatedPreview ({ item, big, still }) {
       }
 
       <StatsOverlay className="">
-        {item.views && <StatsItem className="mx-2">
+        {!!item.views && <StatsItem className="mx-2">
           <EyeIcon className="mr-1" />
           <span className="">{item.views}</span>
         </StatsItem>}
-        {item.votes && <StatsItem className="mx-2">
+        {!!item.votes && <StatsItem className="mx-2">
           <StarIcon className="mr-1" />
           <span className="">{item.votes}</span>
         </StatsItem>}

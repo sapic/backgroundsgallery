@@ -191,15 +191,15 @@ function Background ({ bgInfo }) {
         </LinksContainer>
 
         <StatsContainer>
-          {bgInfo.views && <StatsItem className="mx-2">
+          {!!bgInfo.views && <StatsItem className="mx-2">
             <EyeIcon className="mr-1" />
             <span className="">{bgInfo.views}</span>
           </StatsItem>}
-          {bgInfo.votes && <StatsItem className="mx-2">
+          {!!bgInfo.votes && <StatsItem className="mx-2">
             <StarIcon className="mr-1" />
             <span className="">{bgInfo.votes}</span>
           </StatsItem>}
-          {bgInfo.pointCost && <StatsItem className="mx-2">
+          {!!bgInfo.pointCost && <StatsItem className="mx-2">
             <span className="">{bgInfo.pointCost}</span>
             <span className="font-bold ml-1">SP</span>
           </StatsItem>}
