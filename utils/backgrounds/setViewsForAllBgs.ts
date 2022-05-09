@@ -21,7 +21,7 @@ const knex = Knex({
 console.log('l', bgs.length)
 async function main () {
   // const i = 0
-  const rows = bgs.map(bg => ({
+  const rows: {url: string; views: 0}[] = bgs.map(bg => ({
     url: bg.url,
     views: 0,
   }))
@@ -30,6 +30,7 @@ async function main () {
 
   for (const items of chunks) {
     await knex('views').insert(items).onConflict().ignore()
+    await knex('votes_total').insert(items.map((v) => ({ url: v.url, votes: 0 }))).onConflict().ignore()
   }
 
   // for (const bg of bgs) {

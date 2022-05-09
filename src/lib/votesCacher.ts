@@ -109,7 +109,7 @@ async function getBackgroundsData (itemsCache, db) {
   for (const key of Object.keys(combined)) {
     const item = combined[key]
 
-    if (!item.votes || !item.views) {
+    if (typeof item.votes === 'undefined' || typeof item.views === 'undefined') {
       continue
     }
 
@@ -120,7 +120,7 @@ async function getBackgroundsData (itemsCache, db) {
 
     const itemStats = {
       popularity: item.votes / max,
-      goodness: item.votes / item.views,
+      goodness: item.votes && item.views ? (item.votes / item.views) : 0,
     }
 
     result.push({
