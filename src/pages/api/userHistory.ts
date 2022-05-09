@@ -3,7 +3,7 @@ import withDatabase from '../../lib/database'
 import withPassport from '../../lib/withPassport'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const bgs = require('../../assets/bgs_full.json')
+const bgs = require('../../assets/bgs.json')
 
 /**
  *
