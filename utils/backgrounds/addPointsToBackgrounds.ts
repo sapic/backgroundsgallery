@@ -39,7 +39,7 @@ for (const bg of bgs) {
             ...bg,
             defid: pointbg.defid,
             pointCost: pointbg.point_cost,
-            steamUrl: `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${pointbg.appid}/${pointbg.community_item_data.item_image_large}`,
+            // steamUrl: `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${pointbg.appid}/${pointbg.community_item_data.item_image_large}`,
           })
 
           break
@@ -62,10 +62,9 @@ for (let i = 0; i < result.length; i++) {
   if (bg.steamUrl) continue
 
   for (const withUrl of bgsWithSteamUrl) {
-    console.log(bg, withUrl)
-    process.exit(0)
     if (withUrl.url === bg.url) {
       bg.steamUrl = withUrl.url
+      bg.iconUrl = withUrl.iconUrl
       result[i] = bg
       break
     }
