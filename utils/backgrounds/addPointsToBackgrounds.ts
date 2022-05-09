@@ -2,6 +2,7 @@ import fs from 'fs'
 
 const pointsBgs = require('../data/bgs.json')
 const bgs = require('../data/steam_tools_backgrounds.json')
+const bgsWithSteamUrl = require('../data/bgs_with_steam_url.json')
 
 console.log('l', pointsBgs.length, bgs.length)
 
@@ -38,6 +39,7 @@ for (const bg of bgs) {
             ...bg,
             defid: pointbg.defid,
             pointCost: pointbg.point_cost,
+            steamUrl: `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${pointbg.appid}/${pointbg.community_item_data.item_image_large}`,
           })
 
           break
@@ -52,6 +54,21 @@ for (const bg of bgs) {
 
   if (!isFound) {
     result.push(bg)
+  }
+}
+
+for (let i = 0; i < result.length; i++) {
+  const bg = result[i]
+  if (bg.steamUrl) continue
+
+  for (const withUrl of bgsWithSteamUrl) {
+    console.log(bg, withUrl)
+    process.exit(0)
+    if (withUrl.url === bg.url) {
+      bg.steamUrl = withUrl.url
+      result[i] = bg
+      break
+    }
   }
 }
 
