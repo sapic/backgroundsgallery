@@ -63,7 +63,7 @@ for (let i = 0; i < result.length; i++) {
 
   for (const withUrl of bgsWithSteamUrl) {
     if (withUrl.url === bg.url) {
-      bg.steamUrl = withUrl.url
+      bg.steamUrl = withUrl.steamUrl
       bg.iconUrl = withUrl.iconUrl
       result[i] = bg
       break

@@ -62,14 +62,6 @@ export default class MyDocument extends Document {
             }}
           />
 
-          {/* plausible */}
-          <script
-            async
-            defer
-            data-domain="backgrounds.gallery"
-            src="https://plausible.steam.design/js/plausible.js"
-          />
-
           {/* google ads */}
           {/* <script data-ad-client="ca-pub-1034829471687394" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> */}
 
