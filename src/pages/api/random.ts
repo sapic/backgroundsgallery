@@ -19,12 +19,24 @@ export default withCacher(withCors(async (req: NextApiRequest, res:NextApiRespon
 }))
 
 function getAnimatedBackgrounds (itemsCache) {
-  const [index1, index2] = getRandomIndeces(itemsCache.animated.length)
+  const backgrounds: any[] = []
+  while (true) {
+    if (backgrounds.length === 2) {
+      break
+    }
 
-  const randomBg1 = itemsCache.animated[index1]
-  const randomBg2 = itemsCache.animated[index2]
+    const index = Math.floor(Math.random() * itemsCache.animated.length)
+    const randomBg = itemsCache.animated[index]
 
-  return [randomBg1, randomBg2, {
+    if ((backgrounds[0] && backgrounds[0].defid === randomBg.defid) ||
+        (randomBg.views > 100 && randomBg.popularity < 0.1)) {
+      continue
+    }
+
+    backgrounds.push(randomBg)
+  }
+
+  return [backgrounds[0], backgrounds[1], {
     type: 'animated',
   }]
 }
@@ -57,26 +69,24 @@ function getStaticBackgrounds (itemsCache) {
     default: break
   }
 
-  const [index1, index2] = getRandomIndeces(sortArray.length)
+  const backgrounds: any[] = []
+  while (true) {
+    if (backgrounds.length === 2) {
+      break
+    }
 
-  const randomBg1 = sortArray[index1]
-  const randomBg2 = sortArray[index2]
+    const index = Math.floor(Math.random() * sortArray.length)
+    const randomBg = sortArray[index]
 
-  return [randomBg1, randomBg2, {
+    if ((backgrounds[0] && backgrounds[0].url === randomBg.url) ||
+        (randomBg.views > 100 && randomBg.popularity < 0.1)) {
+      continue
+    }
+
+    backgrounds.push(randomBg)
+  }
+
+  return [backgrounds[0], backgrounds[1], {
     type: 'static',
   }]
-}
-
-function getRandomIndeces (dataLength) {
-  const index1 = Math.floor(Math.random() * dataLength)
-  const random2 = Math.floor(Math.random() * dataLength)
-
-  // Check if it's same so we don't send 2 same pictures
-  const index2 = random2 !== index1
-    ? random2
-    : random2 > 0
-      ? random2 - 1
-      : random2 + 1
-
-  return [index1, index2]
 }

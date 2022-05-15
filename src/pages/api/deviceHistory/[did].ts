@@ -11,7 +11,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send([])
   }
 
-  console.log('device history', did)
   const votes = req.db('votes')
   const docs = await votes.where({ device_id: did }).orderBy('created_at', 'DESC').select()
 
