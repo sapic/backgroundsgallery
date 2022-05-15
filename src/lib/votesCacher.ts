@@ -188,7 +188,7 @@ async function getAnimatedData (itemsCache, db) {
 
     return bg
   }).sort((a, b) => {
-    return b.goodness - a.goodness
+    return getBgRating(b) - getBgRating(a)
   })
 
   itemsCache.animated = bgs
