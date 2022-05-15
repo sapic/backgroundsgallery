@@ -49,7 +49,7 @@ export default withCacher(withCors(async (req: NextApiRequest, res: NextApiRespo
   const end = count - offset
 
   res.send({
-    items: sortToReturn.slice(start, end).reverse(),
+    items: [...sortToReturn.slice(start, end)].reverse(),
     meta: {
       limit,
       offset,

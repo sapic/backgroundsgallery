@@ -223,6 +223,15 @@ function parseWithSorts (itemsCache) {
     return getBgRating(a) - getBgRating(b)
   })
 
+  // console.log('ratings', [...itemsCache.ratingAscSort].reverse().slice(0, 10).map(r => {
+  //   return {
+  //     views: r.views,
+  //     votes: r.votes,
+  //     goodness: r.goodness,
+  //     rating: getBgRating(r),
+  //   }
+  // }))
+
   return itemsCache
 }
 
