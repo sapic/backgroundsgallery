@@ -219,9 +219,19 @@ function parseWithSorts (itemsCache) {
   // Generate sort arrays
   itemsCache.viewsAscSort = [...response].sort((a, b) => a.views - b.views)
   itemsCache.votesAscSort = [...response].sort((a, b) => a.votes - b.votes)
-  itemsCache.ratingAscSort = [...response].sort((a, b) => a.goodness - b.goodness)
+  itemsCache.ratingAscSort = [...response].sort((a, b) => {
+    return getBgRating(a) - getBgRating(b)
+  })
 
   return itemsCache
+}
+
+function getBgRating (bg) {
+  const n = 50
+  const avg = 0.3
+  return ((bg.votes / (bg.votes + n)) * bg.goodness) + (
+    (n / (bg.votes + n)) * avg
+  )
 }
 
 function parseWithGameId (itemsCache) {
