@@ -193,6 +193,10 @@ async function getAnimatedData (itemsCache, db) {
 
   itemsCache.animated = bgs
 
+  // itemsCache.animated.slice(0, 40).map(r => {
+  //   console.log(`${r.views},${r.votes},${r.goodness},${getBgRating(r)}`)
+  // })
+
   return itemsCache
 }
 
@@ -237,9 +241,9 @@ function parseWithSorts (itemsCache) {
 
 function getBgRating (bg) {
   const n = 50
-  const avg = 0.3
+  const avg = 0.4
   return ((bg.votes / (bg.votes + n)) * bg.goodness) + (
-    (n / (bg.votes + n)) * avg
+    (n / (bg.votes + n)) * avg * bg.goodness
   )
 }
 
