@@ -29,7 +29,7 @@ function getAnimatedBackgrounds (itemsCache) {
     const randomBg = itemsCache.animated[index]
 
     if ((backgrounds[0] && backgrounds[0].defid === randomBg.defid) ||
-        (randomBg.views > 100 && randomBg.popularity < 0.1)) {
+        (randomBg.views > 100 && randomBg.goodness < 0.1)) {
       continue
     }
 
@@ -79,7 +79,7 @@ function getStaticBackgrounds (itemsCache) {
     const randomBg = sortArray[index]
 
     if ((backgrounds[0] && backgrounds[0].url === randomBg.url) ||
-        (randomBg.views > 100 && randomBg.popularity < 0.1)) {
+        (randomBg.views > 100 && randomBg.goodness < 0.1)) {
       continue
     }
 
