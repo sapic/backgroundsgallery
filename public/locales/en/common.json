@@ -11,7 +11,7 @@
   "top": {
     "imageViews": "Views",
     "imageVotes": "Votes",
-    "SteamLink": "Steam",
+    "steamLink": "Steam",
     "sapicLink": "Crop",
     "headerText": "Find the best background for your Steam profile based on community votes! Or, vote yourself!",
     "sortRating": "Rating",
