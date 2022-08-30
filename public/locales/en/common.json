@@ -1,9 +1,9 @@
 {
   "skipImages": "Skip",
   "header": {
-    "top": "Best Backgrounds",
+    "top": "Top Backgrounds",
     "battle": "Vote",
-    "login": "Login through Steam",
+    "login": "Login with Steam",
     "logout": "Logout",
     "history": "History",
     "animated": "Animated"
@@ -13,17 +13,17 @@
     "imageVotes": "Votes",
     "steamLink": "Steam",
     "sapicLink": "Crop",
-    "headerText": "Find best background for Your Steam Profile based on community votes! Or vote yourself!",
+    "headerText": "Find the best background for your Steam profile based on community votes! Or, vote yourself!",
     "sortRating": "Rating",
     "sortVotes": "Votes",
     "sortViews": "Views",
     "sortVote": "Vote",
-    "guideText": "If you write guides for steam and find this site useful, please consider adding it to your guides. It will be very helpful."
+    "guideText": "If you write guides for Steam and find this site useful, please consider adding it to your guides. It will be very helpful."
   },
   "bg": {
     "cropBg": "Crop this background",
     "buyBg": "Buy on Steam",
-    "buyPoins": "Buy for poins"
+    "buyPoins": "Buy with points"
   },
   "seo": {
     "title": {
@@ -35,17 +35,17 @@
       "animated": "Backgrounds.Gallery | Best Steam Backgrounds | Animated"
     },
     "description": {
-      "index": "Best steam backgrounds collection! Find your favorite! User voted top list.",
-      "history": "Best steam backgrounds collection! Find your favorite! Your votes history.",
-      "battle": "Best steam backgrounds collection! Find your favorite! Vote for random backgrounds!",
-      "gameId": "Best steam backgrounds collection! | Steam Game Backgrounds - ",
-      "bgId": "Best steam backgrounds collection! | Steam Background - ",
-      "animated": "Best steam backgrounds collection! Find your favorite! Animated backgrounds."
+      "index": "Best Steam backgrounds collection! Find your favorite! User voted top list.",
+      "history": "Best Steam backgrounds collection! Find your favorite! Your vote history.",
+      "battle": "Best Steam backgrounds collection! Find your favorite! Vote for random backgrounds!",
+      "gameId": "Best Steam backgrounds collection! | Steam Game Backgrounds - ",
+      "bgId": "Best Steam backgrounds collection! | Steam Background - ",
+      "animated": "Best Steam backgrounds collection! Find your favorite! Animated backgrounds."
     }
   },
   "animated": {
     "enableAnimation": "Video preview",
     "disableAnimation": "Static preview",
-    "animationHelpText": "If you experience lags with videos you can preview them as static images"
+    "animationHelpText": "If you experience lag with videos, you can preview them as static images"
   }
 }
