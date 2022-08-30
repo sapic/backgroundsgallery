@@ -271,11 +271,8 @@ function Top ({ startTop, animatedBgs }) {
 
           <div className="text-white">{t('top.guideText')}</div>
         </div>
-        <a className="bg-gray-900 rounded mt-2 h-16 content-center" href="https://steamlevels.com" target="_blank" rel="norefferer noreferrer">
-        <img className="mx-auto" src="/sl.png" alt="SteamLevels"/>
-        {/* <video autoPlay muted playsInline loop> -->
-          <source src="/steam_levels.mp4" />
-        </video> */}
+        <a className="bg-[#191b1d] rounded mt-2 h-16 content-center" href="https://steamlevels.com" target="_blank" rel="norefferer noreferrer">
+        <img className="mx-auto h-16" src="/sl.gif" alt="SteamLevels"/>
         </a>
 
         <AnimatedBackgroundsPreview animatedBgs={animatedBgs} />
