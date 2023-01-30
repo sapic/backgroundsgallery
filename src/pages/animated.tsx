@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styled from 'styled-components'
 import { useMemo, useRef, useState } from 'react'
-import tw from 'twin.macro'
+
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { Virtuoso } from 'react-virtuoso'

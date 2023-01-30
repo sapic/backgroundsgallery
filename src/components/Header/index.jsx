@@ -26,46 +26,36 @@ export default function Header () {
     ])}>
       <div className="flex">
         {/* <div> */}
-        <Link href="/">
-          <a className="flex items-center">
+        <Link href="/" className="flex items-center">
             <LogoSvg className="w-12 h-12" />
             {/* <img className="w-12 h-12" src={require('@/assets/images/logo-asset.svg')} alt=""></img> */}
-          </a>
         </Link>
         {/* </div> */}
         <div className="flex mx-4">
-          <Link href="/">
-            <a className={clsx([
-              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              (pathname === '/') && 'text-blue-300',
-            ])}>
+          <Link href="/" className={clsx([
+            'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
+            (pathname === '/') && 'text-blue-300',
+          ])}>
               {t('header.top')}
-            </a>
           </Link>
-          <Link href="/animated">
-            <a className={clsx([
-              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              (pathname === '/animated') && 'text-blue-300',
-            ])}>
+          <Link href="/animated" className={clsx([
+            'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
+            (pathname === '/animated') && 'text-blue-300',
+          ])}>
               {t('header.animated')}
-            </a>
           </Link>
 
-          <Link href="/battle">
-            <a className={clsx([
-              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              pathname === '/battle' && 'text-blue-300',
-            ])}>
+          <Link href="/battle" className={clsx([
+            'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
+            pathname === '/battle' && 'text-blue-300',
+          ])}>
               {t('header.battle')}
-            </a>
           </Link>
-          {(identity || cookies.bgsspid) && <Link href="/history">
-            <a className={clsx([
-              'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
-              pathname === '/history' && 'text-blue-300',
-            ])}>
+          {(identity || cookies.bgsspid) && <Link href="/history" className={clsx([
+            'flex items-center font-medium text-sm md:text-lg mx-2 md:mx-4',
+            pathname === '/history' && 'text-blue-300',
+          ])}>
               {t('header.history')}
-            </a>
           </Link>}
         </div>
       </div>

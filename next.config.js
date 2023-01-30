@@ -1,3 +1,5 @@
+const stailwc = require('stailwc/install')
+
 const { i18n } = require('./next-i18next.config')
 
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -8,11 +10,14 @@ module.exports =
   // withImages({
   // withBundleAnalyzer({{
     {
-      inlineImageLimit: 1024,
+      // inlineImageLimit: 1024,
 
       pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+      // experimental: {
+      //   modern: true,
+      // },
       experimental: {
-        modern: true,
+        swcPlugins: [stailwc()],
       },
 
       i18n,
@@ -43,6 +48,10 @@ module.exports =
 
       images: {
         domains: ['google.com'],
+      },
+
+      compiler: {
+        styledComponents: true,
       },
     }
 // })

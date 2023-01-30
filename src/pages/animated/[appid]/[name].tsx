@@ -4,7 +4,7 @@ import Head from 'next/head'
 // import Image from 'next/image'
 import Header from '../../../components/Header'
 import styled from 'styled-components'
-import tw from 'twin.macro'
+
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 
@@ -36,17 +36,6 @@ const BackgroundContainer = styled.div`
 `
 
 const BackgroundVideo = styled.video``
-
-const InfoContainer = styled.div`
-  height: max-content;
-
-  ${tw`
-    rounded bg-gray-900 text-gray-100
-    pt-2 pb-4 px-4 my-2 ml-2
-    md:w-80
-    flex flex-col
-  `}
-`
 
 const BackgroundTitle = styled.h1`
   ${tw`text-lg font-bold`}
@@ -158,14 +147,18 @@ function Background ({ bgInfo }) {
         </BackgroundVideo>
       </BackgroundContainer>
 
-      <InfoContainer>
+      <div className='
+        flex flex-col h-max
+        rounded bg-gray-900 text-gray-100
+        pt-2 pb-4 px-4 m-2
+        md:w-80
+        md:mx-0'
+      >
         <BackgroundTitle>{bgInfo.internalDescription}</BackgroundTitle>
 
         <BackgroundGame>
           <Link href={`/games/${gameId}`}>
-            <a>
               {bgInfo.game}
-            </a>
           </Link>
         </BackgroundGame>
 
@@ -204,7 +197,7 @@ function Background ({ bgInfo }) {
             <span className="font-bold ml-1">SP</span>
           </StatsItem>}
         </StatsContainer>
-      </InfoContainer>
+      </div>
     </PageContainer >
   </div>
 }

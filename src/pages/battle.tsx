@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 // import { parseCookies } from 'nookies'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import tw from 'twin.macro'
+
 import { useCookies } from 'react-cookie'
 
 import Header from '../components/Header'
