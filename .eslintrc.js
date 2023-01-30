@@ -1,7 +1,8 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-  extends: ['standard', 'react-app', 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  plugins: ['@typescript-eslint', 'react', 'prettier'],
+  extends: ['standard', 'react-app', 'eslint:recommended', 'plugin:@typescript-eslint/recommended',     'plugin:react/jsx-runtime',
+  'plugin:prettier/recommended',],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
