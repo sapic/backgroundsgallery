@@ -2,7 +2,7 @@ import withCors from '@/lib/withCors'
 import withCacher from '@/lib/withCacher'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default withCacher(withCors(async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const itemsCache = await req.Cacher.getItems()
 
   if (!req.query.url || typeof req.query.url !== 'string') {
@@ -27,4 +27,6 @@ export default withCacher(withCors(async (req: NextApiRequest, res: NextApiRespo
   console.log('not found', combined, req.query.url)
 
   return res.send({})
-}))
+}
+
+export default withCacher(withCors(handler))

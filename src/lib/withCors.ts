@@ -6,8 +6,8 @@ const cors = Cors({
 })
 
 // export middleware to wrap api/auth handlers
-const withCors = fn => (req, res) => {
-  return new Promise(resolve => {
+const withCors = (fn) => (req, res) => {
+  return new Promise((resolve) => {
     cors(req, res, () => {
       resolve(fn(req, res))
     })

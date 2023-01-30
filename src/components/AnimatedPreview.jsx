@@ -17,9 +17,7 @@ const ImageContainer = styled.div`
     transform scale-100 
     // hover:scale-110 transition-all duration-150
     // hover:z-10
-  `}
-
-  /* @media (max-width: 560px) {
+  `}/* @media (max-width: 560px) {
     width: 50%;
   } */
 `
@@ -65,7 +63,7 @@ const MiniVideo = styled.video`
   width: 100%;
 `
 
-export default function AnimatedPreview ({ item, big, still }) {
+export default function AnimatedPreview({ item, big, still }) {
   // const { t } = useTranslation()
   const wembmSrc = big
     ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemMovieWebm}`
@@ -77,36 +75,38 @@ export default function AnimatedPreview ({ item, big, still }) {
 
   const imgSrc = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${item.appid}/${item.communityItemData.itemImageLarge}`
 
-  return <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`}>
-    <ImageContainer className="group">
-      {!still
-        ? <MiniVideo
-          muted
-          loop
-          playsInline
-          autoPlay
-        >
-          <source src={mp4Src} type="video/mp4" />
-          <source src={wembmSrc} type="video/webm" />
-        </MiniVideo>
-        : <MiniImage
-          style={{
-            backgroundImage: `url(${imgSrc})`,
-          }}
-          alt='background'
-        />
-      }
+  return (
+    <Link href={`/animated/${item.appid}/${item.defid}-${item.internalDescription}`}>
+      <ImageContainer className="group">
+        {!still ? (
+          <MiniVideo muted loop playsInline autoPlay>
+            <source src={mp4Src} type="video/mp4" />
+            <source src={wembmSrc} type="video/webm" />
+          </MiniVideo>
+        ) : (
+          <MiniImage
+            style={{
+              backgroundImage: `url(${imgSrc})`,
+            }}
+            alt="background"
+          />
+        )}
 
-      <StatsOverlay className="">
-        {!!item.views && <StatsItem className="mx-2">
-          <EyeIcon className="mr-1" />
-          <span className="">{item.views}</span>
-        </StatsItem>}
-        {!!item.votes && <StatsItem className="mx-2">
-          <StarIcon className="mr-1" />
-          <span className="">{item.votes}</span>
-        </StatsItem>}
-      </StatsOverlay>
-    </ImageContainer>
-  </Link>
+        <StatsOverlay className="">
+          {!!item.views && (
+            <StatsItem className="mx-2">
+              <EyeIcon className="mr-1" />
+              <span className="">{item.views}</span>
+            </StatsItem>
+          )}
+          {!!item.votes && (
+            <StatsItem className="mx-2">
+              <StarIcon className="mr-1" />
+              <span className="">{item.votes}</span>
+            </StatsItem>
+          )}
+        </StatsOverlay>
+      </ImageContainer>
+    </Link>
+  )
 }

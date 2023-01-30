@@ -2,7 +2,7 @@ import withCors from '@/lib/withCors'
 import withCacher from '@/lib/withCacher'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default withCacher(withCors(async function handler (req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { gameId } = req.query
 
   if (!gameId || gameId === '' || Array.isArray(gameId)) {
@@ -23,4 +23,6 @@ export default withCacher(withCors(async function handler (req: NextApiRequest, 
     name,
     ...bgs,
   })
-}))
+}
+
+export default withCacher(withCors(handler))

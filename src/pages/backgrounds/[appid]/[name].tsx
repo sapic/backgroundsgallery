@@ -96,13 +96,13 @@ const PointsIcon = styled(SteamPointsSvg)`
 `
 
 const BgLink = styled.a`
-${tw`
+  ${tw`
     flex items-center cursor-pointer
     hover:text-blue-300
   `}
 `
 
-function Background ({ bgInfo }) {
+function Background({ bgInfo }) {
   const { t } = useTranslation()
 
   const shareUrl = `https://backgrounds.gallery/backgrounds/${bgInfo.url}`
@@ -113,104 +113,124 @@ function Background ({ bgInfo }) {
   // 753/1110690-...
   const gameId = bgInfo.url.split('-')[0].split('/')[1]
 
-  return <div className="bg-black">
-    <Head>
-      <title>{shareName}</title>
-      <meta name="description" key="description" content={description} />
+  return (
+    <div className="bg-black">
+      <Head>
+        <title>{shareName}</title>
+        <meta name="description" key="description" content={description} />
 
-      <meta name="twitter:url" key="twitterurl" content={shareUrl} />
-      <meta name="twitter:title" key="twittertitle" content={shareName} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={previewUrl} />
-      <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" key="twitterurl" content={shareUrl} />
+        <meta name="twitter:title" key="twittertitle" content={shareName} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={previewUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
 
-      <meta property="og:url" key="ogurl" content={shareUrl} />
-      <meta property="og:title" key="ogtitle" content={shareName} />
-      <meta property="og:description" key="ogdescription" content={description} />
-      <meta property="og:type" key="ogtype" content="website" />
-      <meta property="og:image" key="ogimage" content={previewUrl} />
+        <meta property="og:url" key="ogurl" content={shareUrl} />
+        <meta property="og:title" key="ogtitle" content={shareName} />
+        <meta property="og:description" key="ogdescription" content={description} />
+        <meta property="og:type" key="ogtype" content="website" />
+        <meta property="og:image" key="ogimage" content={previewUrl} />
 
-      <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/backgrounds/${bgInfo.url}`} />
-      <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/backgrounds/${bgInfo.url}`} />
-      <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
-    </Head>
+        <link
+          rel="alternate"
+          hrefLang="en"
+          href={`https://backgrounds.gallery/en/backgrounds/${bgInfo.url}`}
+        />
+        <link
+          rel="alternate"
+          hrefLang="ru"
+          href={`https://backgrounds.gallery/ru/backgrounds/${bgInfo.url}`}
+        />
+        <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
+      </Head>
 
-    <Header />
+      <Header />
 
-    <PageContainer className="">
-      <BackgroundContainer style={{
-        backgroundImage: `url(${bgInfo.steamUrl})`,
-      }} />
+      <PageContainer className="">
+        <BackgroundContainer
+          style={{
+            backgroundImage: `url(${bgInfo.steamUrl})`,
+          }}
+        />
 
-      <div className='
+        <div
+          className="
         flex flex-col h-max
         rounded bg-gray-900 text-gray-100
         pt-2 pb-4 px-4 m-2
         md:w-80
-        md:mx-0'
-      >
-        <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
+        md:mx-0"
+        >
+          <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
 
-        <BackgroundGame>
-          <Link href={`/games/${gameId}`}>
-            {bgInfo.game}
-          </Link>
-        </BackgroundGame>
+          <BackgroundGame>
+            <Link href={`/games/${gameId}`}>{bgInfo.game}</Link>
+          </BackgroundGame>
 
-        <LinksContainer>
-          <BgLink
-            href={`https://steam.design/#${bgInfo.steamUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <LogoIcon />
-            <span>{t('bg.cropBg')}</span>
-          </BgLink>
-          <BgLink
-            href={`https://steamcommunity.com/market/listings/${bgInfo.url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SteamIcon />
-            <span>{t('bg.buyBg')}</span>
-          </BgLink>
+          <LinksContainer>
+            <BgLink
+              href={`https://steam.design/#${bgInfo.steamUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <LogoIcon />
+              <span>{t('bg.cropBg')}</span>
+            </BgLink>
+            <BgLink
+              href={`https://steamcommunity.com/market/listings/${bgInfo.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SteamIcon />
+              <span>{t('bg.buyBg')}</span>
+            </BgLink>
 
-          {bgInfo.defid && <BgLink
-            href={`https://store.steampowered.com/points/shop/reward/${bgInfo.defid}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <PointsIcon />
-            <span>{t('bg.buyPoins')}
-              <span className="text-sm text-gray-400"> ({bgInfo.pointCost})</span>
-            </span>
-          </BgLink>}
-        </LinksContainer>
+            {bgInfo.defid && (
+              <BgLink
+                href={`https://store.steampowered.com/points/shop/reward/${bgInfo.defid}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <PointsIcon />
+                <span>
+                  {t('bg.buyPoins')}
+                  <span className="text-sm text-gray-400"> ({bgInfo.pointCost})</span>
+                </span>
+              </BgLink>
+            )}
+          </LinksContainer>
 
-        <StatsContainer>
-          {!!bgInfo.views && <StatsItem className="mx-2">
-            <EyeIcon className="mr-1" />
-            <span className="">{bgInfo.views}</span>
-          </StatsItem>}
-          {!!bgInfo.votes && <StatsItem className="mx-2">
-            <StarIcon className="mr-1" />
-            <span className="">{bgInfo.votes}</span>
-          </StatsItem>}
-          {!!bgInfo.price && <StatsItem className="mx-2">
-            <span className="font-bold mr-1">$</span>
-            <span className="">{bgInfo.price}</span>
-          </StatsItem>}
-        </StatsContainer>
-      </div>
-    </PageContainer >
-  </div >
+          <StatsContainer>
+            {!!bgInfo.views && (
+              <StatsItem className="mx-2">
+                <EyeIcon className="mr-1" />
+                <span className="">{bgInfo.views}</span>
+              </StatsItem>
+            )}
+            {!!bgInfo.votes && (
+              <StatsItem className="mx-2">
+                <StarIcon className="mr-1" />
+                <span className="">{bgInfo.votes}</span>
+              </StatsItem>
+            )}
+            {!!bgInfo.price && (
+              <StatsItem className="mx-2">
+                <span className="font-bold mr-1">$</span>
+                <span className="">{bgInfo.price}</span>
+              </StatsItem>
+            )}
+          </StatsContainer>
+        </div>
+      </PageContainer>
+    </div>
+  )
 }
 
-export async function getServerSideProps ({ locale, params }) {
+export async function getServerSideProps({ locale, params }) {
   let bgInfo = {}
   const url = encodeURIComponent(`${params.appid}/${params.name}`)
   try {
-    bgInfo = await fetch(`${apiUrl}/api/bgInfo?url=${url}`).then(r => r.json())
+    bgInfo = await fetch(`${apiUrl}/api/bgInfo?url=${url}`).then((r) => r.json())
   } catch (e) {
     console.log('get bgs server side error', e)
   }
@@ -220,7 +240,7 @@ export async function getServerSideProps ({ locale, params }) {
       // startTop: top,
       bgInfo,
 
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ['common'])),
     }, // will be passed to the page component as props
   }
 }

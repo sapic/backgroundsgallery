@@ -28,50 +28,45 @@ const ImagePlaceholderInside = styled.div`
 `
 
 const ItemContainer = styled.div`
-    /* padding: 0.5rem; */
+  /* padding: 0.5rem; */
+  width: 100%;
+  display: flex;
+  flex: none;
+  align-content: stretch;
+
+  @media (max-width: 1024px) {
+    width: 50%;
+  }
+
+  @media (max-width: 480px) {
     width: 100%;
-    display: flex;
-    flex: none;
-    align-content: stretch;
-
-    @media (max-width: 1024px) {
-      width: 50%;
-    }
-
-    @media (max-width: 480px) {
-      width: 100%;
-    }
-  `
+  }
+`
 
 const RowContainer = styled.div`
   height: 384px;
 `
 
 const ListContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-  `
+  display: flex;
+  flex-wrap: wrap;
+`
 
 const SortButton = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer`}
 `
 
-function Row ({ item, still }) {
-  return item
-    ? <AnimatedPreview
-      key={item.defid}
-      item={item}
-      big={true}
-      still={still}
-    />
-    : <ImagePlaceholder>
+function Row({ item, still }) {
+  return item ? (
+    <AnimatedPreview key={item.defid} item={item} big={true} still={still} />
+  ) : (
+    <ImagePlaceholder>
       <ImagePlaceholderInside></ImagePlaceholderInside>
     </ImagePlaceholder>
+  )
 }
 
-function Animated ({ animatedBgs }: {
-  animatedBgs: AnimatedBg[]
-}) {
+function Animated({ animatedBgs }: { animatedBgs: AnimatedBg[] }) {
   const virtuosoRef = useRef(null)
   const { t } = useTranslation()
   const [still, setStill] = useState(false)
@@ -116,7 +111,11 @@ function Animated ({ animatedBgs }: {
 
         <link rel="alternate" hrefLang="en" href="https://backgrounds.gallery/en/animated" />
         <link rel="alternate" hrefLang="ru" href="https://backgrounds.gallery/ru/animated" />
-        <link rel="alternate" hrefLang="x-default" href="https://backgrounds.gallery/animated"></link>
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href="https://backgrounds.gallery/animated"
+        ></link>
       </Head>
 
       <Header />
@@ -129,8 +128,12 @@ function Animated ({ animatedBgs }: {
         </div>
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
-          <SortButton onClick={() => setStill(false)} className={!still && 'bg-gray-500'}>{t('animated.enableAnimation')}</SortButton>
-          <SortButton onClick={() => setStill(true)} className={still && 'bg-gray-500'}>{t('animated.disableAnimation')}</SortButton>
+          <SortButton onClick={() => setStill(false)} className={!still && 'bg-gray-500'}>
+            {t('animated.enableAnimation')}
+          </SortButton>
+          <SortButton onClick={() => setStill(true)} className={still && 'bg-gray-500'}>
+            {t('animated.disableAnimation')}
+          </SortButton>
         </div>
 
         <Virtuoso
@@ -149,21 +152,24 @@ function Animated ({ animatedBgs }: {
               </ItemContainer>
             ),
           }}
-
-          itemContent={index => <RowContainer className="flex w-full">
-            {rows[index].map((item, i) => <Row item={item} key={i} still={still} />)}
-          </RowContainer>}
+          itemContent={(index) => (
+            <RowContainer className="flex w-full">
+              {rows[index].map((item, i) => (
+                <Row item={item} key={i} still={still} />
+              ))}
+            </RowContainer>
+          )}
         />
       </div>
-    </div >
+    </div>
   )
 }
 
-export async function getServerSideProps ({ locale }) {
+export async function getServerSideProps({ locale }) {
   let animated = {}
 
   try {
-    animated = await fetch(`${apiUrl}/api/animated`).then(r => r.json())
+    animated = await fetch(`${apiUrl}/api/animated`).then((r) => r.json())
   } catch (e) {
     console.log('get bgs server side error', e)
   }
@@ -172,7 +178,7 @@ export async function getServerSideProps ({ locale }) {
     props: {
       animatedBgs: animated,
 
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ['common'])),
     },
   }
 }

@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import useFetch from 'use-http'
 
-function User (props) {
+function User(props) {
   const { className } = props
   let rows = []
   const options = {} // these options accept all native `fetch` options\
@@ -13,11 +13,12 @@ function User (props) {
 
   const r = []
   let j = 0
-  const itemsPerRow = typeof window !== 'undefined'
-    ? window.innerWidth < 560
-      ? 2
-      : 4 // default 4
-    : 4
+  const itemsPerRow =
+    typeof window !== 'undefined'
+      ? window.innerWidth < 560
+        ? 2
+        : 4 // default 4
+      : 4
 
   for (let i = 0; i < data.length; i++) {
     if (i % itemsPerRow === 0) {
@@ -30,15 +31,15 @@ function User (props) {
 
   rows = r
 
-  return (<>
-    <div className={clsx([
-      className,
-      'bg-gray-900 py-2 px-4 rounded mt-2',
-    ])}>
-      <h1 className="text-white">View your Steam ID votes history</h1>
-    </div>
-    {rows.map((row, i) => <Row row={row} key={i} />)}
-  </>
+  return (
+    <>
+      <div className={clsx([className, 'bg-gray-900 py-2 px-4 rounded mt-2'])}>
+        <h1 className="text-white">View your Steam ID votes history</h1>
+      </div>
+      {rows.map((row, i) => (
+        <Row row={row} key={i} />
+      ))}
+    </>
   )
 }
 

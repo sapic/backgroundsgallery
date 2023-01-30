@@ -14,9 +14,7 @@ const isBrowser = () => typeof window !== 'undefined'
 // type IdentityProviderProps = Readonly<AppInitialProps> & {
 //   session: UserIdentity
 // }
-const IdentityContext = React.createContext(
-  null,
-)
+const IdentityContext = React.createContext(null)
 
 const loginPage = '/auth/login'
 
@@ -34,7 +32,7 @@ export const redirectToLogin = (ctx) => {
 // any is needed to use as JSX element
 const withIdentity = (App) => {
   return class IdentityProvider extends React.Component {
-    static getCookies (ctx) {
+    static getCookies(ctx) {
       if (ctx && ctx.req && ctx.req.headers.cookie) {
         return new Cookies(ctx.req.headers.cookie)
       }
@@ -43,9 +41,7 @@ const withIdentity = (App) => {
     }
 
     static displayName = 'IdentityProvider(MyApp)'
-    static async getInitialProps (
-      ctx,
-    ) {
+    static async getInitialProps(ctx) {
       // Get inner app's props
       let appProps
       if (NextApp.getInitialProps) {
@@ -90,7 +86,7 @@ const withIdentity = (App) => {
       }
     }
 
-    render () {
+    render() {
       const { session, cookies, ...appProps } = this.props
 
       return (

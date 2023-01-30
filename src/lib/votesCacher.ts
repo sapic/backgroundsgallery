@@ -14,13 +14,13 @@ export default class Cacher {
   parseFunctions: Array<(itemsCache: any, db?: KnexType) => any> = []
   getDbClient: () => Promise<KnexType>
 
-  constructor ({
+  constructor({
     getDbClient,
     cacheTime,
     refreshTime,
     parseFunctions = [],
   }: {
-    getDbClient: () => Promise<KnexType>,
+    getDbClient: () => Promise<KnexType>
     cacheTime: number
     refreshTime: number
     parseFunctions: Array<(itemsCache: any, db?: KnexType) => any>
@@ -33,7 +33,7 @@ export default class Cacher {
     this.updateCache()
   }
 
-  async getItems () {
+  async getItems() {
     if (Date.now() - this.lastUpdate < this.cacheTime) {
       if (Date.now() - this.lastUpdate > this.refreshTime) {
         this.updateCache()
@@ -45,7 +45,7 @@ export default class Cacher {
     return this.updateCache()
   }
 
-  async updateCache () {
+  async updateCache() {
     if (this.alreadyReturning) {
       return this.alreadyReturning
     }
@@ -74,7 +74,7 @@ export default class Cacher {
   }
 }
 
-async function getBackgroundsData (itemsCache, db) {
+async function getBackgroundsData(itemsCache, db) {
   console.log('fetch weighted in cache')
   const views = await db('views').select()
   const votesTotal = await db('votes_total').select()
@@ -113,14 +113,14 @@ async function getBackgroundsData (itemsCache, db) {
       continue
     }
 
-    const bgInfo = bgs.find(bg => bg.url === key)
+    const bgInfo = bgs.find((bg) => bg.url === key)
     if (!bgInfo) {
       continue
     }
 
     const itemStats = {
       popularity: item.votes / max,
-      goodness: item.votes && item.views ? (item.votes / item.views) : 0,
+      goodness: item.votes && item.views ? item.votes / item.views : 0,
     }
 
     result.push({
@@ -134,7 +134,7 @@ async function getBackgroundsData (itemsCache, db) {
   return itemsCache
 }
 
-async function getAnimatedData (itemsCache, db) {
+async function getAnimatedData(itemsCache, db) {
   const animatedBgs = db('animated_bgs')
   let bgs = await animatedBgs.select()
 
@@ -167,29 +167,31 @@ async function getAnimatedData (itemsCache, db) {
     }
   }
 
-  bgs = bgs.map(bg => {
-    const key = `${bg.appid}:${bg.defid}`
-    if (combined[key]) {
-      const item = combined[key]
-      bg.views = item.views
-      bg.votes = item.votes
-      bg.popularity = item.votes / max
-      bg.goodness = item.votes / item.views
-    } else {
-      bg.views = 0
-      bg.votes = 0
-      bg.popularity = 0
-      bg.goodness = 0
-    }
+  bgs = bgs
+    .map((bg) => {
+      const key = `${bg.appid}:${bg.defid}`
+      if (combined[key]) {
+        const item = combined[key]
+        bg.views = item.views
+        bg.votes = item.votes
+        bg.popularity = item.votes / max
+        bg.goodness = item.votes / item.views
+      } else {
+        bg.views = 0
+        bg.votes = 0
+        bg.popularity = 0
+        bg.goodness = 0
+      }
 
-    if (itemsCache.apps && itemsCache.apps[bg.appid]) {
-      bg.game = itemsCache.apps[bg.appid]
-    }
+      if (itemsCache.apps && itemsCache.apps[bg.appid]) {
+        bg.game = itemsCache.apps[bg.appid]
+      }
 
-    return bg
-  }).sort((a, b) => {
-    return getBgRating(b) - getBgRating(a)
-  })
+      return bg
+    })
+    .sort((a, b) => {
+      return getBgRating(b) - getBgRating(a)
+    })
 
   itemsCache.animated = bgs
 
@@ -200,7 +202,7 @@ async function getAnimatedData (itemsCache, db) {
   return itemsCache
 }
 
-async function getAppsData (itemsCache, db) {
+async function getAppsData(itemsCache, db) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const appsJson = require('../../utils/data/apps.json')
 
@@ -217,7 +219,7 @@ async function getAppsData (itemsCache, db) {
   return itemsCache
 }
 
-function parseWithSorts (itemsCache) {
+function parseWithSorts(itemsCache) {
   const response = itemsCache.items
 
   // Generate sort arrays
@@ -239,15 +241,13 @@ function parseWithSorts (itemsCache) {
   return itemsCache
 }
 
-function getBgRating (bg) {
+function getBgRating(bg) {
   const n = 50
   const avg = 0.4
-  return ((bg.votes / (bg.votes + n)) * bg.goodness) + (
-    (n / (bg.votes + n)) * avg * bg.goodness
-  )
+  return (bg.votes / (bg.votes + n)) * bg.goodness + (n / (bg.votes + n)) * avg * bg.goodness
 }
 
-function parseWithGameId (itemsCache) {
+function parseWithGameId(itemsCache) {
   const response = itemsCache.items
 
   const withGameId = {}
@@ -276,7 +276,7 @@ function parseWithGameId (itemsCache) {
   return itemsCache
 }
 
-function parseToObject (itemsCache) {
+function parseToObject(itemsCache) {
   const response = itemsCache.items
 
   const newItems = {}
@@ -294,7 +294,6 @@ export {
   getBackgroundsData,
   getAnimatedData,
   getAppsData,
-
   parseWithSorts,
   parseToObject,
   parseWithGameId,

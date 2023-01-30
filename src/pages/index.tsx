@@ -35,7 +35,7 @@ const SortButton = styled.div`
 const SortButtonViolet = styled.div`
   ${tw`p-2 rounded mx-2 cursor-pointer`}
   background: #aa076b;
-  background: linear-gradient(45deg,#61045f,#aa076b);
+  background: linear-gradient(45deg, #61045f, #aa076b);
 `
 
 const PaginationContainer = styled.div`
@@ -84,20 +84,20 @@ const ImagePlaceholderInside = styled.div`
 `
 
 const ItemContainer = styled.div`
-    /* padding: 0.5rem; */
+  /* padding: 0.5rem; */
+  width: 100%;
+  display: flex;
+  flex: none;
+  align-content: stretch;
+
+  @media (max-width: 1024px) {
+    width: 50%;
+  }
+
+  @media (max-width: 480px) {
     width: 100%;
-    display: flex;
-    flex: none;
-    align-content: stretch;
-
-    @media (max-width: 1024px) {
-      width: 50%;
-    }
-
-    @media (max-width: 480px) {
-      width: 100%;
-    }
-  `
+  }
+`
 
 // const ItemWrapper = styled.div`
 //     flex: 1;
@@ -109,26 +109,25 @@ const ItemContainer = styled.div`
 //   `
 
 const ListContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-  `
+  display: flex;
+  flex-wrap: wrap;
+`
 
 const InvisibleListContainer = styled.div`
   display: none;
 `
 
-function Row ({ item }) {
-  return item
-    ? <ImagePreview
-      key={item.url}
-      item={item}
-    />
-    : <ImagePlaceholder>
+function Row({ item }) {
+  return item ? (
+    <ImagePreview key={item.url} item={item} />
+  ) : (
+    <ImagePlaceholder>
       <ImagePlaceholderInside></ImagePlaceholderInside>
     </ImagePlaceholder>
+  )
 }
 
-function Top ({ startTop, animatedBgs }) {
+function Top({ startTop, animatedBgs }) {
   const router = useRouter()
   const { page: spageFromQuery } = router.query
   const virtuosoRef = useRef<HTMLElement>(null)
@@ -144,11 +143,12 @@ function Top ({ startTop, animatedBgs }) {
   const [sort, setSort] = useState(0)
   const [initialScrollHappened, setInitialScrollHappened] = useState(false)
 
-  const itemsPerRow = typeof window !== 'undefined'
-    ? window.innerWidth < 560
-      ? 2
-      : 4 // default 4
-    : 4
+  const itemsPerRow =
+    typeof window !== 'undefined'
+      ? window.innerWidth < 560
+        ? 2
+        : 4 // default 4
+      : 4
 
   // const rowsCount = Math.floor(startTop.meta.count / itemsPerRow)
 
@@ -160,8 +160,8 @@ function Top ({ startTop, animatedBgs }) {
     if (!initialScrollHappened && pageFromQuery) {
       setInitialScrollHappened(true)
       setTimeout(() => {
-        const indexToSroll = pageFromQuery === 1 ? 0 : ((pageFromQuery - 1) * rowsPerPage)
-        const scrollOfset = (192 * indexToSroll) - 65
+        const indexToSroll = pageFromQuery === 1 ? 0 : (pageFromQuery - 1) * rowsPerPage
+        const scrollOfset = 192 * indexToSroll - 65
 
         if (virtuosoRef.current) {
           virtuosoRef.current.scrollTo({ top: scrollOfset })
@@ -171,12 +171,16 @@ function Top ({ startTop, animatedBgs }) {
   }, [initialScrollHappened, pageFromQuery, rowsPerPage])
 
   // const [allData, setAllData] = useState([startTop])
-  const { data: allData } = useFetch(`${apiUrl}/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`, {
-    onNewData: (_, newData) => {
-      return [newData]
+  const { data: allData } = useFetch(
+    `${apiUrl}/api/top?offset=${0}&limit=${startTop.meta.count}&sort=${sort}`,
+    {
+      onNewData: (_, newData) => {
+        return [newData]
+      },
+      data: [startTop],
     },
-    data: [startTop],
-  }, [startTop, sort])
+    [startTop, sort]
+  )
 
   const filledArray = useMemo(() => {
     const res = new Array(startTop.meta.count)
@@ -212,8 +216,8 @@ function Top ({ startTop, animatedBgs }) {
 
   // const [pages, setPages] = useState([1, 2, 3, 4, 5, '...', pagesCount + 1])
   useEffect(() => {
-    const newPageStart = ((visibleRange.startIndex + 1) / rowsPerPage) + 1
-    const newPageEnd = ((visibleRange.endIndex + 1) / rowsPerPage) + 1
+    const newPageStart = (visibleRange.startIndex + 1) / rowsPerPage + 1
+    const newPageEnd = (visibleRange.endIndex + 1) / rowsPerPage + 1
     const avg = Math.floor((newPageStart + newPageEnd) / 2)
 
     if (avg !== currentPage) {
@@ -228,10 +232,20 @@ function Top ({ startTop, animatedBgs }) {
 
   const pages = useMemo(() => {
     const cr = currentPage
-    const newPages = cr < 5
-      ? [1, 2, 3, 4, 5, 6, pagesCount]
-      : cr > pagesCount - 5
-        ? [1, pagesCount - 6, pagesCount - 5, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
+    const newPages =
+      cr < 5
+        ? [1, 2, 3, 4, 5, 6, pagesCount]
+        : cr > pagesCount - 5
+        ? [
+            1,
+            pagesCount - 6,
+            pagesCount - 5,
+            pagesCount - 4,
+            pagesCount - 3,
+            pagesCount - 2,
+            pagesCount - 1,
+            pagesCount,
+          ]
         : [1, cr - 2, cr - 1, cr, cr + 1, cr + 2, pagesCount]
 
     return newPages
@@ -274,13 +288,18 @@ function Top ({ startTop, animatedBgs }) {
         <AnimatedBackgroundsPreview animatedBgs={animatedBgs} />
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
-          <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>{t('top.sortRating')}</SortButton>
-          <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>{t('top.sortVotes')}</SortButton>
-          <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>{t('top.sortViews')}</SortButton>
+          <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>
+            {t('top.sortRating')}
+          </SortButton>
+          <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>
+            {t('top.sortVotes')}
+          </SortButton>
+          <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>
+            {t('top.sortViews')}
+          </SortButton>
           <Link href="/battle">
             <SortButtonViolet>{t('top.sortVote')}</SortButtonViolet>
           </Link>
-
         </div>
 
         <Virtuoso
@@ -301,10 +320,13 @@ function Top ({ startTop, animatedBgs }) {
               </ItemContainer>
             ),
           }}
-
-          itemContent={index => <div className="flex w-full">
-            {rows[index].map((item, i) => <Row item={item} key={i} />)}
-          </div>}
+          itemContent={(index) => (
+            <div className="flex w-full">
+              {rows[index].map((item, i) => (
+                <Row item={item} key={i} />
+              ))}
+            </div>
+          )}
         />
 
         <PaginationContainer>
@@ -315,8 +337,8 @@ function Top ({ startTop, animatedBgs }) {
               onClick={(e) => {
                 e.preventDefault()
 
-                const indexToSroll = i === 1 ? 0 : ((i - 1) * rowsPerPage)
-                const scrollOfset = (192 * indexToSroll) - 65
+                const indexToSroll = i === 1 ? 0 : (i - 1) * rowsPerPage
+                const scrollOfset = 192 * indexToSroll - 65
 
                 if (virtuosoRef.current) {
                   virtuosoRef.current.scrollTo({ top: scrollOfset })
@@ -336,13 +358,17 @@ function Top ({ startTop, animatedBgs }) {
       </div>
 
       <InvisibleListContainer>
-        {startTop.items.map(item => <a key={item.url} href={`/backgrounds/${item.url}`}>{item.name}</a>)}
+        {startTop.items.map((item) => (
+          <a key={item.url} href={`/backgrounds/${item.url}`}>
+            {item.name}
+          </a>
+        ))}
       </InvisibleListContainer>
-    </div >
+    </div>
   )
 }
 
-export async function getServerSideProps ({ locale, query }) {
+export async function getServerSideProps({ locale, query }) {
   let top = {}
   let animated = {}
   let offset = 0
@@ -352,9 +378,9 @@ export async function getServerSideProps ({ locale, query }) {
   }
 
   try {
-    [top, animated] = await Promise.all([
-      fetch(`${apiUrl}/api/top?limit=32&offset=${offset}`).then(r => r.json()),
-      fetch(`${apiUrl}/api/animated`).then(r => r.json()),
+    ;[top, animated] = await Promise.all([
+      fetch(`${apiUrl}/api/top?limit=32&offset=${offset}`).then((r) => r.json()),
+      fetch(`${apiUrl}/api/animated`).then((r) => r.json()),
     ])
   } catch (e) {
     console.log('get bgs server side error', e)
@@ -365,7 +391,7 @@ export async function getServerSideProps ({ locale, query }) {
       startTop: top,
       animatedBgs: animated,
 
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ['common'])),
     }, // will be passed to the page component as props
   }
 }

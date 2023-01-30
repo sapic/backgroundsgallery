@@ -8,7 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useCookies } from 'react-cookie'
 import { useTranslation } from 'next-i18next'
 
-function History () {
+function History() {
   const identity = useIdentity()
   const { t } = useTranslation()
 
@@ -37,7 +37,11 @@ function History () {
 
         <link rel="alternate" hrefLang="en" href="https://backgrounds.gallery/en/history" />
         <link rel="alternate" hrefLang="ru" href="https://backgrounds.gallery/ru/history" />
-        <link rel="alternate" hrefLang="x-default" href="https://backgrounds.gallery/history"></link>
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href="https://backgrounds.gallery/history"
+        ></link>
       </Head>
 
       <Header />
@@ -46,14 +50,14 @@ function History () {
         {deviceId && <DeviceHistory deviceId={deviceId} />}
         {identity && <UserHistory identity={identity} className={deviceId && 'mt-16'} />}
       </div>
-    </div >
+    </div>
   )
 }
 
-export async function getServerSideProps ({ locale }) {
+export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ['common'])),
     }, // will be passed to the page component as props
   }
 }

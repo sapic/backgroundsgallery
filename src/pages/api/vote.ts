@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 const disableVoting = !!process.env.DISABLE_VOTING
 
-export default withDatabase(withPassport(async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.statusCode = 200
   res.json({ status: 'ok' })
 
@@ -45,12 +45,15 @@ export default withDatabase(withPassport(async (req: NextApiRequest, res: NextAp
 
       await votesStatic.insert(toInsert)
 
-      await votesTotalStatic.insert({
-        url: item.url,
-        votes: 1,
-      }).onConflict('url').merge({
-        votes: req.db.raw('votes_total.votes + 1'),
-      })
+      await votesTotalStatic
+        .insert({
+          url: item.url,
+          votes: 1,
+        })
+        .onConflict('url')
+        .merge({
+          votes: req.db.raw('votes_total.votes + 1'),
+        })
     } else {
       // animated
       const toInsert: any = {
@@ -65,36 +68,47 @@ export default withDatabase(withPassport(async (req: NextApiRequest, res: NextAp
 
       await votesAnimated.insert(toInsert)
 
-      await votesTotalAnimated.insert({
-        appid: item.appid,
-        defid: item.defid,
-        votes: 1,
-      }).onConflict(['appid', 'defid']).merge({
-        votes: req.db.raw('votes_total_animated.votes + 1'),
-      })
+      await votesTotalAnimated
+        .insert({
+          appid: item.appid,
+          defid: item.defid,
+          votes: 1,
+        })
+        .onConflict(['appid', 'defid'])
+        .merge({
+          votes: req.db.raw('votes_total_animated.votes + 1'),
+        })
     }
   }
 
   if (!isAnimated) {
     // static
     for (const bg of bgs) {
-      await viewsStatic.insert({
-        url: bg.url,
-        views: 1,
-      }).onConflict('url').merge({
-        views: req.db.raw('views.views + 1'),
-      })
+      await viewsStatic
+        .insert({
+          url: bg.url,
+          views: 1,
+        })
+        .onConflict('url')
+        .merge({
+          views: req.db.raw('views.views + 1'),
+        })
     }
   } else {
     // animated
     for (const bg of bgs) {
-      await viewsAnimated.insert({
-        appid: bg.appid,
-        defid: bg.defid,
-        views: 1,
-      }).onConflict(['appid', 'defid']).merge({
-        views: req.db.raw('views_animated.views + 1'),
-      })
+      await viewsAnimated
+        .insert({
+          appid: bg.appid,
+          defid: bg.defid,
+          views: 1,
+        })
+        .onConflict(['appid', 'defid'])
+        .merge({
+          views: req.db.raw('views_animated.views + 1'),
+        })
     }
   }
-}))
+}
+
+export default withDatabase(withPassport(handler))

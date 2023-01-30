@@ -4,12 +4,12 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 const allowedTypes = [0, 1, 2]
 
-export default withCacher(withCors(async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const itemsCache = await req.Cacher.getItems()
   const { limit: qLimit, offset: qOffset, sort: qSort } = req.query
-  let limit = parseInt(Array.isArray(qLimit) ? qLimit[0] : qLimit)
-  let offset = parseInt(Array.isArray(qOffset) ? qOffset[0] : qOffset)
-  let sort = parseInt(Array.isArray(qSort) ? qSort[0] : qSort)
+  let limit = parseInt(Array.isArray(qLimit) ? qLimit[0] : qLimit || '0')
+  let offset = parseInt(Array.isArray(qOffset) ? qOffset[0] : qOffset || '0')
+  let sort = parseInt(Array.isArray(qSort) ? qSort[0] : qSort || '0')
 
   if (typeof limit !== 'number' || limit < 0 || limit > 100000 || isNaN(limit)) {
     limit = 100
@@ -36,9 +36,10 @@ export default withCacher(withCors(async (req: NextApiRequest, res: NextApiRespo
     })
   }
 
-  const sortToReturn = sort === 0
-    ? itemsCache.ratingAscSort
-    : sort === 1
+  const sortToReturn =
+    sort === 0
+      ? itemsCache.ratingAscSort
+      : sort === 1
       ? itemsCache.votesAscSort
       : itemsCache.viewsAscSort
 
@@ -57,4 +58,6 @@ export default withCacher(withCors(async (req: NextApiRequest, res: NextApiRespo
       count: itemsCache.items.length,
     },
   })
-}))
+}
+
+export default withCacher(withCors(handler))

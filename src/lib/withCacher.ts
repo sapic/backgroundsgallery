@@ -2,7 +2,6 @@ import Cacher, {
   getBackgroundsData,
   getAnimatedData,
   getAppsData,
-
   parseWithSorts,
   parseWithGameId,
   parseToObject,
@@ -28,8 +27,8 @@ const cacher = new Cacher({
 })
 
 // export middleware to wrap api/auth handlers
-const withCacher = fn => (req, res) => {
-  return new Promise(resolve => {
+const withCacher = (fn) => (req, res) => {
+  return new Promise((resolve) => {
     req.Cacher = cacher
     resolve(fn(req, res))
   })

@@ -1,4 +1,3 @@
-
 import { NextApiResponse, NextApiRequest } from 'next'
 import withPassport, { passport } from '../../../../lib/withPassport'
 

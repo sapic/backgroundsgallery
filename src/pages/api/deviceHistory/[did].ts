@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const votes = req.db('votes')
   const docs = await votes.where({ device_id: did }).orderBy('created_at', 'DESC').select()
 
-  const result = docs.map(d => bgs.find(bg => bg.url === d.url)).filter(d => d)
+  const result = docs.map((d) => bgs.find((bg) => bg.url === d.url)).filter((d) => d)
 
   res.send(result)
 }

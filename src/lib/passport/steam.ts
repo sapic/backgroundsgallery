@@ -34,7 +34,7 @@ const strategy = (req, res) => {
       // User.findByOpenID({ openId: identifier }, function (err, user) {
       //   return done(err, user);
       // });
-    },
+    }
     // (accessToken, refreshToken, githubProfile, cb) => {
     //   // Right now, the user's Github profile is supplied as the user
     //   // record. In a production-quality application, the Github profile should

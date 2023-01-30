@@ -96,7 +96,7 @@ const BgLink = styled.a`
   `}
 `
 
-function Background ({ bgInfo }) {
+function Background({ bgInfo }) {
   const { t } = useTranslation()
 
   console.log('bg info', bgInfo)
@@ -111,103 +111,116 @@ function Background ({ bgInfo }) {
   const webmUrl = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${bgInfo.appid}/${bgInfo.communityItemData.itemMovieWebm}`
   const mp4Url = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/${bgInfo.appid}/${bgInfo.communityItemData.itemMovieMp4}`
 
-  return <div className="bg-black">
-    <Head>
-      <title>{shareName}</title>
-      <meta name="description" key="description" content={description} />
+  return (
+    <div className="bg-black">
+      <Head>
+        <title>{shareName}</title>
+        <meta name="description" key="description" content={description} />
 
-      <meta name="twitter:url" key="twitterurl" content={shareUrl} />
-      <meta name="twitter:title" key="twittertitle" content={shareName} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={previewUrl} />
-      <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" key="twitterurl" content={shareUrl} />
+        <meta name="twitter:title" key="twittertitle" content={shareName} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={previewUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
 
-      <meta property="og:url" key="ogurl" content={shareUrl} />
-      <meta property="og:title" key="ogtitle" content={shareName} />
-      <meta property="og:description" key="ogdescription" content={description} />
-      <meta property="og:type" key="ogtype" content="website" />
-      <meta property="og:image" key="ogimage" content={previewUrl} />
+        <meta property="og:url" key="ogurl" content={shareUrl} />
+        <meta property="og:title" key="ogtitle" content={shareName} />
+        <meta property="og:description" key="ogdescription" content={description} />
+        <meta property="og:type" key="ogtype" content="website" />
+        <meta property="og:image" key="ogimage" content={previewUrl} />
 
-      <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`} />
-      <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`} />
-      <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
-    </Head>
+        <link
+          rel="alternate"
+          hrefLang="en"
+          href={`https://backgrounds.gallery/en/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`}
+        />
+        <link
+          rel="alternate"
+          hrefLang="ru"
+          href={`https://backgrounds.gallery/ru/animated/${bgInfo.appid}/${bgInfo.defid}-${bgInfo.internalDescription}`}
+        />
+        <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
+      </Head>
 
-    <Header />
+      <Header />
 
-    <PageContainer className="">
-      <BackgroundContainer>
-        <BackgroundVideo
-          muted
-          loop
-          playsInline
-          autoPlay >
-          <source src={mp4Url} type="video/mp4" />
-          <source src={webmUrl} type="video/webm" />
-        </BackgroundVideo>
-      </BackgroundContainer>
+      <PageContainer className="">
+        <BackgroundContainer>
+          <BackgroundVideo muted loop playsInline autoPlay>
+            <source src={mp4Url} type="video/mp4" />
+            <source src={webmUrl} type="video/webm" />
+          </BackgroundVideo>
+        </BackgroundContainer>
 
-      <div className='
+        <div
+          className="
         flex flex-col h-max
         rounded bg-gray-900 text-gray-100
         pt-2 pb-4 px-4 m-2
         md:w-80
-        md:mx-0'
-      >
-        <BackgroundTitle>{bgInfo.internalDescription}</BackgroundTitle>
+        md:mx-0"
+        >
+          <BackgroundTitle>{bgInfo.internalDescription}</BackgroundTitle>
 
-        <BackgroundGame>
-          <Link href={`/games/${gameId}`}>
-              {bgInfo.game}
-          </Link>
-        </BackgroundGame>
+          <BackgroundGame>
+            <Link href={`/games/${gameId}`}>{bgInfo.game}</Link>
+          </BackgroundGame>
 
-        <LinksContainer>
-          {/* <div className="text-white">{JSON.stringify(bgInfo)}</div> */}
+          <LinksContainer>
+            {/* <div className="text-white">{JSON.stringify(bgInfo)}</div> */}
 
-          <BgLink
-            href={`https://steam.design/#${webmUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <LogoIcon />
-            <span>{t('bg.cropBg')}</span>
-          </BgLink>
-          <BgLink
-            href={`https://store.steampowered.com/points/shop/c/backgrounds/reward/${bgInfo.defid}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SteamIcon />
-            <span>{t('bg.buyBg')}</span>
-          </BgLink>
-        </LinksContainer>
+            <BgLink
+              href={`https://steam.design/#${webmUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <LogoIcon />
+              <span>{t('bg.cropBg')}</span>
+            </BgLink>
+            <BgLink
+              href={`https://store.steampowered.com/points/shop/c/backgrounds/reward/${bgInfo.defid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SteamIcon />
+              <span>{t('bg.buyBg')}</span>
+            </BgLink>
+          </LinksContainer>
 
-        <StatsContainer>
-          {!!bgInfo.views && <StatsItem className="mx-2">
-            <EyeIcon className="mr-1" />
-            <span className="">{bgInfo.views}</span>
-          </StatsItem>}
-          {!!bgInfo.votes && <StatsItem className="mx-2">
-            <StarIcon className="mr-1" />
-            <span className="">{bgInfo.votes}</span>
-          </StatsItem>}
-          {!!bgInfo.pointCost && <StatsItem className="mx-2">
-            <span className="">{bgInfo.pointCost}</span>
-            <span className="font-bold ml-1">SP</span>
-          </StatsItem>}
-        </StatsContainer>
-      </div>
-    </PageContainer >
-  </div>
+          <StatsContainer>
+            {!!bgInfo.views && (
+              <StatsItem className="mx-2">
+                <EyeIcon className="mr-1" />
+                <span className="">{bgInfo.views}</span>
+              </StatsItem>
+            )}
+            {!!bgInfo.votes && (
+              <StatsItem className="mx-2">
+                <StarIcon className="mr-1" />
+                <span className="">{bgInfo.votes}</span>
+              </StatsItem>
+            )}
+            {!!bgInfo.pointCost && (
+              <StatsItem className="mx-2">
+                <span className="">{bgInfo.pointCost}</span>
+                <span className="font-bold ml-1">SP</span>
+              </StatsItem>
+            )}
+          </StatsContainer>
+        </div>
+      </PageContainer>
+    </div>
+  )
 }
 
-export async function getServerSideProps ({ locale, params }) {
+export async function getServerSideProps({ locale, params }) {
   let bgInfo = {}
   const defId = params.name.split('-')[0]
 
   try {
-    bgInfo = await fetch(`${apiUrl}/api/animatedInfo?appid=${params.appid}&defid=${defId}`).then(r => r.json())
+    bgInfo = await fetch(`${apiUrl}/api/animatedInfo?appid=${params.appid}&defid=${defId}`).then(
+      (r) => r.json()
+    )
   } catch (e) {
     console.log('get bgs server side error', e)
   }
@@ -217,7 +230,7 @@ export async function getServerSideProps ({ locale, params }) {
       // startTop: top,
       bgInfo,
 
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ['common'])),
     }, // will be passed to the page component as props
   }
 }

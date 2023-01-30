@@ -57,26 +57,32 @@ const StarIcon = styled(StarSvg)`
   height: 16px;
 `
 
-export default function ImagePreview ({ item }) {
+export default function ImagePreview({ item }) {
   // const { t } = useTranslation()
-  return <Link href={`/backgrounds/${item.url}`}>
-    <ImageContainer className="group">
-      <MiniImage
-        style={{
-          backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`,
-        }}
-        alt='background'
-      />
-      <StatsOverlay className="">
-        {!!item.views && <StatsItem className="mx-2">
-          <EyeIcon className="mr-1" />
-          <span className="">{item.views}</span>
-        </StatsItem>}
-        {!!item.votes && <StatsItem className="mx-2">
-          <StarIcon className="mr-1" />
-          <span className="">{item.votes}</span>
-        </StatsItem>}
-      </StatsOverlay>
-    </ImageContainer>
-  </Link>
+  return (
+    <Link href={`/backgrounds/${item.url}`}>
+      <ImageContainer className="group">
+        <MiniImage
+          style={{
+            backgroundImage: `url(https://community.cloudflare.steamstatic.com/economy/image/${item.iconUrl}/360fx360f)`,
+          }}
+          alt="background"
+        />
+        <StatsOverlay className="">
+          {!!item.views && (
+            <StatsItem className="mx-2">
+              <EyeIcon className="mr-1" />
+              <span className="">{item.views}</span>
+            </StatsItem>
+          )}
+          {!!item.votes && (
+            <StatsItem className="mx-2">
+              <StarIcon className="mr-1" />
+              <span className="">{item.votes}</span>
+            </StatsItem>
+          )}
+        </StatsOverlay>
+      </ImageContainer>
+    </Link>
+  )
 }

@@ -10,17 +10,15 @@ import { Row } from '../../components/History/Row'
 import { useTranslation } from 'next-i18next'
 import { Background, GameInfo } from '@/types'
 
-function Game ({ gameBgs, gameId }: {
-  gameBgs: GameInfo
-  gameId: string
-}) {
+function Game({ gameBgs, gameId }: { gameBgs: GameInfo; gameId: string }) {
   const { t } = useTranslation()
 
-  const itemsPerRow = typeof window !== 'undefined'
-    ? window.innerWidth < 560
-      ? 2
-      : 4 // default 4
-    : 4
+  const itemsPerRow =
+    typeof window !== 'undefined'
+      ? window.innerWidth < 560
+        ? 2
+        : 4 // default 4
+      : 4
 
   const rows = useMemo(() => {
     if (!gameBgs || !gameBgs.static) {
@@ -82,8 +80,16 @@ function Game ({ gameBgs, gameId }: {
         <meta property="og:type" key="ogtype" content="website" />
         <meta property="og:image" key="ogimage" content="/SocialBanner.png" />
 
-        <link rel="alternate" hrefLang="en" href={`https://backgrounds.gallery/en/games/${gameId}`} />
-        <link rel="alternate" hrefLang="ru" href={`https://backgrounds.gallery/ru/games/${gameId}`} />
+        <link
+          rel="alternate"
+          hrefLang="en"
+          href={`https://backgrounds.gallery/en/games/${gameId}`}
+        />
+        <link
+          rel="alternate"
+          hrefLang="ru"
+          href={`https://backgrounds.gallery/ru/games/${gameId}`}
+        />
         <link rel="alternate" hrefLang="x-default" href={shareUrl}></link>
       </Head>
 
@@ -91,33 +97,48 @@ function Game ({ gameBgs, gameId }: {
 
       <div className="w-full flex pt-16 max-w-screen-sm sm:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto flex-col relative">
         <div className="bg-gray-900 py-2 px-4 rounded mt-2">
-          <h1 className="text-white">Backgrounds from
-          <a href={`https://store.steampowered.com/app/${gameId}`} target="_blank" rel="noopener noreferrer"><strong>{gameBgs.name}</strong></a>
+          <h1 className="text-white">
+            Backgrounds from
+            <a
+              href={`https://store.steampowered.com/app/${gameId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <strong>{gameBgs.name}</strong>
+            </a>
           </h1>
         </div>
 
-        {rows.length > 0 && <>
-          <div className="bg-gray-900 py-2 px-4 rounded my-2">
-            <div className="text-white">Static backgrounds</div>
-          </div>
-          {rows.map((row, i) => <Row row={row} key={i} />)}
-        </>}
+        {rows.length > 0 && (
+          <>
+            <div className="bg-gray-900 py-2 px-4 rounded my-2">
+              <div className="text-white">Static backgrounds</div>
+            </div>
+            {rows.map((row, i) => (
+              <Row row={row} key={i} />
+            ))}
+          </>
+        )}
 
-        {animatedRows.length > 0 && <>
-          <div className="bg-gray-900 py-2 px-4 rounded my-2">
-            <div className="text-white">Animated backgrounds</div>
-          </div>
-          {animatedRows.map((row, i) => <Row row={row} key={i} animated={true} rowLen={itemsPerRow} />)}
-        </>}
+        {animatedRows.length > 0 && (
+          <>
+            <div className="bg-gray-900 py-2 px-4 rounded my-2">
+              <div className="text-white">Animated backgrounds</div>
+            </div>
+            {animatedRows.map((row, i) => (
+              <Row row={row} key={i} animated={true} rowLen={itemsPerRow} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   )
 }
 
-export async function getServerSideProps ({ locale, params }) {
+export async function getServerSideProps({ locale, params }) {
   let gameBgs = {}
   try {
-    gameBgs = await fetch(`${apiUrl}/api/games/${params.id}`).then(r => r.json())
+    gameBgs = await fetch(`${apiUrl}/api/games/${params.id}`).then((r) => r.json())
   } catch (e) {
     console.log('get bgs server side error', e)
   }
@@ -127,7 +148,7 @@ export async function getServerSideProps ({ locale, params }) {
       gameBgs,
       gameId: params.id,
 
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ['common'])),
     }, // will be passed to the page component as props
   }
 }

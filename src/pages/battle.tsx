@@ -33,7 +33,7 @@ const BackgroundsContainer = styled.div`
   }
 `
 
-function preloadImage (url) {
+function preloadImage(url) {
   return new Promise<void>((resolve) => {
     const img = new Image()
     img.onload = () => {
@@ -45,7 +45,7 @@ function preloadImage (url) {
 
 type BgsQueue = Array<Array<AnimatedBg | StaticBg>>
 
-function Home ({ startBgs }) {
+function Home({ startBgs }) {
   // const identity = useIdentity()
   // const { loading, error, data = [] } = useFetch('/api/get_random_bgs', {}, [])
   const { t } = useTranslation('common')
@@ -54,7 +54,7 @@ function Home ({ startBgs }) {
   const [isChanging, setIsChanging] = useState(false)
   const [cookies, setCookie] = useCookies(['bgsspid', 'disable_hello'])
 
-  async function loadBgs () {
+  async function loadBgs() {
     if (window && window.gtag) {
       window.gtag('event', 'loadbg', {
         image: 'true',
@@ -72,7 +72,7 @@ function Home ({ startBgs }) {
     }
   })
 
-  async function getNextBgs () {
+  async function getNextBgs() {
     if (bgsQueue.length > 0) {
       const bgs = bgsQueue.shift()
       setBgsQueue([...bgsQueue])
@@ -83,7 +83,7 @@ function Home ({ startBgs }) {
 
     let bgs
     try {
-      bgs = await fetch(`${apiUrl}/api/random`).then(r => r.json())
+      bgs = await fetch(`${apiUrl}/api/random`).then((r) => r.json())
     } catch (e) {
       console.log('bgs fetch error', e)
       return []
@@ -93,13 +93,13 @@ function Home ({ startBgs }) {
     return bgs
   }
 
-  async function populateQueue () {
+  async function populateQueue() {
     if (bgsQueue.length < 3) {
       const queue: BgsQueue = []
       for (let i = 0; i < 3; i++) {
-        const bgs = await fetch(`${apiUrl}/api/random`).then(r => r.json())
+        const bgs = await fetch(`${apiUrl}/api/random`).then((r) => r.json())
         queue.push(bgs)
-        bgs.map(bg => preloadImage(bg.steamUrl))
+        bgs.map((bg) => preloadImage(bg.steamUrl))
       }
 
       for (const bgs of queue) {
@@ -110,7 +110,7 @@ function Home ({ startBgs }) {
     }
   }
 
-  async function trackVote (item?: AnimatedBg|StaticBg) {
+  async function trackVote(item?: AnimatedBg | StaticBg) {
     if (window && window.gtag) {
       window.gtag('event', 'vote', {
         image: item ? 'true' : 'false',
@@ -142,7 +142,7 @@ function Home ({ startBgs }) {
     })
   }
 
-  async function clickOnImage (item) {
+  async function clickOnImage(item) {
     if (isChanging) {
       return
     }
@@ -154,7 +154,7 @@ function Home ({ startBgs }) {
     setIsChanging(false)
   }
 
-  async function clickOnSkip () {
+  async function clickOnSkip() {
     trackVote()
     loadBgs()
   }
@@ -201,27 +201,29 @@ function Home ({ startBgs }) {
       <Header />
 
       <BackgroundsContainer>
-        <BackgroundsScroller
-          bgs={bgs}
-          clickOnImage={clickOnImage}
-        />
+        <BackgroundsScroller bgs={bgs} clickOnImage={clickOnImage} />
 
         <CenterDiv className="absolute">
-          <div className={clsx([
-            'w-16 h-16 rounded-full leading-16 text-center bg-gray-900 text-white shadow-xl',
-            'mr-28 md:mr-0 mt-0 md:mt-0',
-          ])}>
+          <div
+            className={clsx([
+              'w-16 h-16 rounded-full leading-16 text-center bg-gray-900 text-white shadow-xl',
+              'mr-28 md:mr-0 mt-0 md:mt-0',
+            ])}
+          >
             VS
           </div>
         </CenterDiv>
         <CenterDiv className="absolute">
-          <div className={clsx(
-            'ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full',
-            'leading-24 text-center bg-gray-900 text-white shadow-xl',
-            'transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer',
-            'select-none',
-          )}
-            onClick={() => { clickOnSkip() }}
+          <div
+            className={clsx(
+              'ml-20 mt-0 md:ml-0 md:mt-48 w-24 h-24 rounded-full',
+              'leading-24 text-center bg-gray-900 text-white shadow-xl',
+              'transition-all duration-300 ease-out hover:bg-green-500 cursor-pointer',
+              'select-none'
+            )}
+            onClick={() => {
+              clickOnSkip()
+            }}
           >
             {t('skipImages')}
           </div>
@@ -230,13 +232,14 @@ function Home ({ startBgs }) {
         {/* Popup with instructions */}
         {!cookies?.disable_hello && <Tutorial />}
       </BackgroundsContainer>
-    </div >
+    </div>
   )
 }
 
-const delay = (ms) => new Promise((resolve) => {
-  setTimeout(resolve, ms)
-})
+const delay = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
 
 // function getCookie(name) {
 //   const value = `; ${document.cookie}`;
@@ -244,18 +247,20 @@ const delay = (ms) => new Promise((resolve) => {
 //   if (parts.length === 2) return parts.pop().split(';').shift();
 // }
 
-function randomId () {
+function randomId() {
   const array = window.crypto.getRandomValues(new Uint8Array(16))
-  const hash = Array.prototype.map.call(new Uint8Array(array.buffer), x => ('00' + x.toString(16)).slice(-2)).join('')
+  const hash = Array.prototype.map
+    .call(new Uint8Array(array.buffer), (x) => ('00' + x.toString(16)).slice(-2))
+    .join('')
   return hash
 }
 
-export async function getServerSideProps (ctx) {
+export async function getServerSideProps(ctx) {
   // const cookies = parseCookies(ctx)
 
   let bgs = []
   try {
-    bgs = await fetch(`${apiUrl}/api/random`).then(r => r.json())
+    bgs = await fetch(`${apiUrl}/api/random`).then((r) => r.json())
   } catch (e) {
     console.log('get bgs server side error', e)
   }
@@ -264,14 +269,14 @@ export async function getServerSideProps (ctx) {
     props: {
       // cookies,
       startBgs: bgs,
-      ...await serverSideTranslations(ctx.locale, ['common']),
+      ...(await serverSideTranslations(ctx.locale, ['common'])),
     },
   }
 }
 
-function useKeypress (key, action) {
+function useKeypress(key, action) {
   useEffect(() => {
-    function onKeyup (e) {
+    function onKeyup(e) {
       if (e.key === key) action()
     }
     window.addEventListener('keyup', onKeyup)

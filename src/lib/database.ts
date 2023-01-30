@@ -16,7 +16,7 @@ const knex = Knex({
   },
 })
 
-async function database (req, res, next) {
+async function database(req, res, next) {
   // if (!client.isConnected()) await client.connect();
 
   // req.dbClient = client;
@@ -25,15 +25,12 @@ async function database (req, res, next) {
   return next()
 }
 
-async function getDatabaseClient () {
+async function getDatabaseClient() {
   return knex
 }
 
-const withDatabase = fn => (req, res) =>
-  database(req, res, () => fn(req, res))
+const withDatabase = (fn) => (req, res) => database(req, res, () => fn(req, res))
 
 export default withDatabase
 
-export {
-  getDatabaseClient,
-}
+export { getDatabaseClient }

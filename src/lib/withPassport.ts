@@ -33,7 +33,7 @@ passport.deserializeUser(async (serializedUser, done) => {
 })
 
 // export middleware to wrap api/auth handlers
-const withPassport = fn => (req, res) => {
+const withPassport = (fn) => (req, res) => {
   passport.use(steam(req, res))
   // console.log('passport handler')
   // console.log('with passport fn', res.redirect.toString())
@@ -50,7 +50,7 @@ const withPassport = fn => (req, res) => {
   // Initialize Passport and restore authentication state, if any, from the
   // session. This nesting of middleware handlers basically does what app.use(passport.initialize())
   // does in express.
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     cookieSession({
       name: 'passportSession',
       signed: false,
@@ -60,8 +60,8 @@ const withPassport = fn => (req, res) => {
       passport.initialize()(req, res, () =>
         passport.session()(req, res, () => {
           resolve(fn(req, res))
-        }),
-      ),
+        })
+      )
     )
   })
 }
