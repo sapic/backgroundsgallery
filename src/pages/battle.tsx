@@ -25,7 +25,6 @@ const CenterDiv = styled.div`
 `
 
 const BackgroundsContainer = styled.div`
-  ${tw`w-full flex pt-16 flex-col md:flex-row`}
   height: 100vh;
 
   @media (max-width: 964px) {
@@ -200,7 +199,7 @@ function Home({ startBgs }) {
 
       <Header />
 
-      <BackgroundsContainer>
+      <BackgroundsContainer className="w-full flex pt-16 flex-col md:flex-row">
         <BackgroundsScroller bgs={bgs} clickOnImage={clickOnImage} />
 
         <CenterDiv className="absolute">

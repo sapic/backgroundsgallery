@@ -10,11 +10,12 @@ import AnimatedPreview from '../components/AnimatedPreview'
 import { apiUrl } from '../lib/getApiUrl'
 import Header from '../components/Header'
 import { AnimatedBg } from '@/types'
+import clsx from 'clsx'
 
 const ImagePlaceholder = styled.div`
   width: 25%;
   height: 384px;
-  ${tw`p-1`}
+  padding: 0.25rem;
 
   @media (max-width: 560px) {
     width: 50%;
@@ -24,7 +25,6 @@ const ImagePlaceholder = styled.div`
 const ImagePlaceholderInside = styled.div`
   width: 100%;
   height: 100%;
-  ${tw`bg-gray-500`}
 `
 
 const ItemContainer = styled.div`
@@ -52,16 +52,14 @@ const ListContainer = styled.div`
   flex-wrap: wrap;
 `
 
-const SortButton = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer`}
-`
+const SortButton = styled.div``
 
 function Row({ item, still }) {
   return item ? (
     <AnimatedPreview key={item.defid} item={item} big={true} still={still} />
   ) : (
     <ImagePlaceholder>
-      <ImagePlaceholderInside></ImagePlaceholderInside>
+      <ImagePlaceholderInside className="bg-gray-500" />
     </ImagePlaceholder>
   )
 }
@@ -128,10 +126,16 @@ function Animated({ animatedBgs }: { animatedBgs: AnimatedBg[] }) {
         </div>
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
-          <SortButton onClick={() => setStill(false)} className={!still && 'bg-gray-500'}>
+          <SortButton
+            onClick={() => setStill(false)}
+            className={clsx('p-2 rounded mx-2 cursor-pointer', !still && 'bg-gray-500')}
+          >
             {t('animated.enableAnimation')}
           </SortButton>
-          <SortButton onClick={() => setStill(true)} className={still && 'bg-gray-500'}>
+          <SortButton
+            onClick={() => setStill(true)}
+            className={clsx('p-2 rounded mx-2 cursor-pointer', !still && 'bg-gray-500')}
+          >
             {t('animated.disableAnimation')}
           </SortButton>
         </div>

@@ -2600,11 +2600,6 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-app-root-path@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/app-root-path/-/app-root-path-3.1.0.tgz#5971a2fc12ba170369a7a1ef018c71e6e47c2e86"
-  integrity sha512-biN3PwB2gUtjaYy/isrU3aNWI5w+fAfvHkSvCKeQGxhmYpwKFUxudR3Yya+KqVRHBmEDYh+/lTozYCFbmzX4nA==
-
 arg@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
@@ -6510,13 +6505,6 @@ stable@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
   integrity sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==
-
-stailwc@^0.14.1:
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/stailwc/-/stailwc-0.14.1.tgz#bce8dd45ae23da166066e54a16841f453f9bda58"
-  integrity sha512-KbpJU0VQa4FGrhGZKEV34fNagFMKpUBo85ZvZe4x1TEWF8kybcV0MqBH47xs5ClN5i6iCIeALlBMJiJkFX8Sqw==
-  dependencies:
-    app-root-path "^3.1.0"
 
 "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"

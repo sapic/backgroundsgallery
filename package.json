@@ -27,7 +27,6 @@
     "react-is": "^18.2.0",
     "react-transition-group": "^4.4.5",
     "react-virtuoso": "^4.0.6",
-    "stailwc": "^0.14.1",
     "styled-components": "^5.3.6",
     "use-http": "^1.0.27"
   },

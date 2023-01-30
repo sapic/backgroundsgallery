@@ -19,6 +19,7 @@ import { apiUrl } from '../lib/getApiUrl'
 // import TopList from '@/components/TopList'
 import { useRouter } from 'next/router'
 import { Virtuoso } from 'react-virtuoso'
+import clsx from 'clsx'
 
 // const BodyContainer = styled.div`
 //   margin: 0 auto;
@@ -28,12 +29,9 @@ import { Virtuoso } from 'react-virtuoso'
 //   height: 192px;
 // `
 
-const SortButton = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer`}
-`
+const SortButton = styled.div``
 
 const SortButtonViolet = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer`}
   background: #aa076b;
   background: linear-gradient(45deg, #61045f, #aa076b);
 `
@@ -44,9 +42,6 @@ const PaginationContainer = styled.div`
   left: 50%;
   margin-left: 400px;
   display: none;
-  ${tw`
-    bg-gray-900 rounded text-white overflow-hidden w-16
-  `}
 
   @media (min-width: 964px) {
     display: block;
@@ -61,16 +56,12 @@ const PaginationContainer = styled.div`
   }
 `
 
-const PageNumberContainer = styled.a`
-  ${tw`
-    flex px-4 py-2 cursor-pointer select-none text-center items-center justify-center
-  `}
-`
+const PageNumberContainer = styled.a``
 
 const ImagePlaceholder = styled.div`
   width: 25%;
   height: 192px;
-  ${tw`p-1`}
+  padding: 0.25rem;
 
   @media (max-width: 560px) {
     width: 50%;
@@ -80,7 +71,6 @@ const ImagePlaceholder = styled.div`
 const ImagePlaceholderInside = styled.div`
   width: 100%;
   height: 100%;
-  ${tw`bg-gray-500`}
 `
 
 const ItemContainer = styled.div`
@@ -122,7 +112,7 @@ function Row({ item }) {
     <ImagePreview key={item.url} item={item} />
   ) : (
     <ImagePlaceholder>
-      <ImagePlaceholderInside></ImagePlaceholderInside>
+      <ImagePlaceholderInside className="bg-gray-500" />
     </ImagePlaceholder>
   )
 }
@@ -288,17 +278,28 @@ function Top({ startTop, animatedBgs }) {
         <AnimatedBackgroundsPreview animatedBgs={animatedBgs} />
 
         <div className="bg-gray-900 flex rounded py-4 px-2 text-white my-2">
-          <SortButton onClick={() => setSort(0)} className={sort === 0 && 'bg-gray-500'}>
+          <SortButton
+            onClick={() => setSort(0)}
+            className={clsx('p-2 rounded mx-2 cursor-pointer', sort === 0 && 'bg-gray-500')}
+          >
             {t('top.sortRating')}
           </SortButton>
-          <SortButton onClick={() => setSort(1)} className={sort === 1 && 'bg-gray-500'}>
+          <SortButton
+            onClick={() => setSort(1)}
+            className={clsx('p-2 rounded mx-2 cursor-pointer', sort === 1 && 'bg-gray-500')}
+          >
             {t('top.sortVotes')}
           </SortButton>
-          <SortButton onClick={() => setSort(2)} className={sort === 2 && 'bg-gray-500'}>
+          <SortButton
+            onClick={() => setSort(2)}
+            className={clsx('p-2 rounded mx-2 cursor-pointer', sort === 2 && 'bg-gray-500')}
+          >
             {t('top.sortViews')}
           </SortButton>
           <Link href="/battle">
-            <SortButtonViolet>{t('top.sortVote')}</SortButtonViolet>
+            <SortButtonViolet className="p-2 rounded mx-2 cursor-pointer">
+              {t('top.sortVote')}
+            </SortButtonViolet>
           </Link>
         </div>
 
@@ -329,11 +330,14 @@ function Top({ startTop, animatedBgs }) {
           )}
         />
 
-        <PaginationContainer>
+        <PaginationContainer className="bg-gray-900 rounded text-white overflow-hidden w-16">
           {pages.map((i, index) => (
             <PageNumberContainer
               href={`/?page=${i}`}
-              className={i === currentPage && 'bg-gray-500'}
+              className={clsx(
+                'flex px-4 py-2 cursor-pointer select-none text-center items-center justify-center',
+                i === currentPage && 'bg-gray-500'
+              )}
               onClick={(e) => {
                 e.preventDefault()
 

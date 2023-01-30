@@ -5,7 +5,6 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 const SortButtonViolet = styled.div`
-  ${tw`p-2 rounded mx-2 cursor-pointer w-64 mx-auto mt-2 mb-4 text-white text-center`}
   background: #aa076b;
   background: linear-gradient(45deg, #61045f, #aa076b);
 `
@@ -36,7 +35,12 @@ function Preview({ animatedBgs }) {
       </VideoRow>
 
       <Link href="/animated">
-        <SortButtonViolet>See all animated backgrounds</SortButtonViolet>
+        <SortButtonViolet
+          className="p-2 rounded cursor-pointer w-64
+            mx-auto mt-2 mb-4 text-white text-center"
+        >
+          See all animated backgrounds
+        </SortButtonViolet>
       </Link>
     </div>
   )

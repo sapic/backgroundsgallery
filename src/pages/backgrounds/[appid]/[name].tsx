@@ -14,16 +14,7 @@ import LogoSvg from '../../../assets/images/logo.svg'
 import SteamSvg from '../../../assets/images/steam.svg'
 import SteamPointsSvg from '../../../assets/images/steam_points.svg'
 
-const PageContainer = styled.div`
-  ${tw`
-    w-full max-w-md
-    flex flex-col
-    pt-16 mx-auto relative
-
-    md:max-w-screen-md md:flex-row
-    xl:max-w-screen-lg 2xl:max-w-screen-xl
-  `}
-`
+const PageContainer = styled.div``
 
 const BackgroundContainer = styled.div`
   width: 100%;
@@ -32,31 +23,17 @@ const BackgroundContainer = styled.div`
   padding-top: 65%;
   background-size: contain;
   background-repeat: no-repeat;
-
-  ${tw`bg-center md:bg-top`}
 `
 
-const BackgroundTitle = styled.h1`
-  ${tw`text-lg font-bold`}
-`
+const BackgroundTitle = styled.h1``
 
-const BackgroundGame = styled.h3`
-  ${tw`cursor-pointer font-semibold hover:text-blue-300`}
-`
+const BackgroundGame = styled.h3``
 
-const StatsContainer = styled.div`
-  ${tw`flex -mx-2 mt-2`}
-`
+const StatsContainer = styled.div``
 
-const LinksContainer = styled.div`
-  ${tw`flex flex-col mt-2 space-y-2`}
-`
+const LinksContainer = styled.div``
 
-const StatsItem = styled.div`
-  ${tw`
-    flex-row flex items-center text-sm
-  `}
-`
+const StatsItem = styled.div``
 
 const EyeIcon = styled(EyeSvg)`
   color: white;
@@ -75,8 +52,6 @@ const StarIcon = styled(StarSvg)`
 const LogoIcon = styled(LogoSvg)`
   width: 20px;
   height: 20px;
-
-  ${tw`mr-2`}
 `
 
 const SteamIcon = styled(SteamSvg)`
@@ -84,23 +59,14 @@ const SteamIcon = styled(SteamSvg)`
   height: 20px;
   fill: currentColor;
   color: white;
-
-  ${tw`mr-2`}
 `
 
 const PointsIcon = styled(SteamPointsSvg)`
   width: 20px;
   height: 20px;
-
-  ${tw`mr-2`}
 `
 
-const BgLink = styled.a`
-  ${tw`
-    flex items-center cursor-pointer
-    hover:text-blue-300
-  `}
-`
+const BgLink = styled.a``
 
 function Background({ bgInfo }) {
   const { t } = useTranslation()
@@ -146,11 +112,19 @@ function Background({ bgInfo }) {
 
       <Header />
 
-      <PageContainer className="">
+      <PageContainer
+        className="w-full max-w-md
+          flex flex-col
+          pt-16 mx-auto relative
+
+          md:max-w-screen-md md:flex-row
+          xl:max-w-screen-lg 2xl:max-w-screen-xl"
+      >
         <BackgroundContainer
           style={{
             backgroundImage: `url(${bgInfo.steamUrl})`,
           }}
+          className="bg-center md:bg-top"
         />
 
         <div
@@ -161,27 +135,31 @@ function Background({ bgInfo }) {
         md:w-80
         md:mx-0"
         >
-          <BackgroundTitle>{bgInfo.name}</BackgroundTitle>
+          <BackgroundTitle className="text-lg font-bold">{bgInfo.name}</BackgroundTitle>
 
-          <BackgroundGame>
+          <BackgroundGame className="cursor-pointer font-semibold hover:text-blue-300">
             <Link href={`/games/${gameId}`}>{bgInfo.game}</Link>
           </BackgroundGame>
 
-          <LinksContainer>
+          <LinksContainer className="flex flex-col mt-2 space-y-2">
             <BgLink
               href={`https://steam.design/#${bgInfo.steamUrl}`}
               target="_blank"
               rel="noopener noreferrer"
+              className="flex items-center cursor-pointer
+                  hover:text-blue-300"
             >
-              <LogoIcon />
+              <LogoIcon className="mr-2" />
               <span>{t('bg.cropBg')}</span>
             </BgLink>
             <BgLink
               href={`https://steamcommunity.com/market/listings/${bgInfo.url}`}
               target="_blank"
               rel="noopener noreferrer"
+              className="flex items-center cursor-pointer
+                  hover:text-blue-300"
             >
-              <SteamIcon />
+              <SteamIcon className="mr-2" />
               <span>{t('bg.buyBg')}</span>
             </BgLink>
 
@@ -190,8 +168,10 @@ function Background({ bgInfo }) {
                 href={`https://store.steampowered.com/points/shop/reward/${bgInfo.defid}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="flex items-center cursor-pointer
+                  hover:text-blue-300"
               >
-                <PointsIcon />
+                <PointsIcon className="mr-2" />
                 <span>
                   {t('bg.buyPoins')}
                   <span className="text-sm text-gray-400"> ({bgInfo.pointCost})</span>
@@ -200,21 +180,21 @@ function Background({ bgInfo }) {
             )}
           </LinksContainer>
 
-          <StatsContainer>
+          <StatsContainer className="flex -mx-2 mt-2">
             {!!bgInfo.views && (
-              <StatsItem className="mx-2">
+              <StatsItem className="mx-2 flex-row flex items-center text-sm">
                 <EyeIcon className="mr-1" />
                 <span className="">{bgInfo.views}</span>
               </StatsItem>
             )}
             {!!bgInfo.votes && (
-              <StatsItem className="mx-2">
+              <StatsItem className="mx-2 flex-row flex items-center text-sm">
                 <StarIcon className="mr-1" />
                 <span className="">{bgInfo.votes}</span>
               </StatsItem>
             )}
             {!!bgInfo.price && (
-              <StatsItem className="mx-2">
+              <StatsItem className="mx-2 flex-row flex items-center text-sm">
                 <span className="font-bold mr-1">$</span>
                 <span className="">{bgInfo.price}</span>
               </StatsItem>
