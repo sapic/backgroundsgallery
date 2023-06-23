@@ -25,7 +25,7 @@ function Preview ({ animatedBgs }) {
 
   return <div className="bg-gray-900 my-4 rounded ">
     <div className="py-2 px-4 mt-2">
-      <h1 className="text-white">Animated bacgkrounds</h1>
+      <h1 className="text-white">Animated backgrounds</h1>
     </div>
     <VideoRow className="py-2 px-4 grid grid-cols-2 gap-4 md:grid-cols-4">
       {animatedBgs.slice(0, 4).map((item, i) =>
